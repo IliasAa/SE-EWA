@@ -1,14 +1,15 @@
 <template>
-<Home></Home>
+  <login-screen></login-screen>
 </template>
 
 <script>
-import Home from "@/components/Home.vue";
+import loginScreen from "./components/LoginScreen";
+
 
 export default {
   name: 'App',
   components: {
-  Home
+  loginScreen
   }
 }
 </script>
