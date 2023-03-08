@@ -2,11 +2,11 @@
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-log-in screen">
       <div class="overlap-group">
-        <img class="image-11" src="src/assets/Hva%20logo.png" alt="image 11" /> <div class="overlap-group1">
+        <img class="image-11" src="../assets/Hvalogo.png" alt="image 11" /> <div class="overlap-group1">
         <div class="rectangle-53"></div>
         <div class="submit valign-text-middle">SUBMIT</div>
         <div class="rectangle-48"></div>
-        <img class="rectangle-51" src="src/assets/Rectangle.png" alt="Rectangle 51"/>
+        <img class="rectangle-51" src="../assets/Rectangle.png" alt="Rectangle 51"/>
         <h1 class="title valign-text-middle">Log in</h1>
         <div class="rectangle-50"></div>
         <div class="email-address valign-text-middle poetsenone- regular-normal-white-40px">Email address</div> <div class="rectangle-52"></div>
@@ -82,7 +82,7 @@ export default {
 
 .overlap-group {
   align-items: center;
-  background-image: url("src/assets/Ludo background.png");
+  background-image: url("@/assets/Ludo background.png");
   background-position: 50% 50%;
   background-size: cover;
   display: flex;
