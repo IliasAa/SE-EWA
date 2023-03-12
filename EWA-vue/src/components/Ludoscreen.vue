@@ -126,9 +126,9 @@
             <div class="cells green" style="top: 46.66%;left:6.66%;"></div>
             <div class="cells" style="top: 46.66%;left:0;"></div>
           </div>
-
-          <button class="Throw-a-dice" @click="ThrowDice">Gooi je dobbelsteen</button>
         </div>
+        <h2 class="dice-output">{{ diceoutput }}</h2>
+        <button class="Throw-a-dice" @click="ThrowDice">Gooi je dobbelsteen</button>
         </div>
       </div>
     </div>
@@ -140,11 +140,29 @@
 export default {
   name: "LoginScreen",
 
+  data() {
+    return {
+      diceoutput: null
+    };
+  },
+
   methods: {
     ThrowDice(){
-      return Math.floor((Math.random() * 6) + 1);
+      let result = Math.floor((Math.random() * 6) + 1);
+
+      if (result == 6) {
+        this.diceoutput = result
+        this.AddnewToken();
+      }
+      else {
+        this.diceoutput = result
+      }
+    },
+
+    AddnewToken(){
+      return null;
     }
-  }
+  },
 }
 </script>
 
