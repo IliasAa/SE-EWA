@@ -2,16 +2,22 @@
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-log-in screen">
       <div class="overlap-group">
-        <img class="image-11" src="../assets/Hvalogo.png" alt="image 11" /> <div class="overlap-group1">
-        <div class="rectangle-53"></div>
-        <div class="submit valign-text-middle">SUBMIT</div>
-        <div class="rectangle-48"></div>
-        <img class="rectangle-51" src="../assets/Rectangle.png" alt="Rectangle 51"/>
-        <h1 class="title valign-text-middle">Log in</h1>
-        <div class="rectangle-50"></div>
-        <div class="email-address valign-text-middle poetsenone- regular-normal-white-40px">Email address</div> <div class="rectangle-52"></div>
-        <div class="password valign-text-middle poetsenone- regular-normal-white-40px">Password</div>
-      </div>
+        <img class="image-11" src="../assets/Hvalogo.png" alt="image 11"/>
+        <div class="overlap-group1">
+          <div class="rectangle-53"></div>
+          <div class="rectangle-48"></div>
+          <button class="submit valign-text-middle" :disabled="!hasChanged" @click="redirect">inloggen</button>
+
+          <img class="rectangle-51" src="../assets/Rectangle.png" alt="Rectangle 51"/>
+          <h1 class="title valign-text-middle">Log in</h1>
+          <div class="rectangle-50"></div>
+          <div class="email-address valign-text-middle poetsenone- regular-normal-white-40px"><input v-model="email" type="email"
+                                                                                                     placeholder="email">
+          </div>
+          <div class="rectangle-52"></div>
+          <div class="password valign-text-middle poetsenone- regular-normal-white-40px"><input  v-model="password" type="password"
+                                                                                                placeholder="password"></div>
+        </div>
         <p class="new-here-create-an-account valign-text- middle poetsenone-regular-normal-white-40px">
           New Here? Create an account
         </p>
@@ -22,9 +28,32 @@
 
 <script>
 export default {
-  name: "LoginScreen"
+  name: "LoginScreen",
+  data() {
+    return {
+      email: '',
+      password: '',
+    };
+  },
+
+  computed: {
+    hasChanged() {
+      if (this.email !== '' && this.password !== ''){
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+
+  methods: {
+    redirect(){
+      this.$router.push("/gamepage");
+    }
+  }
 }
 </script>
+
 
 
 <style scoped>
@@ -32,9 +61,9 @@ export default {
 /* Variables */
 
 :root {
-  --BackgroundColor: rgba(5,11,98,1);
-  --BoxBorderColor: rgba(119,181,221,1);
-  --InputBoxColor: rgba(196,196,196,0.271);
+  --BackgroundColor: rgba(5, 11, 98, 1);
+  --BoxBorderColor: rgba(119, 181, 221, 1);
+  --InputBoxColor: rgba(196, 196, 196, 0.271);
 
   --font-size-s: 32px;
   --font-size-xl: 64px;
@@ -50,6 +79,7 @@ export default {
   display: contents;
   text-decoration: none;
 }
+
 .container-center-horizontal {
   display: flex;
   flex-direction: row;
@@ -57,6 +87,7 @@ export default {
   pointer-events: none;
   width: 100%;
 }
+
 .container-center-horizontal > * {
   flex-shrink: 0;
   pointer-events: auto;
@@ -71,7 +102,7 @@ export default {
 /*Screen css*/
 .macbook-pro-16-log-in {
   align-items: flex-start;
-  background-color: rgba(5,11,98,1);
+  background-color: rgba(5, 11, 98, 1);
   border: 2px solid;
   border-color: black;
   display: flex;
@@ -100,8 +131,11 @@ export default {
   width: 98px;
 }
 
-.overlap-group1 { height: 650px; margin-left: 1px;
-  margin-top: 105px; position: relative;
+.overlap-group1 {
+  height: 650px;
+  margin-left: 1px;
+  margin-top: 105px;
+  position: relative;
   width: 1147px;
 }
 
@@ -164,9 +198,9 @@ export default {
 }
 
 .rectangle-50 {
-  background-color: rgba(196,196,196,0.271);
+  background-color: rgba(196, 196, 196, 0.271);
   border: 4px solid;
-  border-color: rgba(119,181,221,1);
+  border-color: rgba(119, 181, 221, 1);
   border-radius: 25px;
   box-shadow: 0px 4px 4px #00000040;
   height: 117px;
@@ -177,16 +211,21 @@ export default {
 }
 
 .email-address {
-  height: 64px; left: 296px; letter-spacing: 0; line-height: 18px; position: absolute;
-  text-align: center; top: 261px;
+  height: 64px;
+  left: 296px;
+  letter-spacing: 0;
+  line-height: 18px;
+  position: absolute;
+  text-align: center;
+  top: 261px;
   width: 529px;
   color: white;
 }
 
 .rectangle-52 {
-  background-color: rgba(196,196,196,0.271);
+  background-color: rgba(196, 196, 196, 0.271);
   border: 4px solid;
-  border-color: rgba(119,181,221,1);
+  border-color: rgba(119, 181, 221, 1);
   border-radius: 25px;
   box-shadow: 0px 4px 4px #00000040;
   height: 117px;
@@ -196,7 +235,8 @@ export default {
   width: 809px;
 }
 
-.password { height: 64px;
+.password {
+  height: 64px;
   left: 309px;
   letter-spacing: 0;
   line-height: 18px;

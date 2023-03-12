@@ -1,15 +1,15 @@
 <template>
-  <login-screen></login-screen>
+  <router-view></router-view>
 </template>
 
 <script>
-import loginScreen from "./components/LoginScreen";
+
 
 
 export default {
   name: 'App',
   components: {
-  loginScreen
+
   }
 }
 </script>
