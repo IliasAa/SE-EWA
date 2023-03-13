@@ -113,7 +113,7 @@ export default {
 
 .overlap-group {
   align-items: center;
-  background-image: url("EWA-vue/src/assets/Ludo background.png");
+  background-image: url("@/assets/Ludo background.png");
   background-position: 50% 50%;
   background-size: cover;
   display: flex;
