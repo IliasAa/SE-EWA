@@ -2,12 +2,12 @@
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-sign-up screen">
       <div class="overlap-group">
-        <img class="image-11" src="@/assets/image-11.png" alt="image 11" /> <div class="flex-col">
+        <img class="image-11" src="src/assets/Hvalogo.png" alt="image 11" /> <div class="flex-col">
         <div class="overlap-group1">
           <div class="rectangle-53"></div>
           <div class="submit valign-text-middle poetsenone- regular-normal-white-32px">SUBMIT</div>
           <div class="rectangle-48"></div>
-          <img class="rectangle-51" src="@/assets/Rectangle-51.png"
+          <img class="rectangle-51" src="src/assets/Rectangle.png"
                alt="Rectangle 51" />
           <h1 class="title valign-text-middle poetsenone-regular-normal-white-64px">Sign up</h1>
           <div class="rectangle-50"></div>
