@@ -1,39 +1,47 @@
 <template>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-log-in screen">
-      <div class="overlap-group">
+      <div id="select" class="overlap-group">
         <img class="image-11" src="../assets/Hvalogo.png" alt="image 11"/>
-        <div class="overlap-group1">
+        <div class="row">
 
+          <div class="col">
+            <h1 id="offline" class="h1">offline game</h1>
+            <button @click="showPopup1 = true">Start a offline game</button>
+            <popup v-if="showPopup1">
+              <DetailOfflineGame></DetailOfflineGame>
+            </popup>
+          </div>
+
+
+          <div class="col">
+            <h1 id="online" class="h1">online game</h1>
+            <button @click="showPopup2 = true">Start a online game</button>
+            <popup v-if="showPopup2">
+              <DetailOnlineGame></DetailOnlineGame>
+            </popup>
+          </div>
+        </div>
+        <h1 class="h1">Join Lobby:</h1>
+        <input> <button>Join</button>
       </div>
     </div>
   </div>
-  </div>
+
 </template>
 
 <script>
+import DetailOnlineGame from "@/components/DetailOnlineGame.vue";
+import DetailOfflineGame from "@/components/DetailOfflineGame.vue";
 export default {
-  name: 'DashboardScreen',
+  name: "DashboardScreen",
+  components: {DetailOnlineGame, DetailOfflineGame},
   data() {
     return {
-      email: '',
-      password: '',
-    };
-  },
-
-  computed: {
-    hasChanged() {
-      if (this.email !== '' && this.password !== ''){
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
-
-  methods: {
-    redirect(){
-      this.$router.push("/StartScreen");
+      showPopup1: false,
+      showPopup2: false
     }
   }
 }
@@ -43,86 +51,28 @@ export default {
 
 <style scoped>
 
-/* Variables */
-
-:root {
-  --BackgroundColor: rgba(5, 11, 98, 1);
-  --BoxBorderColor: rgba(119, 181, 221, 1);
-  --InputBoxColor: rgba(196, 196, 196, 0.271);
-
-  --font-size-s: 32px;
-  --font-size-xl: 64px;
-  --font-size-s2: 40px;
-  --font-size-m2: 57px;
-
-  --font-family-poetsenone-regular: "PoetsenOne-Regular"
-}
-
-/* Css */
-
-.screen a {
-  display: contents;
-  text-decoration: none;
-}
-
-.container-center-horizontal {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  pointer-events: none;
-  width: 100%;
-}
-
-.container-center-horizontal > * {
-  flex-shrink: 0;
-  pointer-events: auto;
-}
-
-.valign-text-middle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 
 /*Screen css*/
 .macbook-pro-16-log-in {
-  align-items: flex-start;
   background-color: rgba(5, 11, 98, 1);
-  border: 2px solid;
-  border-color: black;
-  display: flex;
-  height: 1117px;
-  width: 1728px;
 }
 
 
 .overlap-group {
-  align-items: center;
   background-image: url("@/assets/Ludo background.png");
   background-position: 50% 50%;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
   min-height: 1117px;
-  padding: 40px 54px;
-  width: 1728px;
 }
 
-.image-11 {
-  align-self: flex-start;
-  height: 111px;
-  margin-top: 9px;
-  object-fit: cover;
-  width: 98px;
+.row {
+  border: solid blue;
+  max-width: 800px;
 }
-
-.overlap-group1 {
-  height: 650px;
-  margin-left: 1px;
-  margin-top: 105px;
-  position: relative;
-  width: 1147px;
+.h1 {
+  color: thistle;
+  margin-left: 20px;
 }
+#offline {
 
-
+}
 </style>
