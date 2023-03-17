@@ -2,24 +2,27 @@
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-sign-up screen">
       <div class="overlap-group">
-        <img class="image-11" src="src/assets/Hvalogo.png" alt="image 11" /> <div class="flex-col">
+        <img class="image-11" src="../assets/Hvalogo.png" alt="image 11" /> <div class="flex-col">
         <div class="overlap-group1">
-          <div class="rectangle-53"></div>
-          <div class="submit valign-text-middle poetsenone- regular-normal-white-32px">SUBMIT</div>
+          <button class="submit valign-text-middle" :disabled="!hasChanged" @click="redirect">registreren</button>
           <div class="rectangle-48"></div>
-          <img class="rectangle-51" src="src/assets/Rectangle.png"
+          <img class="rectangle-51" src="../assets/Rectangle.png"
                alt="Rectangle 51" />
           <h1 class="title valign-text-middle poetsenone-regular-normal-white-64px">Sign up</h1>
           <div class="rectangle-50"></div>
+          <div class="username valign-text-middle poetsenone- regular-normal-white-40px"><input  v-model="username" type="text"
+                                                                                                 placeholder="username"></div>
           <div class="rectangle-52"></div>
-          <div class="email-address valign-text-middle poetsenone- regular-normal-white-40px">Email address</div>
-          <div class="username valign-text-middle poetsenone- regular-normal-white-40px">Username</div>
+          <div class="email-address valign-text-middle poetsenone- regular-normal-white-40px"><input v-model="email" type="email"
+                                                                                                     placeholder="email">
+          </div>
           <div class="rectangle-54"></div>
-          <div class="password valign-text-middle poetsenone- regular-normal-white-40px">Password</div>
+          <div class="password valign-text-middle poetsenone- regular-normal-white-40px"><input  v-model="password" type="password"
+                                                                                                 placeholder="password"></div>
         </div>
         <p class="already-have-an-account-login valign-text-middle poetsenone-regular-normal-white-40px">
-          Already have an Account? Login
-        </p> </div>
+          Already have an Account? <router-link to="/">Log in</router-link>
+        </p></div>
       </div>
     </div>
   </div>
@@ -27,7 +30,30 @@
 
 <script>
 export default {
-  name: "RegisterScreen"
+  name: "RegisterScreen",
+  data() {
+    return {
+      email: '',
+      password: '',
+      username: '',
+    };
+  },
+
+  computed: {
+    hasChanged() {
+      if (this.email !== '' && this.password !== ''&& this.username !== ''){
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+
+  methods: {
+    redirect(){
+      this.$router.push("/gamepage");
+    }
+  }
 }
 </script>
 
@@ -58,21 +84,6 @@ export default {
   font-style: normal;
 }
 
-.poetsenone-regular-normal-white-57px {
-  color: white;
-  font-family: var(--font-family-poetsenone-regular);
-  font-size: 57px;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.poetsenone-regular-normal-white-32px {
-  color: white;
-  font-family: var(--font-family-poetsenone-regular);
-  font-size: 32px;
-  font-weight: 400;
-  font-style: normal;
-}
 
 .poetsenone-regular-normal-white-40px {
   color: white;
@@ -125,7 +136,7 @@ export default {
 
 .overlap-group {
   align-items: flex-start;
-  background-image: url("EWA-vue/src/assets/Ludo background.png");
+  background-image: url("@/assets/Ludo background.png");
   background-position: 50% 50%;
   background-size: cover;
   display: flex;
@@ -158,25 +169,19 @@ export default {
   width: 1147px;
 }
 
-.rectangle-53 {
-  background-color: black;
+
+.submit {
+  background-color: white;
   border-radius: 25px;
   box-shadow: 0px 4px 4px #00000040;
   height: 70px;
   left: 389px;
   position: absolute;
+  z-index: 999;
   top: 772px;
   width: 368px;
-}
-
-.submit {
-  height: 64px;
-  left: 309px;
-  letter-spacing: 0;
-  line-height: 18px; position: absolute;
   text-align: center;
-  top: 774px;
-  width: 529px;
+  align-items: center;
 }
 
 .rectangle-48 {
@@ -236,6 +241,9 @@ export default {
   letter-spacing: 0;
   line-height: 18px;
   position: absolute;
+  text-align: center;
+  top: 425px;
+  width: 529px;
 }
 
 .username {
