@@ -13,7 +13,7 @@ const routes = [
     {path: '/Dashboard', component: Dashboard},
     {path: '/', redirect: '/homePage'},
     {path: '/rulepage', component: rulePage},
-    {path: '/RegisterScreen', component: RegisterScreen}
+    {path: '/Registerpage', component: RegisterScreen}
 ];
 
 export const router = createRouter({
