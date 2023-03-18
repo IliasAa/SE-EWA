@@ -4,7 +4,6 @@
       <div class="overlap-group">
         <img class="image-11" src="../assets/Hvalogo.png" alt="image 11"/>
         <div class="overlap-group1">
-          <div class="rectangle-53"></div>
           <div class="rectangle-48"></div>
           <button class="submit valign-text-middle" :disabled="!hasChanged" @click="redirect">inloggen</button>
 
@@ -19,7 +18,7 @@
                                                                                                 placeholder="password"></div>
         </div>
         <p class="new-here-create-an-account valign-text- middle poetsenone-regular-normal-white-40px">
-          New Here? Create an account
+          New Here? <router-link to="/Registerpage">Create an account</router-link>
         </p>
       </div>
     </div>
@@ -139,29 +138,28 @@ export default {
   width: 1147px;
 }
 
-.rectangle-53 {
-  background-color: black;
-  border-radius: 25px;
-  box-shadow: 0px 4px 4px #00000040;
-  height: 70px;
-  left: 389px;
-  position: absolute;
-  top: 555px;
-  width: 368px;
-}
+
 
 .submit {
-  color: white;
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0px 4px 4px #00000040;
   font-size: 32px;
   font-weight: 400;
-  height: 64px;
-  left: 309px;
+  z-index: 999;
   letter-spacing: 0;
   line-height: 18px;
   position: absolute;
   text-align: center;
-  top: 557px;
-  width: 529px;
+  align-items: center;
+
+
+
+  height: 70px;
+  left: 389px;
+
+  top: 555px;
+  width: 368px;
 }
 
 .rectangle-48 {
