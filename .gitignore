@@ -1,0 +1,9 @@
+# exclude node_modules directory
+node_modules
+
+# exclude JetBrains IDE workspace files
+.idea/
+*.iml
+*.iws
+*.ipr
+*.xml

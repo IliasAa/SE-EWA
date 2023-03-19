@@ -16,6 +16,15 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Services</a></li>
         <li><a href="">Profile</a></li>
+        <div class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+<!--          <img src="../assets/Hvalogo.png" alt="profile-picture">-->
+          <p>username</p>
+        </div>
+
+
       </ul>
     </nav>
   </header>
@@ -23,7 +32,12 @@
 
 <script>
 export default {
-  name: "NavBar.vue"
+  name: "NavBar.vue",
+  data(){
+    return {
+      isLoggedIn: false,
+    }
+  },
 }
 </script>
 
@@ -50,6 +64,21 @@ ul {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
+}
+
+.username {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: blue;
+  border-radius: 10px;
+  margin-left: 50px;
+}
+
+.username p{
+  color: white;
+  margin-bottom: 0;
+  margin-right: 10px;
 }
 
 
@@ -88,6 +117,7 @@ li a:hover {
   border: none;
   cursor: pointer;
   border-right: 1px solid white;
+  border-left: 1px solid white;
 }
 
 /* The container <div> - needed to position the dropdown content */
