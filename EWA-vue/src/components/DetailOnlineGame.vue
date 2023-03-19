@@ -1,14 +1,16 @@
 <template>
   <div class="body">
 <h1>Game lobby</h1>
-  <p>hoi</p>
+
+  <p>Lobby code:</p><p>niu323</p>
   <h2>Joint game:</h2>
   <p>Jan</p>
   <p>Erik</p>
   <p>Nienke</p>
-    <router-link to="/gamepage">
+    <router-link to="/gamepage" v-if="this.players >= 1">
       <button>strart game</button>
     </router-link>
+    <p v-else>there has to he a minimal of one joint players</p>
   </div>
 </template>
 
@@ -17,7 +19,8 @@ export default {
   name: "DetailOnlineGame",
   data(){
     return {
-      tag: []
+      tag: [],
+      players: 3
     }
   },
   createTag(){
@@ -30,6 +33,16 @@ export default {
     }
 
     return tag;
+  },
+  methods: {
+    maxPlayer(){
+      if (this.players < 0){
+        return this.players = 1;
+      }
+      if (this.players > 2){
+        return this.players = 2;
+      }
+    }
   }
 }
 </script>
@@ -39,6 +52,10 @@ export default {
   background: lightskyblue;
   border: solid blue;
   max-width: 500px;
-  height: 300px;
+  height: 350px;
+}
+button {
+  background-color: dodgerblue;
+  border-radius: 12px;
 }
 </style>
