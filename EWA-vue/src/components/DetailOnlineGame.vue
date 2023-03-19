@@ -2,12 +2,12 @@
   <div class="body">
 <h1>Game lobby</h1>
   <p>hoi</p>
-  <h2>Joint game:</h2>
+  <h2>Joined game:</h2>
   <p>Jan</p>
   <p>Erik</p>
   <p>Nienke</p>
     <router-link to="/gamepage">
-      <button>strart game</button>
+      <button>Start game</button>
     </router-link>
   </div>
 </template>
