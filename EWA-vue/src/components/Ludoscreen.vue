@@ -2,7 +2,6 @@
   <NavBar></NavBar>
   <div class="container-center-horizontal">
       <div class="overlap-group">
-        <div class="container-center-horizontal">
           <div class="game">
             <div class="house green">
               <div class="box">
@@ -12,7 +11,6 @@
                 <div class="square square-four green"></div>
               </div>
             </div>
-
             <div class="house yellow" style="right: 0">
               <div class="box">
                 <div class="square square-one yellow"></div>
@@ -21,7 +19,6 @@
                 <div class="square square-four yellow"></div>
               </div>
             </div>
-
             <div class="house red" style="bottom: 0">
               <div class="box">
                 <div class="square square-one red"></div>
@@ -30,7 +27,6 @@
                 <div class="square square-four red"></div>
               </div>
             </div>
-
             <div class="house blue" style="bottom: 0;right: 0">
               <div class="box">
                 <div class="square square-one blue"></div>
@@ -125,11 +121,15 @@
             <div class="cells green" style="top: 46.66%;left:6.66%;"></div>
             <div class="cells" style="top: 46.66%;left:0;"></div>
           </div>
-        </div>
         <h2 class="dice-output">{{ diceoutput }}</h2>
-        <button class="Throw-a-dice" @click="ThrowDice">Gooi je dobbelsteen</button>
-        </div>
+        <button class="btn btn-primary" @click="ThrowDice">Gooi je dobbelsteen</button>
       </div>
+  </div>
+
+
+  <div class="background">
+    <img src="../assets/Ludobackground.png">
+  </div>
 
 
 </template>
@@ -183,47 +183,27 @@ export default {
   --font-family-poetsenone-regular: "PoetsenOne-Regular"
 }
 
-/* Css */
-
-.screen a {
-  display: contents;
-  text-decoration: none;
-}
-
-.container-center-horizontal {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  pointer-events: none;
-  width: 100%;
-
+.background, .background img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  filter: brightness(0.7);
   background-color: rgba(5, 11, 98, 1);
-  background-image: url("@/assets/Ludo background.png");
 }
-
-.container-center-horizontal > * {
-  flex-shrink: 0;
-  pointer-events: auto;
-}
-
 
 
 .overlap-group {
   align-items: center;
   display: flex;
   flex-direction: column;
-  min-height: 1117px;
-  padding: 40px 54px;
-  width: 1728px;
 }
 
-* {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  outline: 0;
-  box-sizing:border-box;
-}
+
 
 .game {
   background: white;
@@ -337,4 +317,9 @@ export default {
   -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
   clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
 }
+
+
+
+
+
 </style>

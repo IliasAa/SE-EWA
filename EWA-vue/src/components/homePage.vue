@@ -73,6 +73,9 @@ export default {
 
 <style scoped>
 
+.btn{
+  margin-left: 7px;
+}
 .jumbotron {
   background-size: cover;
   height: 100%;
@@ -90,10 +93,6 @@ p {
 
   width: 10%;
   margin: 10px;
-}
-
-#img-column {
-  text-align: center;
 }
 
 .card {
