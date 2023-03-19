@@ -5,7 +5,6 @@
     <div class="macbook-pro-16-log-in screen">
       <div class="container">
         <div id="select" class="overlap-group">
-          <img class="image-11" src="../assets/Hvalogo.png" alt="image 11"/>
           <div class="row">
 
             <div class="col">
@@ -80,6 +79,7 @@ export default {
 
 
 <style scoped>
+
 .lobbyContent {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
@@ -115,15 +115,13 @@ export default {
 /*Screen css*/
 .macbook-pro-16-log-in {
   background-color: rgba(5, 11, 98, 1);
+  background-image: url("@/assets/Ludo background.png");
+  background-position: 40% 40%;
+  min-height: 46.8vw;
 }
 
 .lobby {
   text-align: center;
-}
-.overlap-group {
-  background-image: url("@/assets/Ludo background.png");
-  background-position: 50% 50%;
-  min-height: 800px;
 }
 
 .row {
@@ -131,8 +129,8 @@ export default {
   max-width: 1200px;
   text-align: center;
   border-radius: 12px;
-
 }
+
 .h1 {
   color: thistle;
 }

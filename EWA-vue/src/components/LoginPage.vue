@@ -2,14 +2,10 @@
 
   <div class="login-form card">
     <div class="title">
-      <h1>Register</h1>
+      <h1>Login</h1>
     </div>
     <div class="card-body">
       <form>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email">
-        </div>
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" class="form-control" id="username" v-model="username" placeholder="Enter username">
@@ -21,19 +17,19 @@
         <button type="submit" class="btn btn-primary" v-if="hasChanged" @click="redirect">Submit</button>
       </form>
       <p class="new-here-text">
-        Already have an account? <router-link to="/Loginpage">Login</router-link>
+        New Here? <router-link to="/Registerpage">Create an account</router-link>
       </p>
     </div>
   </div>
 
   <div class="background">
-  <img src="../assets/Ludobackground.png">
+    <img src="../assets/Ludobackground.png">
   </div>
 </template>
 
 <script>
 export default {
-  name: "RegisterScreen",
+  name: "LoginPage",
   data() {
     return {
       email: '',
@@ -44,7 +40,7 @@ export default {
 
   computed: {
     hasChanged() {
-      if (this.email !== '' && this.password !== ''&& this.username !== ''){
+      if (this.password !== ''&& this.username !== ''){
         return true;
       } else {
         return false;

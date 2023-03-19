@@ -1,7 +1,6 @@
 <template>
   <NavBar></NavBar>
   <div class="container-center-horizontal">
-    <div class="macbook-pro-16-log-in screen">
       <div class="overlap-group">
         <div class="container-center-horizontal">
           <div class="game">
@@ -131,7 +130,6 @@
         <button class="Throw-a-dice" @click="ThrowDice">Gooi je dobbelsteen</button>
         </div>
       </div>
-    </div>
 
 
 </template>
@@ -198,6 +196,9 @@ export default {
   justify-content: center;
   pointer-events: none;
   width: 100%;
+
+  background-color: rgba(5, 11, 98, 1);
+  background-image: url("@/assets/Ludo background.png");
 }
 
 .container-center-horizontal > * {
@@ -205,29 +206,10 @@ export default {
   pointer-events: auto;
 }
 
-.valign-text-middle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/*Screen css*/
-.macbook-pro-16-log-in {
-  align-items: flex-start;
-  background-color: rgba(5, 11, 98, 1);
-  border: 2px solid;
-  border-color: black;
-  display: flex;
-  height: 1117px;
-  width: 1728px;
-}
 
 
 .overlap-group {
   align-items: center;
-  /*background-image: url("/assets/Ludo background.png");*/
-  background-position: 50% 50%;
-  background-size: cover;
   display: flex;
   flex-direction: column;
   min-height: 1117px;
@@ -266,6 +248,10 @@ export default {
 .blue {
   background-color: #29b6f6;
   border: none;
+}
+
+.dice-output {
+  color: white;
 }
 
 .house {

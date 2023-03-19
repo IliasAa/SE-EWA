@@ -15,6 +15,9 @@
               <h1 class="display-4">Welcome to Hva Ludo!</h1>
               <h4 class="lead"> Roll the dice, make your move, and win the game!</h4>
               <hr class="my-4">
+              <router-link to="/Loginpage" class="btn btn-dark btn-lg shadow-sm">
+                Login
+              </router-link>
               <router-link to="/Registerpage" class="btn btn-dark btn-lg shadow-sm">
                 Register here
               </router-link>
@@ -69,6 +72,7 @@ export default {
 </script>
 
 <style scoped>
+
 .jumbotron {
   background-size: cover;
   height: 100%;
