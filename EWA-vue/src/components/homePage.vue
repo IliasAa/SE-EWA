@@ -56,7 +56,6 @@
     </div>
 
     <div class="background">
-      <img src="../assets/Ludobackground.png">
     </div>
 
   </div>

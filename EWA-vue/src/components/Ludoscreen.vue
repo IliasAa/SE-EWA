@@ -1,9 +1,9 @@
 <template>
+  <NavBar></NavBar>
   <div class="container-center-horizontal">
     <div class="macbook-pro-16-log-in screen">
       <div class="overlap-group">
         <div class="container-center-horizontal">
-
           <div class="game">
             <div class="house green">
               <div class="box">
@@ -137,9 +137,10 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
 export default {
   name: "LoginScreen",
-
+  components: {NavBar},
   data() {
     return {
       diceoutput: null
@@ -224,7 +225,7 @@ export default {
 
 .overlap-group {
   align-items: center;
-  background-image: url("@/assets/Ludo background.png");
+  /*background-image: url("/assets/Ludo background.png");*/
   background-position: 50% 50%;
   background-size: cover;
   display: flex;

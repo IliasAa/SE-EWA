@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="655eecb1-463d-41a5-b6ff-202f88b40eae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EWA-vue/src/components/homePage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EWA-vue/src/components/NavBar.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EWA-vue/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EWA-vue/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EWA-vue/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EWA-vue/src/components/Ludoscreen.vue" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/src/components/Ludoscreen.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EWA-vue/src/components/homePage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/src/components/homePage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EWA-vue/src/components/rulePage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/src/components/rulePage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EWA-vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/EWA-vue/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,23 +40,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-19&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/junio/iss201_2/EWA-vue/vue/src/assets&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\junio\iss201_2\EWA-vue\vue\src\assets" />
@@ -89,6 +79,8 @@
       <workItem from="1679165714688" duration="1331000" />
       <workItem from="1679167830054" duration="11000" />
       <workItem from="1679167848601" duration="1842000" />
+      <workItem from="1679175527734" duration="2050000" />
+      <workItem from="1679230107561" duration="5797000" />
     </task>
     <servers />
   </component>
@@ -105,5 +97,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
