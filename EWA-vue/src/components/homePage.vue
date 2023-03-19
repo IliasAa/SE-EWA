@@ -56,7 +56,7 @@
     </div>
 
     <div class="background">
-<!--      <img src="../assets/Ludo%20background.png">-->
+      <img src="../assets/Ludobackground.png">
     </div>
 
   </div>
@@ -108,6 +108,7 @@ p {
   left: 0;
   z-index: -1000;
   filter: brightness(0.7);
+  background-color: rgba(5, 11, 98, 1);
 }
 
 </style>
