@@ -15,7 +15,7 @@
               <h1 class="display-4">Welcome to Hva Ludo!</h1>
               <h4 class="lead"> Roll the dice, make your move, and win the game!</h4>
               <hr class="my-4">
-              <router-link to="/register" class="btn btn-dark btn-lg shadow-sm">
+              <router-link to="/Registerpage" class="btn btn-dark btn-lg shadow-sm">
                 Register here
               </router-link>
             </div>
@@ -56,7 +56,7 @@
     </div>
 
     <div class="background">
-      <img src="../assets/background.png">
+<!--      <img src="../assets/Ludo%20background.png">-->
     </div>
 
   </div>

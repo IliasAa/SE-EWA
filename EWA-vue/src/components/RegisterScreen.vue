@@ -21,7 +21,7 @@
                                                                                                  placeholder="password"></div>
         </div>
         <p class="already-have-an-account-login valign-text-middle poetsenone-regular-normal-white-40px">
-          Already have an Account? <router-link to="/">Log in</router-link>
+          Already have an Account? <router-link to="/Loginpage">Log in</router-link>
         </p></div>
       </div>
     </div>
@@ -51,7 +51,7 @@ export default {
 
   methods: {
     redirect(){
-      this.$router.push("/gamepage");
+      this.$router.push("/Dashboard");
     }
   }
 }

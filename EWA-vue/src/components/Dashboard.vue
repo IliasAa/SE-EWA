@@ -9,23 +9,25 @@
 
           <div class="col">
             <h1 id="offline" class="h1">offline game</h1>
-            <button @click="showPopup1 = true">Start a offline game</button>
+            <button @click="showPopup1 = !showPopup1">Start a offline game</button>
             <popup v-if="showPopup1">
               <DetailOfflineGame></DetailOfflineGame>
             </popup>
           </div>
 
-
           <div class="col">
             <h1 id="online" class="h1">online game</h1>
-            <button @click="showPopup2 = true">Start a online game</button>
+            <button @click="showPopup2 = !showPopup2">Start a online game</button>
             <popup v-if="showPopup2">
               <DetailOnlineGame></DetailOnlineGame>
             </popup>
           </div>
         </div>
         <h1 class="h1">Join Lobby:</h1>
-        <input> <button>Join</button>
+        <input> <button @click="showPopup3 = !showPopup3">Join</button>
+        <popup v-if="showPopup3">
+          <DetailLobby></DetailLobby>
+        </popup>
       </div>
     </div>
   </div>
@@ -35,13 +37,15 @@
 <script>
 import DetailOnlineGame from "@/components/DetailOnlineGame.vue";
 import DetailOfflineGame from "@/components/DetailOfflineGame.vue";
+import DetailLobby from "@/components/DetailLobby.vue";
 export default {
   name: "DashboardScreen",
-  components: {DetailOnlineGame, DetailOfflineGame},
+  components: {DetailOnlineGame, DetailOfflineGame, DetailLobby},
   data() {
     return {
       showPopup1: false,
-      showPopup2: false
+      showPopup2: false,
+      showPopup3: false,
     }
   }
 }

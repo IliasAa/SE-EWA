@@ -3,7 +3,9 @@
     <h1>Offline Game</h1>
     <p>AI bots:</p>
     <button>-</button> <input> <button>+</button>
-    <button>Start game</button>
+    <router-link to="/gamepage">
+      <button>Start game</button>
+    </router-link>
   </div>
 
 </template>

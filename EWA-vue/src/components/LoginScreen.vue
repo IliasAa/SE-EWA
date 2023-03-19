@@ -47,7 +47,7 @@ export default {
 
   methods: {
     redirect(){
-      this.$router.push("/gamepage");
+      this.$router.push("/Dashboard");
     }
   }
 }

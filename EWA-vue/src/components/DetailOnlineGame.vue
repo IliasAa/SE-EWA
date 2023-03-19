@@ -6,7 +6,9 @@
   <p>Jan</p>
   <p>Erik</p>
   <p>Nienke</p>
-  <button>strart game</button>
+    <router-link to="/gamepage">
+      <button>strart game</button>
+    </router-link>
   </div>
 </template>
 
