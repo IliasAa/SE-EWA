@@ -9,8 +9,8 @@
         <button class="dropbtn">Settings</button>
         <div class="dropdown-content">
           <router-link to="rulePage">Rules</router-link>
-          <a href="#">Invite friend</a>
-          <a href="#">Leave Game</a>
+          <router-link to="Dashboard">Invite friend</router-link>
+          <router-link to="Dashboard">Leave Game</router-link>
         </div>
       </div>
         <li><a href="#">About</a></li>

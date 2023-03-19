@@ -1,4 +1,5 @@
 <template>
+  <NavBar></NavBar>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <div class="container-center-horizontal">
     <div class="macbook-pro-16-log-in screen">
@@ -61,9 +62,10 @@
 import DetailOnlineGame from "@/components/DetailOnlineGame.vue";
 import DetailOfflineGame from "@/components/DetailOfflineGame.vue";
 import DetailLobby from "@/components/DetailLobby.vue";
+import NavBar from "@/components/NavBar.vue";
 export default {
   name: "DashboardScreen",
-  components: {DetailOnlineGame, DetailOfflineGame, DetailLobby},
+  components: {NavBar,DetailOnlineGame, DetailOfflineGame, DetailLobby},
   data() {
     return {
       showPopup1: false,
