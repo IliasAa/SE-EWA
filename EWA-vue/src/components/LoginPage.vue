@@ -1,5 +1,5 @@
 <template>
-
+  <NavBar :isLoggedIn="false"> </NavBar>
   <div class="login-form card">
     <div class="title">
       <h1>Login</h1>
@@ -17,7 +17,8 @@
         <button type="submit" class="btn btn-primary" v-if="hasChanged" @click="redirect">Submit</button>
       </form>
       <p class="new-here-text">
-        New Here? <router-link to="/Registerpage">Create an account</router-link>
+        New Here?
+        <router-link to="/Registerpage">Create an account</router-link>
       </p>
     </div>
   </div>
@@ -28,8 +29,11 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
+
 export default {
   name: "LoginPage",
+  components: {NavBar},
   data() {
     return {
       email: '',
@@ -40,7 +44,7 @@ export default {
 
   computed: {
     hasChanged() {
-      if (this.password !== ''&& this.username !== ''){
+      if (this.password !== '' && this.username !== '') {
         return true;
       } else {
         return false;
@@ -49,7 +53,7 @@ export default {
   },
 
   methods: {
-    redirect(){
+    redirect() {
       this.$router.push("/Dashboard");
     }
   }

@@ -20,8 +20,8 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-<!--          <img src="../assets/Hvalogo.png" alt="profile-picture">-->
-          <p>username</p>
+          <router-link v-if="this.isLoggedIn === false" to="LoginPage"><p>{{checkPage}}</p></router-link>
+          <p v-else>{{checkPage}}</p>
         </div>
 
 
@@ -33,11 +33,21 @@
 <script>
 export default {
   name: "NavBar.vue",
+  props: ["isLoggedIn"],
   data(){
     return {
-      isLoggedIn: false,
     }
   },
+
+  computed: {
+    checkPage(){
+      if (this.isLoggedIn === false){
+        return "Log in"
+      }else {
+        return "cyber_samurai"
+      }
+    }
+  }
 }
 </script>
 
@@ -53,6 +63,8 @@ nav {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  padding-bottom: 5px;
+  padding-top: 5px;
   margin: 0;
 }
 
@@ -70,7 +82,7 @@ ul {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: blue;
+  background-color:  #002B7F;
   border-radius: 10px;
   margin-left: 50px;
 }

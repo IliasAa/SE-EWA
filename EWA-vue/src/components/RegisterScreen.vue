@@ -1,5 +1,5 @@
 <template>
-
+  <NavBar :isLoggedIn="false"></NavBar>
   <div class="login-form card">
     <div class="title">
       <h1>Register</h1>
@@ -32,8 +32,10 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
 export default {
   name: "RegisterScreen",
+  components: {NavBar},
   data() {
     return {
       email: '',
