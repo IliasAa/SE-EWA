@@ -1,7 +1,7 @@
 <template>
   <div class="body">
 <h1>Game lobby</h1>
-  <p>1HG6I97</p>
+  <p>hoi</p>
   <h2>Joint game:</h2>
   <p>Jan</p>
   <p>Erik</p>
@@ -14,7 +14,23 @@
 
 <script>
 export default {
-  name: "DetailOnlineGame"
+  name: "DetailOnlineGame",
+  data(){
+    return {
+      tag: []
+    }
+  },
+  createTag(){
+    let tag = "";
+    const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    const lenght = 8;
+
+    for (let i = 0; i < lenght; i++) {
+      tag += char.charAt(Math.random() * char.length);
+    }
+
+    return tag;
+  }
 }
 </script>
 

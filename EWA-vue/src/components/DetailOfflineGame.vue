@@ -12,7 +12,12 @@
 
 <script>
 export default {
-  name: "DetailOfflineGame"
+  name: "DetailOfflineGame",
+  data(){
+    return {
+
+    }
+  }
 }
 </script>
 
