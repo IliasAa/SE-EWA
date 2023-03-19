@@ -1,4 +1,5 @@
 <template>
+  <NavBar></NavBar>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <body>
   <nav class="navbar">
@@ -120,8 +121,10 @@
 </template>
 
 <script>
+import NavBar from "@/components/NavBar.vue";
 export default {
   name: 'rulePage',
+  components: {NavBar},
   data() {
     return {
       showText1: false,
@@ -196,5 +199,5 @@ button {
   border-bottom-color: purple;
 }
 body {
-background-image: url("@/assets/Ludo background.png")}
+background-image: url("../assets/Ludo background.png")}
 </style>
