@@ -2,27 +2,51 @@
   <NavBar :isLoggedIn="false"></NavBar>
   <div class="login-form card">
     <div class="title">
-      <h1>Register</h1>
+      <v-banner>
+        <h2>Register</h2>
+      </v-banner>
     </div>
-    <div class="card-body">
-      <form>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email">
+    <form>
+      <div class="px-3 pt-3">
+        <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="Username"
+                type="text"
+                v-model="username"
+            ></v-text-field>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" v-model="username" placeholder="Enter username">
+        <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="Email address"
+                type="email"
+                v-model="email"
+            ></v-text-field>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
+        <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="Password"
+                type="password"
+                hint="Enter your password to access this website"
+                v-model="password"
+            ></v-text-field>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary" v-if="hasChanged" @click="redirect">Submit</button>
-      </form>
-      <p class="new-here-text">
-        Already have an account? <router-link to="/Loginpage">Login</router-link>
-      </p>
+      </div>
+    </form>
+    <div class="row px-3 pb-3">
+      <div class="col">
+        <v-btn @click="redirect" type="submit" variant="flat" color="indigo-darken-4" class="w-100" style="transition-duration: 0.5s;">
+          Submit
+        </v-btn>
+      </div>
+    </div>
+    <div class="register">Already Have an Account?
+      <router-link to="/Loginpage" class="link-primary fw-bold">Login</router-link>
     </div>
   </div>
 
@@ -59,7 +83,9 @@ export default {
 </script>
 
 <style scoped>
-
+.title{
+  text-align: center;
+}
 .login-form {
   width: 90vw;
   max-width: 400px;
@@ -67,9 +93,8 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: black;
-  align-items: center;
 }
+
 
 .background, .background img {
   width: 100vw;
@@ -82,6 +107,10 @@ export default {
   z-index: -1000;
   filter: brightness(0.7);
   background-color: rgba(5, 11, 98, 1);
+}
+
+.register{
+  text-align: center;
 }
 
 </style>

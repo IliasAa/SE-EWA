@@ -1,5 +1,4 @@
 <template>
-  <NavBar :isLoggedIn="false"></NavBar>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -67,10 +66,8 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
 export default {
   name: "homePage",
-  components: {NavBar},
 }
 </script>
 
