@@ -5,17 +5,26 @@
         <a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a>
       </div>
       <ul class="menu">
+        <li><a href="#">Services</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="">Profile</a></li>
         <div class="dropdown">
-        <button class="dropbtn">Settings</button>
+        <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
         <div class="dropdown-content">
-          <router-link to="rulePage">Rules</router-link>
+          <router-link to="rulePage" target="_blank">Rules</router-link>
           <router-link to="Dashboard">Invite friend</router-link>
           <router-link to="Dashboard">Leave Game</router-link>
         </div>
       </div>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="">Profile</a></li>
+        <div class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+          <router-link v-if="this.isLoggedIn === false" to="LoginPage"><p>{{checkPage}}</p></router-link>
+          <p v-else>{{checkPage}}</p>
+        </div>
+
+
       </ul>
     </nav>
   </header>
@@ -23,7 +32,22 @@
 
 <script>
 export default {
-  name: "NavBar.vue"
+  name: "NavBar.vue",
+  props: ["isLoggedIn"],
+  data(){
+    return {
+    }
+  },
+
+  computed: {
+    checkPage(){
+      if (this.isLoggedIn === false){
+        return "Log in"
+      }else {
+        return "cyber_samurai"
+      }
+    }
+  }
 }
 </script>
 
@@ -39,6 +63,8 @@ nav {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  padding-bottom: 5px;
+  padding-top: 5px;
   margin: 0;
 }
 
@@ -50,6 +76,21 @@ ul {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
+}
+
+.username {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color:  #002B7F;
+  border-radius: 10px;
+  margin-left: 50px;
+}
+
+.username p{
+  color: white;
+  margin-bottom: 0;
+  margin-right: 10px;
 }
 
 
@@ -88,6 +129,7 @@ li a:hover {
   border: none;
   cursor: pointer;
   border-right: 1px solid white;
+  border-left: 1px solid white;
 }
 
 /* The container <div> - needed to position the dropdown content */

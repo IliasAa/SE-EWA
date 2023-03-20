@@ -1,8 +1,9 @@
 <template>
+
   <div class="login-form card">
     <div class="title">
       <v-banner>
-        <h2>Register</h2>
+        <h2>Login</h2>
       </v-banner>
     </div>
     <form>
@@ -13,15 +14,6 @@
                 label="Username"
                 type="text"
                 v-model="username"
-            ></v-text-field>
-          </div>
-        </div>
-        <div class="row mb-2">
-          <div class="col">
-            <v-text-field
-                label="Email address"
-                type="email"
-                v-model="email"
             ></v-text-field>
           </div>
         </div>
@@ -44,19 +36,20 @@
         </v-btn>
       </div>
     </div>
-    <div class="register">Already Have an Account?
-      <router-link to="/Loginpage" class="link-primary fw-bold">Login</router-link>
+    <div class="register">New Here?
+      <router-link to="/Registerpage" class="link-primary fw-bold">Create an Account</router-link>
     </div>
   </div>
 
   <div class="background">
-  <img src="../assets/Ludobackground.png">
+    <img src="../assets/Ludobackground.png">
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "RegisterScreen",
+  name: "LoginPage",
   data() {
     return {
       email: '',
@@ -67,12 +60,16 @@ export default {
 
   computed: {
     hasChanged() {
-      return this.email !== '' && this.password !== '' && this.username !== '';
+      if (this.password !== '' && this.username !== '') {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
 
   methods: {
-    redirect(){
+    redirect() {
       this.$router.push("/Dashboard");
     }
   }
@@ -106,7 +103,7 @@ export default {
   background-color: rgba(5, 11, 98, 1);
 }
 
-.register{
+.register {
   text-align: center;
 }
 
