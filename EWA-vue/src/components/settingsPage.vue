@@ -2,11 +2,14 @@
   <body>
   <NavBar></NavBar>
   <div class="form-container">
-    <h1>Ludo Game Settings</h1>
+    <div class="card-title">
+      <h1>Ludo Game Settings</h1>
+    </div>
+
     <form>
       <div class="form-group">
         <label for="num-players">Number of Players:</label>
-        <input type="number" id="num-players" name="num-players" min="2" max="4" value="4">
+        <input type="number" id="num-players" name="num-players" min="2" max="4" value="2">
       </div>
       <div class="form-group">
         <label for="game-mode">Game Mode:</label>
@@ -49,10 +52,21 @@ body {
   background-color: rgba(5, 11, 98, 1);
   padding-bottom: 30px;
 }
+.card-title {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+}
 h1 {
   text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  color: white;
+  background-color: #002B7F;
+  width: 500px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+
 }
 
 div.form-container {
@@ -90,6 +104,6 @@ input[type="submit"] {
   font-size: 16px;
 }
 input[type="submit"]:hover {
-  background-color: #3e8e41;
+  background-color: #4b4d50;
 }
 </style>

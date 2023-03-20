@@ -5,6 +5,9 @@
         <a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a>
       </div>
       <ul class="menu">
+        <li><a href="#">Services</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="">Profile</a></li>
         <div class="dropdown">
         <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
         <div class="dropdown-content">
@@ -13,9 +16,6 @@
           <router-link to="Dashboard">Leave Game</router-link>
         </div>
       </div>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="">Profile</a></li>
         <div class="username">
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
