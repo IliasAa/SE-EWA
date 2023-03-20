@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import DetailOnlineGame from "@/components/DetailOnlineGame.vue";
-import DetailOfflineGame from "@/components/DetailOfflineGame.vue";
-import DetailLobby from "@/components/DetailLobby.vue";
+import DetailOnlineGame from "@/components/details/DetailOnlineGame.vue";
+import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
+import DetailLobby from "@/components/details/DetailLobby.vue";
 import NavBar from "@/components/NavBar.vue";
 
 export default {

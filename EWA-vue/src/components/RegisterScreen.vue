@@ -46,11 +46,7 @@ export default {
 
   computed: {
     hasChanged() {
-      if (this.email !== '' && this.password !== ''&& this.username !== ''){
-        return true;
-      } else {
-        return false;
-      }
+      return this.email !== '' && this.password !== '' && this.username !== '';
     }
   },
 

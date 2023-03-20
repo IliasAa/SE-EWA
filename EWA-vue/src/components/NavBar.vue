@@ -6,9 +6,9 @@
       </div>
       <ul class="menu">
         <div class="dropdown">
-        <button class="dropbtn">Settings</button>
+        <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
         <div class="dropdown-content">
-          <router-link to="rulePage">Rules</router-link>
+          <router-link to="rulePage" target="_blank">Rules</router-link>
           <router-link to="Dashboard">Invite friend</router-link>
           <router-link to="Dashboard">Leave Game</router-link>
         </div>
