@@ -1,5 +1,4 @@
 <template>
-  <body>
   <NavBar></NavBar>
   <div class="form-container">
     <div class="card-title">
@@ -36,7 +35,11 @@
       </div>
     </form>
   </div>
-  </body>
+
+  <div class="background">
+    <img src="../assets/Ludobackground.png">
+  </div>
+
 </template>
 
 <script>
@@ -48,10 +51,21 @@ export default {
 </script>
 
 <style scoped>
-body {
+
+.background, .background img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  filter: brightness(0.7);
   background-color: rgba(5, 11, 98, 1);
-  padding-bottom: 30px;
 }
+
+
 .card-title {
   display: flex;
   justify-content: center;

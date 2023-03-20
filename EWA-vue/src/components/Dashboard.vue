@@ -1,9 +1,17 @@
 <template>
   <NavBar></NavBar>
   <div class="screen">
+
     <div class="card">
+      <div class="input">
+        <v-banner>
+          <h1 id="join" class="h1">Join Lobby:</h1>
+          <v-text-field label="Lobby Code"></v-text-field>
+          <button @click="showPopup3 = !showPopup3">Join</button>
+        </v-banner>
+      </div>
 
-
+      <div class="card-buttons">
       <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Start a offline game</button>
       <popup class="popup" v-if="showPopup1">
         <div class="lobbyDetail" :style="{display: showPopup1 ? 'block' : 'none'}">
@@ -24,14 +32,9 @@
           </div>
         </div>
       </popup>
-
-
-
-      <div class="input">
-        <h1 id="join" class="h1">Join Lobby:</h1>
-        <input>
-        <button @click="showPopup3 = !showPopup3">Join</button>
       </div>
+
+
       <popup class="popup" v-if="showPopup3">
         <div class="lobbyDetail" :style="{display: showPopup3 ? 'block' : 'none'}">
           <div class="lobbyContent">
@@ -90,10 +93,6 @@ export default {
   width: 50%;
 }
 
-button {
-  margin-top: 50px;
-}
-
 .lobbyContent {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
@@ -146,7 +145,17 @@ button {
   margin-top: 50px;
   text-align: center;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
+input {
+  background: #F2F2F2;
+}
+
+.btn{
+  margin-left: 7px;
+  margin-bottom: 30px;
+}
 
 </style>

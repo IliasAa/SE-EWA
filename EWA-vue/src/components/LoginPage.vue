@@ -1,5 +1,5 @@
 <template>
-  <NavBar :isLoggedIn="false"> </NavBar>
+
   <div class="login-form card">
     <div class="title">
       <v-banner>
@@ -47,11 +47,9 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
 
 export default {
   name: "LoginPage",
-  components: {NavBar},
   data() {
     return {
       email: '',
