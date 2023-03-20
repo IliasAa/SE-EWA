@@ -1,129 +1,133 @@
 <template>
   <NavBar></NavBar>
   <div class="container-center-horizontal">
-      <div class="overlap-group">
-          <div class="game">
-            <div class="house green">
-              <div class="box">
-                <div class="square square-one green"></div>
-                <div class="square square-two green"></div>
-                <div class="square square-three green"></div>
-                <div class="square square-four green"></div>
-              </div>
+    <div class="overlap-group">
+      <div class="game">
+
+        <div class="house green">
+
+          <div class="box">
+            <div ref="square1" class="square square-one green">
+              <div ref="pawn1" class="green-pawn1"></div>
             </div>
-            <div class="house yellow" style="right: 0">
-              <div class="box">
-                <div class="square square-one yellow"></div>
-                <div class="square square-two yellow"></div>
-                <div class="square square-three yellow"></div>
-                <div class="square square-four yellow"></div>
-              </div>
-            </div>
-            <div class="house red" style="bottom: 0">
-              <div class="box">
-                <div class="square square-one red"></div>
-                <div class="square square-two red"></div>
-                <div class="square square-three red"></div>
-                <div class="square square-four red"></div>
-              </div>
-            </div>
-            <div class="house blue" style="bottom: 0;right: 0">
-              <div class="box">
-                <div class="square square-one blue"></div>
-                <div class="square square-two blue"></div>
-                <div class="square square-three blue"></div>
-                <div class="square square-four blue"></div>
-              </div>
-            </div>
-
-            <div class="home"></div>
-            <div class="cells" style="top: 40%;"></div>
-            <div class="cells g-start" style="top: 40%;left:6.66%;"></div>
-            <div class="cells" style="top: 40%;left:13.32%;"></div>
-            <div class="cells" style="top: 40%;left:19.98%;"></div>
-            <div class="cells" style="top: 40%;left:26.64%;"></div>
-            <div class="cells" style="top: 40%;left:33.3%;"></div>
-
-            <div class="cells" style="top: 0;left:40%;"></div>
-            <div class="cells" style="top: 6.66%;left:40%;"></div>
-            <div class="cells safe" style="top: 13.32%;left:40%;"></div>
-            <div class="cells" style="top: 19.98%;left:40%;"></div>
-            <div class="cells" style="top: 26.64%;left:40%;"></div>
-            <div class="cells" style="top: 33.3%;left:40%;"></div>
-
-            <div class="cells" style="top: 0;left:46.66%;"></div>
-            <div class="cells yellow" style="top: 6.66%;left:46.66%;"></div>
-            <div class="cells yellow" style="top: 13.32%;left:46.66%;"></div>
-            <div class="cells yellow" style="top: 19.98%;left:46.66%;"></div>
-            <div class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
-            <div class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
-
-            <div class="cells" style="top: 0;left:53.32%;"></div>
-            <div class="cells y-start" style="top: 6.66%;left:53.32%;"></div>
-            <div class="cells" style="top: 13.32%;left:53.32%;"></div>
-            <div class="cells" style="top: 19.98%;left:53.32%;"></div>
-            <div class="cells" style="top: 26.64%;left:53.32%;"></div>
-            <div class="cells" style="top: 33.3%;left:53.32%;"></div>
-
-            <div class="cells" style="top: 40%; right: 33.3%"></div>
-            <div class="cells" style="top: 40%;right:26.64%;"></div>
-            <div class="cells" style="top: 40%;right:19.98%;"></div>
-            <div class="cells safe" style="top: 40%;right:13.32%;"></div>
-            <div class="cells" style="top: 40%;right:6.66%;"></div>
-            <div class="cells" style="top: 40%;right:0;"></div>
-
-            <div class="cells blue" style="top: 46.66%; right: 33.3%"></div>
-            <div class="cells blue" style="top: 46.66%;right:26.64%;"></div>
-            <div class="cells blue" style="top: 46.66%;right:19.98%;"></div>
-            <div class="cells blue" style="top: 46.66%;right:13.32%;"></div>
-            <div class="cells blue" style="top: 46.66%;right:6.66%;"></div>
-            <div class="cells" style="top: 46.66%;right:0;"></div>
-
-            <div class="cells" style="top: 53.32%; right: 33.3%"></div>
-            <div class="cells" style="top: 53.32%;right:26.64%;"></div>
-            <div class="cells" style="top: 53.32%;right:19.98%;"></div>
-            <div class="cells" style="top: 53.32%;right:13.32%;"></div>
-            <div class="cells b-start" style="top: 53.32%;right:6.66%;"></div>
-            <div class="cells" style="top: 53.32%;right:0;"></div>
-
-            <div class="cells" style="bottom: 0;left:53.32%;"></div>
-            <div class="cells" style="bottom: 6.66%;left:53.32%;"></div>
-            <div class="cells safe" style="bottom: 13.32%;left:53.32%;"></div>
-            <div class="cells" style="bottom: 19.98%;left:53.32%;"></div>
-            <div class="cells" style="bottom: 26.64%;left:53.32%;"></div>
-            <div class="cells" style="bottom: 33.3%;left:53.32%;"></div>
-
-            <div class="cells" style="bottom: 0;left:46.66%;"></div>
-            <div class="cells red " style="bottom: 6.66%;left:46.66%;"></div>
-            <div class="cells red" style="bottom: 13.32%;left:46.66%;"></div>
-            <div class="cells red" style="bottom: 19.98%;left:46.66%;"></div>
-            <div class="cells red" style="bottom: 26.64%;left:46.66%;"></div>
-            <div class="cells red" style="bottom: 33.3%;left:46.66%;"></div>
-
-            <div class="cells" style="bottom: 0;left:40%;"></div>
-            <div class="cells r-start" style="bottom: 6.66%;left:40%;"></div>
-            <div class="cells" style="bottom: 13.32%;left:40%;"></div>
-            <div class="cells" style="bottom: 19.98%;left:40%;"></div>
-            <div class="cells" style="bottom: 26.64%;left:40%;"></div>
-            <div class="cells" style="bottom: 33.3%;left:40%;"></div>
-
-            <div class="cells" style="top: 53.32%; left: 33.3%"></div>
-            <div class="cells" style="top: 53.32%;left:26.64%;"></div>
-            <div class="cells" style="top: 53.32%;left:19.98%;"></div>
-            <div class="cells safe" style="top: 53.32%;left:13.32%;"></div>
-            <div class="cells" style="top: 53.32%;left:6.66%;"></div>
-            <div class="cells" style="top: 53.32%;left:0;"></div>
-
-            <div class="cells green" style="top: 46.66%;left: 33.3%"></div>
-            <div class="cells green" style="top: 46.66%;left:26.64%;"></div>
-            <div class="cells green" style="top: 46.66%;left:19.98%;"></div>
-            <div class="cells green" style="top: 46.66%;left:13.32%;"></div>
-            <div class="cells green" style="top: 46.66%;left:6.66%;"></div>
-            <div class="cells" style="top: 46.66%;left:0;"></div>
+            <div class="square square-two green"></div>
+            <div class="square square-three green"></div>
+            <div class="square square-four green"></div>
           </div>
-        <h2 class="dice-output">{{ diceoutput }}</h2>
-        <button class="btn btn-primary" @click="ThrowDice">Gooi je dobbelsteen</button>
+        </div>
+        <div class="house yellow" style="right: 0">
+          <div class="box">
+            <div class="square square-one yellow"></div>
+            <div class="square square-two yellow"></div>
+            <div class="square square-three yellow"></div>
+            <div class="square square-four yellow"></div>
+          </div>
+        </div>
+        <div class="house red" style="bottom: 0">
+          <div class="box">
+            <div class="square square-one red"></div>
+            <div class="square square-two red"></div>
+            <div class="square square-three red"></div>
+            <div class="square square-four red"></div>
+          </div>
+        </div>
+        <div class="house blue" style="bottom: 0;right: 0">
+          <div class="box">
+            <div class="square square-one blue"></div>
+            <div class="square square-two blue"></div>
+            <div class="square square-three blue"></div>
+            <div class="square square-four blue"></div>
+          </div>
+        </div>
+
+        <div class="home"></div>
+        <div class="cells" style="top: 40%;"></div>
+        <div ref="start-square" class="cells g-start" style="top: 40%;left:6.66%;"></div>
+        <div ref="cell1" class="cells" style="top: 40%;left:13.32%;"></div>
+        <div ref="cell2" class="cells" style="top: 40%;left:19.98%;"></div>
+        <div class="cells" style="top: 40%;left:26.64%;"></div>
+        <div class="cells" style="top: 40%;left:33.3%;"></div>
+
+        <div class="cells" style="top: 0;left:40%;"></div>
+        <div class="cells" style="top: 6.66%;left:40%;"></div>
+        <div class="cells safe" style="top: 13.32%;left:40%;"></div>
+        <div class="cells" style="top: 19.98%;left:40%;"></div>
+        <div class="cells" style="top: 26.64%;left:40%;"></div>
+        <div class="cells" style="top: 33.3%;left:40%;"></div>
+
+        <div class="cells" style="top: 0;left:46.66%;"></div>
+        <div class="cells yellow" style="top: 6.66%;left:46.66%;"></div>
+        <div class="cells yellow" style="top: 13.32%;left:46.66%;"></div>
+        <div class="cells yellow" style="top: 19.98%;left:46.66%;"></div>
+        <div class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
+        <div class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
+
+        <div class="cells" style="top: 0;left:53.32%;"></div>
+        <div class="cells y-start" style="top: 6.66%;left:53.32%;"></div>
+        <div class="cells" style="top: 13.32%;left:53.32%;"></div>
+        <div class="cells" style="top: 19.98%;left:53.32%;"></div>
+        <div class="cells" style="top: 26.64%;left:53.32%;"></div>
+        <div class="cells" style="top: 33.3%;left:53.32%;"></div>
+
+        <div class="cells" style="top: 40%; right: 33.3%"></div>
+        <div class="cells" style="top: 40%;right:26.64%;"></div>
+        <div class="cells" style="top: 40%;right:19.98%;"></div>
+        <div class="cells safe" style="top: 40%;right:13.32%;"></div>
+        <div class="cells" style="top: 40%;right:6.66%;"></div>
+        <div class="cells" style="top: 40%;right:0;"></div>
+
+        <div class="cells blue" style="top: 46.66%; right: 33.3%"></div>
+        <div class="cells blue" style="top: 46.66%;right:26.64%;"></div>
+        <div class="cells blue" style="top: 46.66%;right:19.98%;"></div>
+        <div class="cells blue" style="top: 46.66%;right:13.32%;"></div>
+        <div class="cells blue" style="top: 46.66%;right:6.66%;"></div>
+        <div class="cells" style="top: 46.66%;right:0;"></div>
+
+        <div class="cells" style="top: 53.32%; right: 33.3%"></div>
+        <div class="cells" style="top: 53.32%;right:26.64%;"></div>
+        <div class="cells" style="top: 53.32%;right:19.98%;"></div>
+        <div class="cells" style="top: 53.32%;right:13.32%;"></div>
+        <div class="cells b-start" style="top: 53.32%;right:6.66%;"></div>
+        <div class="cells" style="top: 53.32%;right:0;"></div>
+
+        <div class="cells" style="bottom: 0;left:53.32%;"></div>
+        <div class="cells" style="bottom: 6.66%;left:53.32%;"></div>
+        <div class="cells safe" style="bottom: 13.32%;left:53.32%;"></div>
+        <div class="cells" style="bottom: 19.98%;left:53.32%;"></div>
+        <div class="cells" style="bottom: 26.64%;left:53.32%;"></div>
+        <div class="cells" style="bottom: 33.3%;left:53.32%;"></div>
+
+        <div class="cells" style="bottom: 0;left:46.66%;"></div>
+        <div class="cells red " style="bottom: 6.66%;left:46.66%;"></div>
+        <div class="cells red" style="bottom: 13.32%;left:46.66%;"></div>
+        <div class="cells red" style="bottom: 19.98%;left:46.66%;"></div>
+        <div class="cells red" style="bottom: 26.64%;left:46.66%;"></div>
+        <div class="cells red" style="bottom: 33.3%;left:46.66%;"></div>
+
+        <div class="cells" style="bottom: 0;left:40%;"></div>
+        <div class="cells r-start" style="bottom: 6.66%;left:40%;"></div>
+        <div class="cells" style="bottom: 13.32%;left:40%;"></div>
+        <div class="cells" style="bottom: 19.98%;left:40%;"></div>
+        <div class="cells" style="bottom: 26.64%;left:40%;"></div>
+        <div class="cells" style="bottom: 33.3%;left:40%;"></div>
+
+        <div class="cells" style="top: 53.32%; left: 33.3%"></div>
+        <div class="cells" style="top: 53.32%;left:26.64%;"></div>
+        <div class="cells" style="top: 53.32%;left:19.98%;"></div>
+        <div class="cells safe" style="top: 53.32%;left:13.32%;"></div>
+        <div class="cells" style="top: 53.32%;left:6.66%;"></div>
+        <div class="cells" style="top: 53.32%;left:0;"></div>
+
+        <div class="cells green" style="top: 46.66%;left: 33.3%"></div>
+        <div class="cells green" style="top: 46.66%;left:26.64%;"></div>
+        <div class="cells green" style="top: 46.66%;left:19.98%;"></div>
+        <div class="cells green" style="top: 46.66%;left:13.32%;"></div>
+        <div class="cells green" style="top: 46.66%;left:6.66%;"></div>
+        <div class="cells" style="top: 46.66%;left:0;"></div>
       </div>
+      <h2 class="dice-output">{{ diceoutput }}</h2>
+      <button class="btn btn-primary" @click="ThrowDice">Gooi je dobbelsteen</button>
+    </div>
   </div>
 
 
@@ -136,29 +140,52 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+
 export default {
   name: "LoginScreen",
   components: {NavBar},
   data() {
     return {
-      diceoutput: null
+      diceoutput: null,
+      pawnSteps: 0,
     };
   },
 
   methods: {
-    ThrowDice(){
-      let result = Math.floor((Math.random() * 6) + 1);
 
-      if (result == 6) {
-        this.diceoutput = result
+    movePawn() {
+      const pawn = this.$refs.pawn1;
+      if (this.pawnSteps === 0) {
+        const greenSquare = this.$refs.square1;
+        const startSquare = this.$refs["start-square"];
+        greenSquare.removeChild(pawn);
+        startSquare.appendChild(pawn);
+        this.pawnSteps++;
+      } else {
+        let parent = pawn.parentElement;
+        pawn.parentElement.removeChild(pawn);
+        parent.nextElementSibling.appendChild(pawn);
+        console.log(parent)
+      }
+
+
+    },
+    ThrowDice() {
+      let result = Math.floor((Math.random() * 6) + 1);
+      this.diceoutput = result
+      if (result === 6 && this.pawnSteps === 0) {
         this.AddnewToken();
+        this.movePawn();
+      } else if (this.pawnSteps !== 0) {
+        // this.movePawn();
+        for (let i = 0; i < this.diceoutput; i++) {
+          setTimeout(this.movePawn, 1000 * i);
+        }
       }
-      else {
-        this.diceoutput = result
-      }
+
     },
 
-    AddnewToken(){
+    AddnewToken() {
       return null;
     }
   },
@@ -169,6 +196,17 @@ export default {
 <style scoped>
 
 /* Variables */
+
+.green-pawn1 {
+  height: 25px;
+  width: 25px;
+  border-radius: 100%;
+  position: absolute;
+  background-color: black;
+  top: 0;
+  left: 0;
+  transition: top 1s ease, left 1s ease;
+}
 
 :root {
   --BackgroundColor: rgba(5, 11, 98, 1);
@@ -204,7 +242,6 @@ export default {
 }
 
 
-
 .game {
   background: white;
   display: flex;
@@ -214,17 +251,21 @@ export default {
   width: 500px;
   height: 500px;
 }
+
 .green {
   background-color: #66bb6a;
 }
+
 .red {
   background-color: #e53935;
   border: none;
 }
+
 .yellow {
   background-color: #fff176;
   border: none;
 }
+
 .blue {
   background-color: #29b6f6;
   border: none;
@@ -237,42 +278,49 @@ export default {
 .house {
   display: inline-block;
   position: absolute;
-  width:40%;
-  height:40%;
-  padding:7%;
+  width: 40%;
+  height: 40%;
+  padding: 7%;
 }
+
 .box {
   position: relative;
-  width:100%;
-  height:100%;
-  background-color:white;
-  padding:20%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  padding: 20%;
 }
+
 .square {
   position: absolute;
-  width:25%;
-  height:25%;
+  width: 25%;
+  height: 25%;
 
 }
+
 .square-one {
-  top:20%;
-  left:20%;
+  top: 20%;
+  left: 20%;
 }
+
 .square-two {
   top: 20%;
   right: 20%;
 }
+
 .square-three {
   bottom: 20%;
   left: 20%;
 }
+
 .square-four {
   bottom: 20%;
   right: 20%;
 }
+
 .home {
   position: absolute;
-  top:40%;
+  top: 40%;
   left: 40%;
   width: 20%;
   height: 20%;
@@ -281,12 +329,13 @@ export default {
   border-left: 20px solid #66bb6a;
   border-right: 20px solid #29b6f6;
 }
+
 .cells {
   position: absolute;
-  width: 6.66% ;
+  width: 6.66%;
   height: 6.66%;
   border-collapse: collapse;
-  border: 1px solid #e5e5e569 ;
+  border: 1px solid #e5e5e569;
 }
 
 .safe {
@@ -294,32 +343,33 @@ export default {
   -webkit-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
+
 .g-start {
   background-color: #66bb6a;
   -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
   clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
 
 }
+
 .y-start {
   background-color: #fff176;
   -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
   clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
 
 }
+
 .r-start {
   background-color: #e53935;
   -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
   clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
 
 }
+
 .b-start {
   background-color: #29b6f6;
   -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
   clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
 }
-
-
-
 
 
 </style>
