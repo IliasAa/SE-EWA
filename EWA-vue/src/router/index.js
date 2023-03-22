@@ -6,6 +6,7 @@ import rulePage from "@/components/rulePage.vue";
 import RegisterScreen from "@/components/RegisterScreen.vue";
 import homePage from "@/components/homePage.vue";
 import settingsPage from "@/components/settingsPage.vue";
+import ActiveGamesScreen from "@/components/ActiveGamesScreen.vue"
 const routes = [
     {path: '/homePage', component: homePage},
     {path: '/Loginpage', component: LoginPage},
@@ -14,7 +15,8 @@ const routes = [
     {path: '/', redirect: '/homePage'},
     {path: '/rulepage', component: rulePage},
     {path: '/Registerpage', component: RegisterScreen},
-    {path: '/settings', component: settingsPage}
+    {path: '/settings', component: settingsPage},
+    {path: '/activeGames', component: ActiveGamesScreen},
 ];
 
 export const router = createRouter({
