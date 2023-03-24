@@ -7,8 +7,31 @@
         <v-banner>
           <h1 id="join" class="h1">Join Lobby:</h1>
           <v-text-field label="Lobby Code"></v-text-field>
-          <button @click="showPopup3 = !showPopup3">Join</button>
+          <button @click="earthPressed">Join</button>
         </v-banner>
+      </div>
+
+      <div v-if="showModal"
+           id="myModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header border-none mb-0">
+            <h2 class="">Hva Ludo king</h2>
+            <span class="close" @click="earthPressed">&times;</span>
+          </div>
+          <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Hoe werkt deze site?</h2>
+          <p>> Maak een
+            <router-link class="underline" to="/registreren">account</router-link>
+            aan en log in. Je kan dan een lobby aanmaken of een bestaande lobby joinen.
+            <router-link class="underline" to=""></router-link>
+            test test
+          </p>
+          <h2 class="mb-2 text-xl text-green-800 mt-4 font-bold">Moet ik een student zijn?</h2>
+          <p>> Nee natuurlijk niet! Iedereen is welkom om te werken aan de
+            <a class="underline" href="" target="_blank"></a></p>
+          <div class="modal-footer mt-3">
+            <h3>Als je nog meer vragen hebt kan je de rechtsonder de chatbot gebruiken!</h3>
+          </div>
+        </div>
       </div>
 
       <div class="card-buttons">
@@ -69,14 +92,43 @@ export default {
       showPopup1: false,
       showPopup2: false,
       showPopup3: false,
+      showModal: false,
     }
   },
+  methods: {
+    earthPressed() {
+      this.showModal = !this.showModal;
+      return this.showModal;
+    }
+  }
 
 }
 </script>
 
 
 <style scoped>
+
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 13% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+
 
 .screen{
   display: flex;
