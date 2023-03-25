@@ -7,7 +7,7 @@
       <ul class="menu">
         <li><a href="#">Services</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="">Profile</a></li>
+        <router-link to="/UserPage"><li><a href="#">Profile</a></li></router-link>
         <div class="dropdown">
         <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
         <div class="dropdown-content">
@@ -23,8 +23,6 @@
           <router-link v-if="this.isLoggedIn === false" to="LoginPage"><p>{{checkPage}}</p></router-link>
           <p v-else>{{checkPage}}</p>
         </div>
-
-
       </ul>
     </nav>
   </header>
