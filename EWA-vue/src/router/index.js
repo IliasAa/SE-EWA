@@ -7,6 +7,9 @@ import RegisterScreen from "@/components/RegisterScreen.vue";
 import homePage from "@/components/homePage.vue";
 import settingsPage from "@/components/settingsPage.vue";
 import ActiveGamesScreen from "@/components/ActiveGamesScreen.vue"
+import Userpage from "@/components/userpage/Userpage.vue";
+import LeaderboardPage from "@/components/LeaderboardPage.vue";
+
 const routes = [
     {path: '/homePage', component: homePage},
     {path: '/Loginpage', component: LoginPage},
@@ -17,6 +20,8 @@ const routes = [
     {path: '/Registerpage', component: RegisterScreen},
     {path: '/settings', component: settingsPage},
     {path: '/activeGames', component: ActiveGamesScreen},
+    {path: '/UserPage', component: Userpage},
+    {path: '/LeaderboardPage', component: LeaderboardPage}
 ];
 
 export const router = createRouter({
