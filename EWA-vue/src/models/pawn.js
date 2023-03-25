@@ -78,7 +78,7 @@ export class pawn {
 
         function generateRedpath() {
             let redPath = [];
-            for (let i = 38; i <= 51; i++) {
+            for (let i = 39; i <= 51; i++) {
                 redPath.push(i);
             }
             for (let i = 0; i <= 37; i++) {

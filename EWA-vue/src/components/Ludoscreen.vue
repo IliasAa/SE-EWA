@@ -8,7 +8,7 @@
 
           <div class="box">
             <div id="100" class="square square-one green">
-              <div v-bind="this.pawns[0]" ref="gpawn1" class="green-pawn 1"></div>
+              <div v-bind="this.pawns[0]" class="green-pawn 1"></div>
             </div>
             <div id="101" class="square square-two green">
               <div v-bind="this.pawns[1]" class="green-pawn 2"></div>
@@ -219,15 +219,15 @@ export default {
     },
 
     movePawn(result) {
-      const pawnMove = this.$refs.gpawn1;
-      const arrLength = this.pawns[0].path.length;
-      console.log(this.pawns[0].position)
-      if (this.pawns[0].onField === 2 && this.pawns[0].position !== arrLength) {
+      const pawnMove = document.getElementById(1000);
+      if (this.pawns[0].onField === 2) {
         const posValue = this.pawns[0].position;
         const currPosIndex = this.pawns[0].path.indexOf(posValue);
         let newPosIndex = currPosIndex + result;
-        if (newPosIndex >= arrLength) {
+        const arrLength = this.pawns[0].path.length;
+        if (newPosIndex > arrLength) {
           newPosIndex = arrLength - 1;
+          this.pawns[0].onField = 3;
         }
         this.pawns[0].previousPosition = this.pawns[0].position;
 
@@ -237,10 +237,7 @@ export default {
         let prevPosBox = document.getElementById(this.pawns[0].previousPosition);
         let nextPosBox = document.getElementById(this.pawns[0].position);
         prevPosBox.removeChild(pawnMove);
-        if (newPos !== arrLength){
-          nextPosBox.appendChild(pawnMove);
-        }
-        console.log(newPosIndex)
+        nextPosBox.appendChild(pawnMove);
       }
     },
 
