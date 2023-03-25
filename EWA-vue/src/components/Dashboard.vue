@@ -110,6 +110,7 @@ export default {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   width: 800px;
+  border-radius: 20px;
 }
 
 .close {

@@ -1,13 +1,17 @@
 <template>
   <div class="body">
 <h1>Game lobby</h1>
-  <p>hoi</p>
-  <h2>Joint game:</h2>
-  <p>Jan</p>
-  <p>Erik</p>
-  <p>Nienke</p>
+  <p>lobby code: G23UI6</p>
+    <div class="players">
+      <h2>Joint game:</h2>
+      <p>Jan</p>
+      <p>Erik</p>
+      <p>Nienke</p>
+    </div>
+
+
     <router-link to="/gamepage">
-      <button>strart game</button>
+      <button>start game</button>
     </router-link>
   </div>
 </template>
@@ -36,9 +40,23 @@ export default {
 
 <style scoped>
 .body {
-  background: lightskyblue;
+  text-align: center;
+  background: dodgerblue;
   border: solid blue;
   max-width: 500px;
-  height: 300px;
+  height: 350px;
+}
+.players {
+  background-color: white;
+  text-align: center;
+  margin: 10px;
+  border: solid blue;
+  border-radius: 12px;
+}
+button {
+  background-color: #002B7F;
+  color: white;
+  border: solid blue;
+  padding: 5px;
 }
 </style>

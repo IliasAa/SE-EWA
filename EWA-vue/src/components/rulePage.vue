@@ -170,12 +170,17 @@ export default {
 }
 
 .container {
-  background: white;
+  background: dodgerblue;
   border-radius: 10px;
+  text-align: center;
 }
 
 body {
   background-color: rgba(5, 11, 98, 1);
-  background-image: url("../assets/Ludo background.png")
+  /*background-image: url("../assets/Ludo background.png")*/
+}
+p {
+  text-align: start;
+  color: white;
 }
 </style>

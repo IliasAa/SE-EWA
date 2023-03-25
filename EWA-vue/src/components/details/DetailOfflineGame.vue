@@ -1,9 +1,13 @@
 <template>
   <div class="body">
     <h1>Offline Game</h1>
-    <p>AI bots:</p>
-    <p>{{players}}</p>
-    <button @click="maxPlayer()" v-on:click="players= 0">-</button><button @click="maxPlayer()" v-on:click="players++">+</button>
+    <div class="players">
+      <p>AI bots:</p>
+      <p>{{players}}</p>
+      <button @click="maxPlayer()" v-on:click="players= 0">-</button><button @click="maxPlayer()" v-on:click="players++">+</button>
+    </div>
+
+
     <router-link to="/gamepage" v-if="this.players >= 1">
       <p></p>
       <button>Start game</button>
@@ -38,10 +42,18 @@ export default {
 
 <style scoped>
 .body {
-  background: lightskyblue;
+  text-align: center;
+  background: dodgerblue;
   border: solid blue;
   max-width: 500px;
   height: 300px;
 
+}
+.players {
+  background-color: white;
+  text-align: center;
+  margin: 10px;
+  border: solid blue;
+  border-radius: 12px;
 }
 </style>
