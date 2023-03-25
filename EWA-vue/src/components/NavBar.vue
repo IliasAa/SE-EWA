@@ -5,8 +5,6 @@
         <a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a>
       </div>
       <ul class="menu">
-        <li><a href="#">Services</a></li>
-        <li><a href="#">About</a></li>
         <router-link to="/UserPage"><li><a href="#">Profile</a></li></router-link>
         <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
         <div class="dropdown">

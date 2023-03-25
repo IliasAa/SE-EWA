@@ -5,9 +5,9 @@
     <div class="card">
       <div class="input">
         <v-banner>
-          <h1 id="join" class="h1">Join Lobby:</h1>
+          <h1 id="join" class="h1">Join Lobby</h1>
           <v-text-field label="Lobby Code"></v-text-field>
-          <button @click="earthPressed">Join</button>
+          <button @click="earthPressed" class="joinButton">Join</button>
         </v-banner>
       </div>
 
@@ -35,7 +35,7 @@
       </div>
 
       <div class="card-buttons">
-      <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Start a offline game</button>
+      <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Host Offline Game</button>
       <popup class="popup" v-if="showPopup1">
         <div class="lobbyDetail" :style="{display: showPopup1 ? 'block' : 'none'}">
           <div class="lobbyContent">
@@ -46,7 +46,7 @@
       </popup>
 
 
-      <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">Start a online game</button>
+      <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">Host Online Game</button>
       <popup class="popup" v-if="showPopup2">
         <div class="lobbyDetail" :style="{display: showPopup2 ? 'block' : 'none'}">
           <div class="lobbyContent">
@@ -129,6 +129,10 @@ export default {
   width: 50%; /* Could be more or less, depending on screen size */
 }
 
+.joinButton {
+  font-weight: bold;
+  font-size: large;
+}
 
 .screen{
   display: flex;
@@ -210,4 +214,7 @@ input {
   margin-bottom: 30px;
 }
 
+.card-buttons {
+  margin-top: 3%;
+}
 </style>
