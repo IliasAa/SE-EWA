@@ -92,7 +92,7 @@ export default {
 
 .profile-stats {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 1rem;
 }
 
