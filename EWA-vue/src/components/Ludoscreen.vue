@@ -220,12 +220,13 @@ export default {
 
     movePawn(result) {
       const pawnMove = this.$refs.gpawn1;
-      if (this.pawns[0].onField === 2) {
+      const arrLength = this.pawns[0].path.length;
+      console.log(this.pawns[0].position)
+      if (this.pawns[0].onField === 2 && this.pawns[0].position !== arrLength) {
         const posValue = this.pawns[0].position;
         const currPosIndex = this.pawns[0].path.indexOf(posValue);
         let newPosIndex = currPosIndex + result;
-        const arrLength = this.pawns[0].path.length;
-        if (newPosIndex > arrLength) {
+        if (newPosIndex >= arrLength) {
           newPosIndex = arrLength - 1;
         }
         this.pawns[0].previousPosition = this.pawns[0].position;
@@ -236,7 +237,10 @@ export default {
         let prevPosBox = document.getElementById(this.pawns[0].previousPosition);
         let nextPosBox = document.getElementById(this.pawns[0].position);
         prevPosBox.removeChild(pawnMove);
-        nextPosBox.appendChild(pawnMove);
+        if (newPos !== arrLength){
+          nextPosBox.appendChild(pawnMove);
+        }
+        console.log(newPosIndex)
       }
     },
 
