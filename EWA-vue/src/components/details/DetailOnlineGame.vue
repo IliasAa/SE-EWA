@@ -40,6 +40,7 @@ export default {
 
 <style scoped>
 .body {
+  border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
@@ -58,5 +59,9 @@ button {
   color: white;
   border: solid blue;
   padding: 5px;
+}
+h2 {
+  text-decoration: underline;
+
 }
 </style>

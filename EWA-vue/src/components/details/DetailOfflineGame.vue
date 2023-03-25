@@ -4,13 +4,14 @@
     <div class="players">
       <p>AI bots:</p>
       <p>{{players}}</p>
-      <button @click="maxPlayer()" v-on:click="players= 0">-</button><button @click="maxPlayer()" v-on:click="players++">+</button>
+      <button class="ai" @click="maxPlayer()" v-on:click="players= 0">-</button>
+      <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
     </div>
 
 
     <router-link to="/gamepage" v-if="this.players >= 1">
       <p></p>
-      <button>Start game</button>
+      <button class="start" >Start game</button>
     </router-link>
     <p v-else>there has to he a minimal of one AI bot</p>
 
@@ -42,6 +43,7 @@ export default {
 
 <style scoped>
 .body {
+  border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
@@ -55,5 +57,18 @@ export default {
   margin: 10px;
   border: solid blue;
   border-radius: 12px;
+}
+.ai {
+  background: dodgerblue;
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.start {
+  background-color: #002B7F;
+  color: white;
+  border: solid blue;
+  padding: 5px;
 }
 </style>

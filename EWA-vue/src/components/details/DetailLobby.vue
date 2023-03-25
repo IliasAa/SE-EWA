@@ -20,6 +20,7 @@ export default {
 
 <style scoped>
 .lobby {
+  border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
@@ -32,5 +33,8 @@ export default {
   margin: 10px;
   border: solid blue;
   border-radius: 12px;
+}
+h2 {
+  text-decoration: underline;
 }
 </style>
