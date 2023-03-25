@@ -2,7 +2,7 @@
   <header>
     <nav>
       <div class="logo">
-        <a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a>
+        <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a></router-link>
       </div>
       <ul class="menu">
         <router-link to="/UserPage"><li><a href="#">Profile</a></li></router-link>
