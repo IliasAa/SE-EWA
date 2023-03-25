@@ -1,10 +1,6 @@
 <template>
+  <NavBar></NavBar>
   <div class="wrapper">
-    <header class="page-header">
-      <h1 class="mh-logo">
-        <img src="../assets/Hvalogo.png" width="80" height="75" alt="page header">
-      </h1>
-    </header>
     <main class="page-main">
       <div class="container flex-column">
         <table class="table">
@@ -35,10 +31,12 @@
 </template>
 
 <script>
-import {router} from "@/router";
+import NavBar from "@/components/NavBar.vue";
 
 export default {
+
   name: "ActiveGamesScreen",
+  components: {NavBar},
   data() {
     return {
       games: [
@@ -50,7 +48,7 @@ export default {
   },
   methods: {
     startGame() {
-      router.push({ path: '/gamepage', replace: true })
+      this.$router.push({ path: '/gamepage', replace: true })
     },
     newGame() {
       this.games.push({
@@ -82,19 +80,22 @@ export default {
 .wrapper {
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(20%);
   min-height: 100vh;
   background-image: url("../assets/Ludobackground.png");
   background-position: center;
   background-size: cover;
-  background-color: rgba(5, 11, 98, 1);
+  background-color: #080931;
   font-family: "Arial Hebrew";
 }
+
 .wrapper > * {
   padding: 20px;
   overflow: hidden;
 }
 .page-main {
   flex-grow: 1;
+  backdrop-filter: blur(10px);
 }
 img {
   max-width: 100%;
@@ -108,6 +109,7 @@ img {
   width: 100vh;
   background-color: white;
   padding: 3%;
+  margin-top: 7%;
 }
 .delete, .play {
   border-radius: 50%;
