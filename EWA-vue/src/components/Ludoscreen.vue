@@ -164,7 +164,7 @@
 
 
   <div class="background">
-    <img src="../assets/Ludobackground.png">
+    <img alt="backgroundimg" src="../assets/Ludobackground.png">
   </div>
 
 
@@ -281,7 +281,7 @@ export default {
       let arrayPos = null;
 
       //using this method only the pawn that is upfront will move.
-      //this will only be a thing till we can select the pawn that we are gonna move.
+      //this will only be a thing till we can select the pawn that we are moving.
       for (let i = 0; i < 4; i++) {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
@@ -327,8 +327,7 @@ export default {
 
         //moving the pawn to the new position and changing the data of the pawn itself.
         this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
-        const newPos = this.playablePawns[arrayPos].path[newPawnPosIndex];
-        this.playablePawns[arrayPos].position = newPos;
+        this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
         let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
         let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
         prevPosBox.removeChild(pawnMove);
