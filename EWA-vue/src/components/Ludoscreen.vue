@@ -7,64 +7,64 @@
         <div class="house green">
 
           <div class="box">
-            <div id="100" class="square square-one green">
+            <div id="1000" class="square square-one green">
               <div v-bind="this.pawns[0]" class="green-pawn 1"></div>
             </div>
-            <div id="101" class="square square-two green">
+            <div id="1001" class="square square-two green">
               <div v-bind="this.pawns[1]" class="green-pawn 2"></div>
             </div>
-            <div id="102" class="square square-three green">
+            <div id="1002" class="square square-three green">
               <div v-bind="this.pawns[2]" class="green-pawn 3"></div>
             </div>
-            <div id="103" class="square square-four green">
+            <div id="1003" class="square square-four green">
               <div v-bind="this.pawns[3]" class="green-pawn 4"></div>
             </div>
           </div>
         </div>
         <div class="house yellow" style="right: 0">
           <div class="box">
-            <div id="200" class="square square-one yellow">
+            <div id="2000" class="square square-one yellow">
               <div v-bind="this.pawns[4]" class="yellow-pawn 1"></div>
             </div>
-            <div id="201" class="square square-two yellow">
+            <div id="2001" class="square square-two yellow">
               <div v-bind="this.pawns[5]" class="yellow-pawn 2"></div>
             </div>
-            <div id="202" class="square square-three yellow">
+            <div id="2002" class="square square-three yellow">
               <div v-bind="this.pawns[6]" class="yellow-pawn 3"></div>
             </div>
-            <div id="203" class="square square-four yellow">
+            <div id="2003" class="square square-four yellow">
               <div v-bind="this.pawns[7]" class="yellow-pawn 4"></div>
             </div>
           </div>
         </div>
         <div class="house red" style="bottom: 0">
           <div class="box">
-            <div id="300" class="square square-one red">
+            <div id="3000" class="square square-one red">
               <div v-bind="this.pawns[8]" class="red-pawn 1"></div>
             </div>
-            <div id="301" class="square square-two red">
+            <div id="3001" class="square square-two red">
               <div v-bind="this.pawns[9]" class="red-pawn 2"></div>
             </div>
-            <div id="302" class="square square-three red">
+            <div id="3002" class="square square-three red">
               <div v-bind="this.pawns[10]" class="red-pawn 3"></div>
             </div>
-            <div id="303" class="square square-four red">
+            <div id="3003" class="square square-four red">
               <div v-bind="this.pawns[11]" class="red-pawn 4"></div>
             </div>
           </div>
         </div>
         <div class="house blue" style="bottom: 0;right: 0">
           <div class="box">
-            <div id="400" class="square square-one blue">
+            <div id="4000" class="square square-one blue">
               <div v-bind="this.pawns[12]" class="blue-pawn 1"></div>
             </div>
-            <div id="401" class="square square-two blue">
+            <div id="4001" class="square square-two blue">
               <div v-bind="this.pawns[13]" class="blue-pawn 2"></div>
             </div>
-            <div id="402" class="square square-three blue">
+            <div id="4002" class="square square-three blue">
               <div v-bind="this.pawns[14]" class="blue-pawn 3"></div>
             </div>
-            <div id="403" class="square square-four blue">
+            <div id="4003" class="square square-four blue">
               <div v-bind="this.pawns[15]" class="blue-pawn 4"></div>
             </div>
           </div>
@@ -158,7 +158,7 @@
         <div id="85" class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
       </div>
       <h2 class="dice-output">{{ diceoutput }}</h2>
-      <button class="btn btn-primary" @click="ThrowDice">Gooi je dobbelsteen</button>
+      <button class="btn btn-primary" v-bind:disabled="hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
     </div>
   </div>
 
@@ -182,65 +182,164 @@ export default {
       pawns: [],
       diceoutput: null,
       pawnSteps: 0,
+      selectedcolor: null,
+      playablePawns: [],
+      finished: false,
     };
   },
 
   created() {
-    for (let i = 1000; i < 1004; i++) {
-      this.pawns.push(pawn.createGreenpawn(i))
+
+    //for statements to create pawns for each color with unique ids
+    for (let i = 100; i < 104; i++) {
+      let count = i - 100;
+      let homepos = 1000 + count;
+      this.pawns.push(pawn.createGreenpawn(i, homepos))
     }
-    for (let i = 2000; i < 2004; i++) {
-      this.pawns.push(pawn.createYellowpawn(i))
+    for (let i = 200; i < 204; i++) {
+      let count = i - 200;
+      let homepos = 2000 + count;
+      this.pawns.push(pawn.createYellowpawn(i, homepos))
     }
-    for (let i = 3000; i < 3004; i++) {
-      this.pawns.push(pawn.createRedpawn(i))
+    for (let i = 300; i < 304; i++) {
+      let count = i - 300;
+      let homepos = 3000 + count;
+      this.pawns.push(pawn.createRedpawn(i, homepos))
     }
-    for (let i = 4000; i < 4004; i++) {
-      this.pawns.push(pawn.createbluePawn(i))
+    for (let i = 400; i < 404; i++) {
+      let count = i - 400;
+      let homepos = 4000 + count;
+      this.pawns.push(pawn.createbluePawn(i, homepos))
+    }
+
+
+    //Make it so only can move pawns that have the same color as you selected.
+    //Will make it more effecient if the start-up game will give a selectedColor attribute to the
+    //Component
+    if (this.selectedcolor === null || this.selectedcolor === "green") {
+      this.selectedcolor = "green"
+      for (let i = 0; i < 4; i++) {
+        this.playablePawns.push(this.pawns[i]);
+      }
+    }
+    if (this.selectedcolor === "yellow") {
+      for (let i = 4; i < 8; i++) {
+        this.playablePawns.push(this.pawns[i]);
+      }
+    }
+    if (this.selectedcolor === "red") {
+      for (let i = 8; i < 12; i++) {
+        this.playablePawns.push(this.pawns[i]);
+      }
+    }
+    if (this.selectedcolor === "blue") {
+      for (let i = 12; i < 16; i++) {
+        this.playablePawns.push(this.pawns[i]);
+      }
     }
   },
 
+  computed: {
+    hasChanged() {
+      return this.finished;
+    }
+
+  },
+
   methods: {
-
     newPawn(result) {
-      const pawnMove = this.$refs.gpawn1;
+      //Check if there are pawns in the home area (Starting zone for their color
+      let pawnId = null;
+      let arrayPos = null;
+      for (let i = 0; i < 4; i++) {
+        //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
+        //in the finished area and in its corrosponding ending.
+        if (this.playablePawns[i].onField === 1) {
+          pawnId = this.playablePawns[i].id;
+          arrayPos = i;
+          break;
+        }
+      }
 
-      if (this.pawns[0].onField === 1){
-        this.pawns[0].previousPosition = 100;
-        this.pawns[0].position = this.pawns[0].path[0];
-        let prevPosBox = document.getElementById(this.pawns[0].previousPosition);
-        let nextPosBox = document.getElementById(this.pawns[0].position);
+      //Check if the pawnId exist before it will select an element.
+      if (pawnId != null) {
+        const pawnMove = document.getElementById(pawnId);
+        this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].homePosition;
+        this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[0];
+        let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
+        let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
         prevPosBox.removeChild(pawnMove);
         nextPosBox.appendChild(pawnMove);
-        this.pawns[0].onField = 2;
+        this.playablePawns[arrayPos].onField = 2;
       } else {
         this.movePawn(result)
       }
     },
 
     movePawn(result) {
-      const pawnMove = document.getElementById(1000);
-      if (this.pawns[0].onField === 2) {
-        const posValue = this.pawns[0].position;
-        const currPosIndex = this.pawns[0].path.indexOf(posValue);
-        let newPosIndex = currPosIndex + result;
-        const arrLength = this.pawns[0].path.length;
-        if (newPosIndex > arrLength) {
-          newPosIndex = arrLength - 1;
-          this.pawns[0].onField = 3;
+      let pawnId = null;
+      let arrayPos = null;
+
+      //using this method only the pawn that is upfront will move.
+      //this will only be a thing till we can select the pawn that we are gonna move.
+      for (let i = 0; i < 4; i++) {
+        //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
+        //in the finished area and in its corrosponding ending.
+        if (this.playablePawns[i].onField === 2) {
+          pawnId = this.playablePawns[i].id;
+          arrayPos = i;
+          break;
         }
-        this.pawns[0].previousPosition = this.pawns[0].position;
+      }
 
-        const newPos = this.pawns[0].path[newPosIndex];
-        this.pawns[0].position = newPos;
+      //checks if pawnId exist before it will call the connected div.
+      if (pawnId != null) {
+        const pawnMove = document.getElementById(pawnId);
+        const currPawnPosIndex = this.playablePawns[arrayPos].path.indexOf(this.playablePawns[arrayPos].position);
+        let newPawnPosIndex = currPawnPosIndex + result;
+        let maxPossiblePositions = this.playablePawns[arrayPos].path.length - 1;
 
-        let prevPosBox = document.getElementById(this.pawns[0].previousPosition);
-        let nextPosBox = document.getElementById(this.pawns[0].position);
+        //This will be used to determine how many available positions there are in the finish
+        //if a pawn finish at last spot in pawn.path it will reduce the arraysize to avoid overlapping.
+        let finishPosIndexAvailable = 0;
+
+        for (let i = 0; i < 4; i++) {
+          const onfieldValue = this.playablePawns[i].onField;
+          if (onfieldValue === 3) {
+            finishPosIndexAvailable += 1;
+          }
+        }
+        maxPossiblePositions = maxPossiblePositions - finishPosIndexAvailable;
+
+        //makes so that if u throw higher than the amount of available positions it will replace it with the
+        //max available positions
+        if (newPawnPosIndex >= maxPossiblePositions) {
+          newPawnPosIndex = maxPossiblePositions;
+
+          //changes status to finished if it got moved to the right finish box
+          this.playablePawns[arrayPos].onField = 3;
+
+          if (finishPosIndexAvailable === 3) {
+            this.winConfirmation();
+          }
+        }
+
+
+        //moving the pawn to the new position and changing the data of the pawn itself.
+        this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
+        const newPos = this.playablePawns[arrayPos].path[newPawnPosIndex];
+        this.playablePawns[arrayPos].position = newPos;
+        let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
+        let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
         prevPosBox.removeChild(pawnMove);
         nextPosBox.appendChild(pawnMove);
       }
     },
 
+    winConfirmation() {
+      this.finished = true
+      this.diceoutput = "Gefeliciteerd, je hebt gewonnen!"
+    },
 
     ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
@@ -250,10 +349,10 @@ export default {
       } else {
         this.movePawn(result);
       }
-      }
+    }
 
-    },
-  }
+  },
+}
 </script>
 
 
@@ -458,35 +557,30 @@ export default {
 
 .safe {
   background-color: #99999938;
-  -webkit-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+
 }
 
 .g-start {
   background-color: #66bb6a;
-  -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
-  clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+
 
 }
 
 .y-start {
   background-color: #fff176;
-  -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
-  clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+
 
 }
 
 .r-start {
   background-color: #e53935;
-  -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
-  clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+
 
 }
 
 .b-start {
   background-color: #29b6f6;
-  -webkit-clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
-  clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+
 }
 
 

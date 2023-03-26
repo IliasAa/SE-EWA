@@ -18,7 +18,7 @@ export class pawn {
         this.path = path;
     }
 
-    static createGreenpawn(id) {
+    static createGreenpawn(id,homepos) {
         let pawnColor = ["Green", "yellow", "red", "blue"]
         function generateGreenpath() {
             let greenpath = [];
@@ -36,15 +36,15 @@ export class pawn {
             this.id = id,
             this.color = pawnColor[0],
             this.onField = 1,
-            this.homePosition = id,
-            this.position = id,
+            this.homePosition = homepos,
+            this.position = homepos,
             this.previousPosition = null,
             this.path = generateGreenpath()
         )
     }
 
 
-    static createYellowpawn(id) {
+    static createYellowpawn(id,homepos) {
         let pawnColor = ["Green", "yellow", "red", "blue"]
 
         function generateYellowpath() {
@@ -66,14 +66,14 @@ export class pawn {
             this.id = id,
             this.color = pawnColor[1],
             this.onField = 1,
-            this.homePosition = id,
-            this.position = id,
+            this.homePosition = homepos,
+            this.position = homepos,
             this.previousPosition = null,
             this.path = generateYellowpath()
         )
     }
 
-    static createRedpawn(id) {
+    static createRedpawn(id,homepos) {
         let pawnColor = ["Green", "yellow", "red", "blue"]
 
         function generateRedpath() {
@@ -94,8 +94,8 @@ export class pawn {
             this.id = id,
             this.color = pawnColor[2],
             this.onField = 1,
-            this.homePosition = id,
-            this.position = id,
+            this.homePosition = homepos,
+            this.position = homepos,
             this.previousPosition = null,
             this.path = generateRedpath()
         )
@@ -103,7 +103,7 @@ export class pawn {
 
     }
 
-    static createbluePawn(id) {
+    static createbluePawn(id,homepos) {
         let pawnColor = ["Green", "yellow", "red", "blue"]
 
         function generateBluepath() {
@@ -124,8 +124,8 @@ export class pawn {
             this.id = id,
             this.color = pawnColor[3],
             this.onField = 1,
-            this.homePosition = id,
-            this.position = id,
+            this.homePosition = homepos,
+            this.position = homepos,
             this.previousPosition = null,
             this.path = generateBluepath()
         )
