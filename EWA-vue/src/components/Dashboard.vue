@@ -7,32 +7,33 @@
         <v-banner>
           <h1 id="join" class="h1">Join Lobby</h1>
           <v-text-field label="Lobby Code"></v-text-field>
-          <button @click="earthPressed" class="joinButton">Join</button>
+<!--          <button @click="earthPressed" class="joinButton">Join</button>-->
+          <button @click="showPopup3 = !showPopup3">Join</button>
         </v-banner>
       </div>
 
-      <div v-if="showModal"
-           id="myModal" class="modal">
-        <div class="modal-content">
-          <div class="modal-header border-none mb-0">
-            <h2 class="">Hva Ludo king</h2>
-            <span class="close" @click="earthPressed">&times;</span>
-          </div>
-          <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Hoe werkt deze site?</h2>
-          <p>> Maak een
-            <router-link class="underline" to="/registreren">account</router-link>
-            aan en log in. Je kan dan een lobby aanmaken of een bestaande lobby joinen.
-            <router-link class="underline" to=""></router-link>
-            test test
-          </p>
-          <h2 class="mb-2 text-xl text-green-800 mt-4 font-bold">Moet ik een student zijn?</h2>
-          <p>> Nee natuurlijk niet! Iedereen is welkom om te werken aan de
-            <a class="underline" href="" target="_blank"></a></p>
-          <div class="modal-footer mt-3">
-            <h3>Als je nog meer vragen hebt kan je de rechtsonder de chatbot gebruiken!</h3>
-          </div>
-        </div>
-      </div>
+<!--      <div v-if="showModal"-->
+<!--           id="myModal" class="modal">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header border-none mb-0">-->
+<!--            <h2 class="">Hva Ludo king</h2>-->
+<!--            <span class="close" @click="earthPressed">&times;</span>-->
+<!--          </div>-->
+<!--          <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Hoe werkt deze site?</h2>-->
+<!--          <p>> Maak een-->
+<!--            <router-link class="underline" to="/registreren">account</router-link>-->
+<!--            aan en log in. Je kan dan een lobby aanmaken of een bestaande lobby joinen.-->
+<!--            <router-link class="underline" to=""></router-link>-->
+<!--            test test-->
+<!--          </p>-->
+<!--          <h2 class="mb-2 text-xl text-green-800 mt-4 font-bold">Moet ik een student zijn?</h2>-->
+<!--          <p>> Nee natuurlijk niet! Iedereen is welkom om te werken aan de-->
+<!--            <a class="underline" href="" target="_blank"></a></p>-->
+<!--          <div class="modal-footer mt-3">-->
+<!--            <h3>Als je nog meer vragen hebt kan je de rechtsonder de chatbot gebruiken!</h3>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div class="card-buttons">
       <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Host Offline Game</button>
@@ -96,9 +97,12 @@ export default {
     }
   },
   methods: {
-    earthPressed() {
-      this.showModal = !this.showModal;
-      return this.showModal;
+    // earthPressed() {
+    //   this.showModal = !this.showModal;
+    //   return this.showModal;
+    // },
+    created() {
+
     }
   }
 
