@@ -4,9 +4,9 @@
   <p>lobby code: G23UI6</p>
     <div class="players">
       <h2>Joint game:</h2>
-      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">
-        <td class="thumbnail">{{players.}}</td>
-      </tr>
+<!--      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">-->
+<!--        <td class="thumbnail">{{players.}}</td>-->
+<!--      </tr>-->
     </div>
 
 
