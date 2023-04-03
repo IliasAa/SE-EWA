@@ -263,14 +263,19 @@ export default {
 
       //Check if the pawnId exist before it will select an element.
       if (pawnId != null) {
-        const pawnMove = document.getElementById(pawnId);
-        this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].homePosition;
-        this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[0];
-        let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
-        let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
-        prevPosBox.removeChild(pawnMove);
-        nextPosBox.appendChild(pawnMove);
-        this.playablePawns[arrayPos].onField = 2;
+        //checks if the spawn position has a child node or not.
+        if (!document.getElementById(this.playablePawns[0].path[0]).hasChildNodes()){
+          const pawnMove = document.getElementById(pawnId);
+          this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].homePosition;
+          this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[0];
+          let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
+          let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
+          prevPosBox.removeChild(pawnMove);
+          nextPosBox.appendChild(pawnMove);
+          this.playablePawns[arrayPos].onField = 2;
+        } else {
+          this.movePawn(result)
+        }
       } else {
         this.movePawn(result)
       }
@@ -345,10 +350,24 @@ export default {
       this.diceoutput = result
       if (result === 6) {
         this.newPawn(result)
+
+        // this.selectPawn(result)
       } else {
         this.movePawn(result);
+
+        // this.selectPawn(result)
       }
-    }
+    },
+
+    //
+    // selectPawn(result){
+    //   if (result === 6) {
+    //     this.newPawn(result)
+    //   } else {
+    //
+    //     this.movePawn(result);
+    //   }
+    // }
 
   },
 }

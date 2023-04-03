@@ -4,9 +4,9 @@
   <p>lobby code: G23UI6</p>
     <div class="players">
       <h2>Joint game:</h2>
-      <p>Jan</p>
-      <p>Erik</p>
-      <p>Nienke</p>
+<!--      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">-->
+<!--        <td class="thumbnail">{{players.}}</td>-->
+<!--      </tr>-->
     </div>
 
 
@@ -17,25 +17,47 @@
 </template>
 
 <script>
+import {User} from "@/models/user";
+
 export default {
   name: "DetailOnlineGame",
   data(){
     return {
-      tag: []
+      tag: [],
+      players: [],
+      player: User
     }
   },
-  createTag(){
-    let tag = "";
-    const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    const lenght = 8;
-
-    for (let i = 0; i < lenght; i++) {
-      tag += char.charAt(Math.random() * char.length);
+  created() {
+    for (let i = 0; i < 3; i++) {
+      this.players.push(User.createSampleUser(this.playerNumber))
     }
+  },
+  methods: {
+    playerNumber() {
+      let number = 0;
 
-    return tag;
+      if (this.players.length === 0){
+        return 0;
+      } else {
+        number = this.players.length;
+      }
+      return number;
+    }
+//   createTag(){
+//   let tag = "";
+//   const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//   const lenght = 8;
+//
+//   for (let i = 0; i < lenght; i++) {
+//     tag += char.charAt(Math.random() * char.length);
+//   }
+//
+//   return tag;
+// }
   }
-}
+  }
+
 </script>
 
 <style scoped>
