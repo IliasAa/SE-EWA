@@ -22,6 +22,8 @@ public class User {
 
     private String role = "Player";
 
+    //test
+
     public User(int userId, String username, String firstname, String lastname, String email, String role) {
         this.userId = userId;
         this.username = username;
