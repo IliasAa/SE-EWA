@@ -8,64 +8,64 @@
 
           <div class="box">
             <div id="1000" class="square square-one green">
-              <div v-bind="this.pawns[0]" class="green-pawn 1"></div>
+              <button v-bind="this.pawns[0]" class="green-pawn 1"></button>
             </div>
             <div id="1001" class="square square-two green">
-              <div v-bind="this.pawns[1]" class="green-pawn 2"></div>
+              <button v-bind="this.pawns[1]" class="green-pawn 2"></button>
             </div>
             <div id="1002" class="square square-three green">
-              <div v-bind="this.pawns[2]" class="green-pawn 3"></div>
+              <button v-bind="this.pawns[2]" class="green-pawn 3"></button>
             </div>
             <div id="1003" class="square square-four green">
-              <div v-bind="this.pawns[3]" class="green-pawn 4"></div>
+              <button v-bind="this.pawns[3]" class="green-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house yellow" style="right: 0">
           <div class="box">
             <div id="2000" class="square square-one yellow">
-              <div v-bind="this.pawns[4]" class="yellow-pawn 1"></div>
+              <button v-bind="this.pawns[4]" class="yellow-pawn 1"></button>
             </div>
             <div id="2001" class="square square-two yellow">
-              <div v-bind="this.pawns[5]" class="yellow-pawn 2"></div>
+              <button v-bind="this.pawns[5]" class="yellow-pawn 2"></button>
             </div>
             <div id="2002" class="square square-three yellow">
-              <div v-bind="this.pawns[6]" class="yellow-pawn 3"></div>
+              <button v-bind="this.pawns[6]" class="yellow-pawn 3"></button>
             </div>
             <div id="2003" class="square square-four yellow">
-              <div v-bind="this.pawns[7]" class="yellow-pawn 4"></div>
+              <button v-bind="this.pawns[7]" class="yellow-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house red" style="bottom: 0">
           <div class="box">
             <div id="3000" class="square square-one red">
-              <div v-bind="this.pawns[8]" class="red-pawn 1"></div>
+              <button v-bind="this.pawns[8]" class="red-pawn 1"></button>
             </div>
             <div id="3001" class="square square-two red">
-              <div v-bind="this.pawns[9]" class="red-pawn 2"></div>
+              <button v-bind="this.pawns[9]" class="red-pawn 2"></button>
             </div>
             <div id="3002" class="square square-three red">
-              <div v-bind="this.pawns[10]" class="red-pawn 3"></div>
+              <button v-bind="this.pawns[10]" class="red-pawn 3"></button>
             </div>
             <div id="3003" class="square square-four red">
-              <div v-bind="this.pawns[11]" class="red-pawn 4"></div>
+              <button v-bind="this.pawns[11]" class="red-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house blue" style="bottom: 0;right: 0">
           <div class="box">
             <div id="4000" class="square square-one blue">
-              <div v-bind="this.pawns[12]" class="blue-pawn 1"></div>
+              <button v-bind="this.pawns[12]" class="blue-pawn 1"></button>
             </div>
             <div id="4001" class="square square-two blue">
-              <div v-bind="this.pawns[13]" class="blue-pawn 2"></div>
+              <button v-bind="this.pawns[13]" class="blue-pawn 2"></button>
             </div>
             <div id="4002" class="square square-three blue">
-              <div v-bind="this.pawns[14]" class="blue-pawn 3"></div>
+              <button v-bind="this.pawns[14]" class="blue-pawn 3"></button>
             </div>
             <div id="4003" class="square square-four blue">
-              <div v-bind="this.pawns[15]" class="blue-pawn 4"></div>
+              <button v-bind="this.pawns[15]" class="blue-pawn 4"></button>
             </div>
           </div>
         </div>
