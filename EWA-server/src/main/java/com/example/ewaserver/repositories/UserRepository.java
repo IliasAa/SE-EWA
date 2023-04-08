@@ -3,9 +3,14 @@ package com.example.ewaserver.repositories;
 import com.example.ewaserver.models.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class UserRepository implements EntityRepository<User> {
 
     @PersistenceContext
@@ -13,17 +18,19 @@ public class UserRepository implements EntityRepository<User> {
 
     @Override
     public List<User> findAll() {
-        return null;
+        TypedQuery<User> query = this.em.createQuery("select u from User u", User.class);
+
+        return query.getResultList();
     }
 
     @Override
     public User findById(int id) {
-        return null;
+        return this.em.find(User.class, id);
     }
 
     @Override
     public User Save(User entity) {
-        return null;
+        return this.em.merge(entity);
     }
 
     @Override
@@ -35,4 +42,6 @@ public class UserRepository implements EntityRepository<User> {
     public User deleteById(int id) {
         return null;
     }
+
+
 }
