@@ -5,9 +5,12 @@ import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -16,12 +19,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path = "/test", produces = "application/json")
-    public List<User> getTestUsers(){
-        return List.of(
-                new User(1, "ibrahim", "ibby" , "" , "", "", "Player"),
-                new User(2, "damien", "D" , "" , "",  "", "Player"));
-    }
 
     @GetMapping(path = "",  produces = "application/json")
     public List<User> getSummary() {
@@ -35,13 +32,24 @@ public class UserController {
             @JsonProperty("lastname") String lastname,
             String email,
             String password,
+            @JsonProperty("password_confirm") String passwordConfirm,
             String role
     ){ }
 
+    record RegisterRespone(
+            @JsonProperty("username") String username,
+            @JsonProperty("firstname") String firstname,
+            @JsonProperty("lastname") String lastname,
+            String email
+    ) {}
+
 
     @PostMapping(value = "/register")
-    public User registerUser(@RequestBody RegisterRequest registerRequest) {
-        return userRepository.Save(
+    public RegisterRespone registerUser(@RequestBody RegisterRequest registerRequest) {
+        if (!Objects.equals(registerRequest.password(), registerRequest.passwordConfirm())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+        }
+        var user =  userRepository.Save(
                 User.of(
                         registerRequest.userId(),
                         registerRequest.username(),
@@ -51,6 +59,9 @@ public class UserController {
                         registerRequest.password(),
                         registerRequest.role()
                 )
+        );
+
+        return new RegisterRespone(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail()
         );
     }
 
