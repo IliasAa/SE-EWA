@@ -12,8 +12,8 @@ import lombok.Setter;
 public class User {
 
     @Id
-    private Long userId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userId;
 
     @JsonProperty("username") private String username;
 
@@ -29,12 +29,12 @@ public class User {
 
 
 
-    public static User of(String username, String firstname, String lastname, String email, String password, String role){
-        return new User(null, username, firstname, lastname, email, password, role);
+    public static User of(int userId,String username, String firstname, String lastname, String email, String password, String role){
+        return new User(userId, username, firstname, lastname, email, password, role);
     }
 
 
-    public User(Long userId, String username, String firstname, String lastname, String email, String password, String role) {
+    public User(int userId, String username, String firstname, String lastname, String email, String password, String role) {
         this.userId = userId;
         this.username = username;
         this.firstname = firstname;

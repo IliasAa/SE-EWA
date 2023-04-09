@@ -19,8 +19,8 @@ public class UserController {
     @GetMapping(path = "/test", produces = "application/json")
     public List<User> getTestUsers(){
         return List.of(
-                new User(null, "ibrahim", "ibby" , "" , "", "", "Player"),
-                new User(null, "damien", "D" , "" , "",  "", "Player"));
+                new User(1, "ibrahim", "ibby" , "" , "", "", "Player"),
+                new User(2, "damien", "D" , "" , "",  "", "Player"));
     }
 
     @GetMapping(path = "",  produces = "application/json")
@@ -29,6 +29,7 @@ public class UserController {
     }
 
     record RegisterRequest(
+            int userId,
             @JsonProperty("username") String username,
             @JsonProperty("firstname") String firstname,
             @JsonProperty("lastname") String lastname,
@@ -42,6 +43,7 @@ public class UserController {
     public User registerUser(@RequestBody RegisterRequest registerRequest) {
         return userRepository.Save(
                 User.of(
+                        registerRequest.userId(),
                         registerRequest.username(),
                         registerRequest.firstname(),
                         registerRequest.lastname(),
