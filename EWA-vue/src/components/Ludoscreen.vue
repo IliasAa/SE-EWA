@@ -1,9 +1,31 @@
 <template>
   <NavBar></NavBar>
   <div class="container-center-horizontal">
+    <div class="left-part">
+      <div class="left-green">
+        <div id="green_username" class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+          <p>cyber_samurai</p>
+        </div>
+        <div class="action-bar">
+          <button class="chat">CHAT</button>
+        </div>
+      </div>
+      <div class="left-red">
+        <div id="red_username" class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+          <p>TheDoomedChicken</p>
+        </div>
+      </div>
+    </div>
     <div class="overlap-group">
-      <div class="game">
 
+
+      <div class="game">
         <div class="house green">
 
           <div class="box">
@@ -70,7 +92,7 @@
           </div>
         </div>
 
-        <div class="home"></div>
+        <div class="home"><h2 class="dice-output">{{ diceoutput }}</h2></div>
         <div id="51" class="cells" style="top: 40%;"></div>
         <div id="0" class="cells g-start" style="top: 40%;left:6.66%;"></div>
         <div id="1" class="cells" style="top: 40%;left:13.32%;"></div>
@@ -157,8 +179,27 @@
         <div id="84" class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
         <div id="85" class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
       </div>
-      <h2 class="dice-output">{{ diceoutput }}</h2>
+
       <button class="btn btn-primary" v-bind:disabled="hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+
+    </div>
+    <div class="right-part">
+      <div class="right-yellow">
+        <div class="username">
+          <p id="yellow_username">John Doe</p>
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+        </div>
+      </div>
+      <div class="right-blue">
+        <div class="username">
+          <p id="blue_username">BigBoy1234567</p>
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -264,7 +305,7 @@ export default {
       //Check if the pawnId exist before it will select an element.
       if (pawnId != null) {
         //checks if the spawn position has a child node or not.
-        if (!document.getElementById(this.playablePawns[0].path[0]).hasChildNodes()){
+        if (!document.getElementById(this.playablePawns[0].path[0]).hasChildNodes()) {
           const pawnMove = document.getElementById(pawnId);
           this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].homePosition;
           this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[0];
@@ -342,7 +383,7 @@ export default {
 
     winConfirmation() {
       this.finished = true
-      this.diceoutput = "Gefeliciteerd, je hebt gewonnen!"
+      this.diceoutput = "win"
     },
 
     ThrowDice() {
@@ -469,6 +510,128 @@ export default {
   background-color: rgba(5, 11, 98, 1);
 }
 
+/*.container-center-horizontal {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  !*justify-content: space-between;*!*/
+/*}*/
+
+.left-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0 10px 10px;
+  height: 500px;
+}
+
+.right-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 10px 10px 0px;
+  height: 500px;
+}
+
+.username {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 10px;
+
+}
+
+.left-green {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #66bb6a;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 2px solid black;
+}
+
+.left-red {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #e53935;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 2px solid black;
+}
+
+.right-yellow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: #fff176;
+  padding: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid black;
+}
+
+.right-blue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: #29b6f6;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid black;
+
+}
+
+
+#yellow_username {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+#blue_username {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.action-bar {
+  width: 100%;
+  border-top: 2px solid black;
+}
+
+.chat {
+  color: white;
+  padding: 5px;
+  background-color: #002B7F;
+  border-radius: 10px;
+
+  margin: 5px;
+}
+
+.username p {
+  color: black;
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+
+.logo {
+  padding: 10px;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.container-center-horizontal {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
 .overlap-group {
   align-items: center;
@@ -507,7 +670,7 @@ export default {
 }
 
 .dice-output {
-  color: white;
+  color: black;
 }
 
 .house {
