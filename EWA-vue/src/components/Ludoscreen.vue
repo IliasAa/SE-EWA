@@ -1,76 +1,110 @@
 <template>
   <NavBar></NavBar>
   <div class="container-center-horizontal">
+    <div class="left-part">
+      <div class="left-green">
+        <div id="green_username" class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+          <p>cyber_samurai</p>
+        </div>
+        <div class="action-bar">
+          <button class="chat">CHAT</button>
+        </div>
+      </div>
+      <div class="left-red">
+        <div id="red_username" class="username">
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+          <p>TheDoomedChicken</p>
+        </div>
+      </div>
+    </div>
     <div class="overlap-group">
-      <div class="game">
 
+
+      <div class="game">
         <div class="house green">
 
           <div class="box">
             <div id="1000" class="square square-one green">
-              <button v-bind="this.pawns[0]" class="green-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[0]"
+                      class="green-pawn 1"></button>
             </div>
             <div id="1001" class="square square-two green">
-              <button v-bind="this.pawns[1]" class="green-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[1]"
+                      class="green-pawn 2"></button>
             </div>
             <div id="1002" class="square square-three green">
-              <button v-bind="this.pawns[2]" class="green-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[2]"
+                      class="green-pawn 3"></button>
             </div>
             <div id="1003" class="square square-four green">
-              <button v-bind="this.pawns[3]" class="green-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[3]"
+                      class="green-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house yellow" style="right: 0">
           <div class="box">
             <div id="2000" class="square square-one yellow">
-              <button v-bind="this.pawns[4]" class="yellow-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 1"></button>
             </div>
             <div id="2001" class="square square-two yellow">
-              <button v-bind="this.pawns[5]" class="yellow-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 2"></button>
             </div>
             <div id="2002" class="square square-three yellow">
-              <button v-bind="this.pawns[6]" class="yellow-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 3"></button>
             </div>
             <div id="2003" class="square square-four yellow">
-              <button v-bind="this.pawns[7]" class="yellow-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house red" style="bottom: 0">
           <div class="box">
             <div id="3000" class="square square-one red">
-              <button v-bind="this.pawns[8]" class="red-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[8]"
+                      class="red-pawn 1"></button>
             </div>
             <div id="3001" class="square square-two red">
-              <button v-bind="this.pawns[9]" class="red-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[9]"
+                      class="red-pawn 2"></button>
             </div>
             <div id="3002" class="square square-three red">
-              <button v-bind="this.pawns[10]" class="red-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[10]"
+                      class="red-pawn 3"></button>
             </div>
             <div id="3003" class="square square-four red">
-              <button v-bind="this.pawns[11]" class="red-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[11]"
+                      class="red-pawn 4"></button>
             </div>
           </div>
         </div>
         <div class="house blue" style="bottom: 0;right: 0">
           <div class="box">
             <div id="4000" class="square square-one blue">
-              <button v-bind="this.pawns[12]" class="blue-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[12]"
+                      class="blue-pawn 1"></button>
             </div>
             <div id="4001" class="square square-two blue">
-              <button v-bind="this.pawns[13]" class="blue-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[13]"
+                      class="blue-pawn 2"></button>
             </div>
             <div id="4002" class="square square-three blue">
-              <button v-bind="this.pawns[14]" class="blue-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[14]"
+                      class="blue-pawn 3"></button>
             </div>
             <div id="4003" class="square square-four blue">
-              <button v-bind="this.pawns[15]" class="blue-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[15]"
+                      class="blue-pawn 4"></button>
             </div>
           </div>
         </div>
 
-        <div class="home"></div>
+        <div class="home"><h2 class="dice-output">{{ output }}</h2></div>
         <div id="51" class="cells" style="top: 40%;"></div>
         <div id="0" class="cells g-start" style="top: 40%;left:6.66%;"></div>
         <div id="1" class="cells" style="top: 40%;left:13.32%;"></div>
@@ -157,8 +191,28 @@
         <div id="84" class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
         <div id="85" class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
       </div>
-      <h2 class="dice-output">{{ diceoutput }}</h2>
-      <button class="btn btn-primary" v-bind:disabled="hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+      <h2 class="make-your-move-text">{{ movePawnText }}</h2>
+
+      <button class="btn btn-primary" :disabled="!hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+
+    </div>
+    <div class="right-part">
+      <div class="right-yellow">
+        <div class="username">
+          <p id="yellow_username">John Doe</p>
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+        </div>
+      </div>
+      <div class="right-blue">
+        <div class="username">
+          <p id="blue_username">BigBoy1234567</p>
+          <div class="logo">
+            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -180,11 +234,12 @@ export default {
   data() {
     return {
       pawns: [],
-      diceoutput: null,
+      output: null,
+      movePawnText: null,
       pawnSteps: 0,
       selectedcolor: null,
       playablePawns: [],
-      finished: false,
+      allowedToMove: true,
     };
   },
 
@@ -241,14 +296,14 @@ export default {
 
   computed: {
     hasChanged() {
-      return this.finished;
+      return this.allowedToMove;
     }
 
   },
 
   methods: {
-    newPawn(result) {
-      //Check if there are pawns in the home area (Starting zone for their color
+    newPawn() {
+      //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
       for (let i = 0; i < 4; i++) {
@@ -264,7 +319,7 @@ export default {
       //Check if the pawnId exist before it will select an element.
       if (pawnId != null) {
         //checks if the spawn position has a child node or not.
-        if (!document.getElementById(this.playablePawns[0].path[0]).hasChildNodes()){
+        if (!document.getElementById(this.playablePawns[0].path[0]).hasChildNodes()) {
           const pawnMove = document.getElementById(pawnId);
           this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].homePosition;
           this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[0];
@@ -274,28 +329,16 @@ export default {
           nextPosBox.appendChild(pawnMove);
           this.playablePawns[arrayPos].onField = 2;
         } else {
-          this.movePawn(result)
+          this.selectPawn()
         }
       } else {
-        this.movePawn(result)
+        this.selectPawn()
       }
     },
 
-    movePawn(result) {
-      let pawnId = null;
-      let arrayPos = null;
 
-      //using this method only the pawn that is upfront will move.
-      //this will only be a thing till we can select the pawn that we are moving.
-      for (let i = 0; i < 4; i++) {
-        //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
-        //in the finished area and in its corrosponding ending.
-        if (this.playablePawns[i].onField === 2) {
-          pawnId = this.playablePawns[i].id;
-          arrayPos = i;
-          break;
-        }
-      }
+    movePawn(pawnId, arrayPos) {
+      const result = this.output;
 
       //checks if pawnId exist before it will call the connected div.
       if (pawnId != null) {
@@ -329,6 +372,9 @@ export default {
           }
         }
 
+        //makes it so the buttons are not activated anymore and the text will disappear.
+        this.allowedToMove = true;
+        this.movePawnText = null;
 
         //moving the pawn to the new position and changing the data of the pawn itself.
         this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
@@ -341,35 +387,59 @@ export default {
     },
 
     winConfirmation() {
-      this.finished = true
-      this.diceoutput = "Gefeliciteerd, je hebt gewonnen!"
+      this.allowedToMove = false
+      this.output = "win"
     },
 
     ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
-      this.diceoutput = result
+      this.output = result
+      let allowMove = false;
       if (result === 6) {
         this.newPawn(result)
 
-        // this.selectPawn(result)
       } else {
-        this.movePawn(result);
-
-        // this.selectPawn(result)
+        //this checks if a pawn is available in the first place (think about start of the game)
+        //if not it will skip the whole process of going through the other methods.
+        for (let i = 0; i < 4; i++) {
+          if (this.playablePawns[i].onField === 2) {
+            allowMove = true
+          }
+        }
+        if (allowMove) {
+          this.selectPawn()
+        }
       }
     },
 
-    //
-    // selectPawn(result){
-    //   if (result === 6) {
-    //     this.newPawn(result)
-    //   } else {
-    //
-    //     this.movePawn(result);
-    //   }
-    // }
 
+    selectPawn() {
+      //possible to make it more efficient if i could toggle or add a listener for the
+      // button press but it will take to long to figure out
+      this.allowedToMove = false;
+      this.movePawnText = "Selecteer welke pion je wilt bewegen";
+    },
+
+
+    checkIfPawnOnField(event) {
+      //small check if selected pawn (event) is playable and gives an alert if it is not.
+      let arrayPos = null;
+      for (let i = 0; i < 4; i++) {
+        // only able to do double == because the value comes from an event
+        if (this.playablePawns[i].id == event.target.id) {
+          if (this.playablePawns[i].onField === 2) {
+            arrayPos = i;
+          }
+        }
+      }
+      if (arrayPos != null) {
+        this.movePawn(event.target.id, arrayPos);
+      } else {
+        alert("Je kan alleen een pion van je eigen kleur kiezen en die in het veld staat.")
+      }
+    }
   },
+
 }
 </script>
 
@@ -377,6 +447,10 @@ export default {
 <style scoped>
 
 /* Variables */
+
+.make-your-move-text {
+  color: white;
+}
 
 .green-pawn {
   height: 25px;
@@ -469,6 +543,128 @@ export default {
   background-color: rgba(5, 11, 98, 1);
 }
 
+/*.container-center-horizontal {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  !*justify-content: space-between;*!*/
+/*}*/
+
+.left-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0 10px 10px;
+  height: 500px;
+}
+
+.right-part {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 10px 10px;
+  height: 500px;
+}
+
+.username {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 10px;
+
+}
+
+.left-green {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #66bb6a;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 2px solid black;
+}
+
+.left-red {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #e53935;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 2px solid black;
+}
+
+.right-yellow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: #fff176;
+  padding: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid black;
+}
+
+.right-blue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: #29b6f6;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid black;
+
+}
+
+
+#yellow_username {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+#blue_username {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.action-bar {
+  width: 100%;
+  border-top: 2px solid black;
+}
+
+.chat {
+  color: white;
+  padding: 5px;
+  background-color: #002B7F;
+  border-radius: 10px;
+
+  margin: 5px;
+}
+
+.username p {
+  color: black;
+  margin-bottom: 0;
+  margin-right: 10px;
+}
+
+.logo {
+  padding: 10px;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.container-center-horizontal {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
 .overlap-group {
   align-items: center;
@@ -507,7 +703,7 @@ export default {
 }
 
 .dice-output {
-  color: white;
+  color: black;
 }
 
 .house {
