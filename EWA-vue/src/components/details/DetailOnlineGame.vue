@@ -1,12 +1,15 @@
 <template>
   <div class="body">
-<h1>Game lobby</h1>
-  <p>lobby code: G23UI6</p>
+    <h1>Game lobby</h1>
+    <p>lobby code: {{ lobby.LobbyCode }}</p>
     <div class="players">
       <h2>Joint game:</h2>
-<!--      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">-->
-<!--        <td class="thumbnail">{{players.}}</td>-->
-<!--      </tr>-->
+      <div>
+        <tr v-for="(player, index) in players" :key="index">
+          <td class="thumbnail">{{player.userName}}</td>
+          <button onclick="removeFromList(player.userId)">kick player</button>
+        </tr>
+      </div>
     </div>
 
 
@@ -18,6 +21,8 @@
 
 <script>
 import {User} from "@/models/user";
+import {Lobby} from "@/models/Lobby";
+// import {Lobby} from "@/models/Lobby";
 
 export default {
   name: "DetailOnlineGame",
@@ -25,14 +30,16 @@ export default {
     return {
       tag: [],
       players: [],
-      player: User
+      lobby: [],
     }
   },
   created() {
     for (let i = 0; i < 3; i++) {
       this.players.push(User.createSampleUser(this.playerNumber))
     }
+    this.lobby.push(Lobby.creatSampleLobby())
   },
+
   methods: {
     playerNumber() {
       let number = 0;
@@ -43,20 +50,12 @@ export default {
         number = this.players.length;
       }
       return number;
+    },
+    removeFromList(userId){
+      this.players = this.players.filter(player => player.userId !== userId);
     }
-//   createTag(){
-//   let tag = "";
-//   const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-//   const lenght = 8;
-//
-//   for (let i = 0; i < lenght; i++) {
-//     tag += char.charAt(Math.random() * char.length);
-//   }
-//
-//   return tag;
-// }
   }
-  }
+}
 
 </script>
 
