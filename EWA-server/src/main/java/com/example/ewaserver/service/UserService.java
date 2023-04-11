@@ -28,4 +28,18 @@ public class UserService {
                 User.of(userId, username, firstname, lastname, email, passwordEncoder.encode(password), role)
         );
     }
+
+    public User login(String email, String password) {
+        // find user by email
+        var user = userRepository.findByEmail(email);
+
+        System.out.println(userRepository.findByEmail(email));
+
+        // see if the passwords match
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid credentials");
+
+        // return user
+        return user;
+    }
 }

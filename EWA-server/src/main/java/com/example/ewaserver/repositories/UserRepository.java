@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -41,6 +42,10 @@ public class UserRepository implements EntityRepository<User> {
     @Override
     public User deleteById(int id) {
         return null;
+    }
+
+    public User findByEmail(String email) {
+        return this.em.createQuery("select u from User u where email = ?1", User.class).setParameter(1, email).getSingleResult();
     }
 
 

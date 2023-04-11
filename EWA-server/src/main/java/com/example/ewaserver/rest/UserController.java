@@ -70,4 +70,18 @@ public class UserController {
         );
     }
 
+    record LoginRequest(String email, String password) { }
+    record LoginResponse(@JsonProperty("username") String username,
+                         @JsonProperty("firstname") String firstname,
+                         @JsonProperty("lastname") String lastname,
+                         String email) {
+    }
+
+
+    @PostMapping(value = "/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        var user = userService.login(loginRequest.email(), loginRequest.password());
+
+        return new LoginResponse(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
+    }
 }
