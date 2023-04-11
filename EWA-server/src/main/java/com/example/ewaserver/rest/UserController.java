@@ -3,6 +3,7 @@ package com.example.ewaserver.rest;
 
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
+import com.example.ewaserver.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,15 @@ import java.util.Objects;
 @RequestMapping(path = "/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
     private UserRepository userRepository;
+
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
 
     @GetMapping(path = "",  produces = "application/json")
@@ -46,19 +54,16 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public RegisterRespone registerUser(@RequestBody RegisterRequest registerRequest) {
-        if (!Objects.equals(registerRequest.password(), registerRequest.passwordConfirm())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
-        }
-        var user =  userRepository.Save(
-                User.of(
-                        registerRequest.userId(),
-                        registerRequest.username(),
-                        registerRequest.firstname(),
-                        registerRequest.lastname(),
-                        registerRequest.email(),
-                        registerRequest.password(),
-                        registerRequest.role()
-                )
+
+        var user =  userService.register(
+                registerRequest.userId(),
+                registerRequest.username(),
+                registerRequest.firstname(),
+                registerRequest.lastname(),
+                registerRequest.email(),
+                registerRequest.password,
+                registerRequest.passwordConfirm(),
+                registerRequest.role()
         );
 
         return new RegisterRespone(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail()
