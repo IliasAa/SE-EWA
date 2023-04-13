@@ -29,7 +29,7 @@ public class UserService {
         );
     }
 
-    public User login(String email, String password) {
+    public Token login(String email, String password) {
         // find user by email
         var user = userRepository.findByEmail(email);
 
@@ -40,6 +40,6 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid credentials");
 
         // return user
-        return user;
+        return Token.of(user.getUserId(), 10L, "very_long_and_secure_and_safe_access_key");
     }
 }
