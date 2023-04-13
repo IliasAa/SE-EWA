@@ -2,6 +2,7 @@ package com.example.ewaserver.service;
 
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final String accessTokenSecret;
+    private final String refreshTokenSecret;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       @Value("${application.security.access-token-secret}") String accessTokenSecret,
+                       @Value("${application.security.refresh-token-secret}") String refreshTokenSecret) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.accessTokenSecret = accessTokenSecret;
+        this.refreshTokenSecret = refreshTokenSecret;
     }
 
     public User register(int userId, String username, String firstname, String lastname, String email, String password, String passwordConfirm,  String role) {
@@ -29,7 +37,7 @@ public class UserService {
         );
     }
 
-    public Token login(String email, String password) {
+    public Login  login(String email, String password) {
         // find user by email
         var user = userRepository.findByEmail(email);
 
@@ -40,6 +48,6 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid credentials");
 
         // return user
-        return Token.of(user.getUserId(), 10L, "very_long_and_secure_and_safe_access_key");
+        return Login.of(user.getUserId(),  accessTokenSecret , refreshTokenSecret);
     }
 }

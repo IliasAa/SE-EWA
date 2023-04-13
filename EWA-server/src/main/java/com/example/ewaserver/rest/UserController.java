@@ -5,13 +5,13 @@ import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
 import com.example.ewaserver.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -76,9 +76,17 @@ public class UserController {
 
 
     @PostMapping(value = "/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-        var token = userService.login(loginRequest.email(), loginRequest.password());
+    public LoginResponse login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        var login = userService.login(loginRequest.email(), loginRequest.password());
 
-        return new LoginResponse(token.getToken());
+        jakarta.servlet.http.Cookie cookie = new Cookie("refresh_token", login.getRefreshToken().getToken());
+        cookie.setMaxAge(3600);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/users");
+
+        response.addCookie(cookie);
+
+        return new LoginResponse(login.getAccesToken().getToken());
+
     }
 }
