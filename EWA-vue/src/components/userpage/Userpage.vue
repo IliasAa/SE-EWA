@@ -3,12 +3,16 @@
 
   <div class="profile-card">
     <div class="profile-avatar">
-      <img :src="avatarUrl" alt="Avatar">
+      <img src="@/assets/icon.png">
     </div>
     <div class="profile-info">
       <h1 class="profile-username">TheDoomedChicken</h1>
-      <p class="profile-fullname">ibrahim ghzawi</p>
-      <p class="profile-email">Test@gmail.com</p>
+      <p v-if="!editing" class="profile-fullname">{{ fullName }}</p>
+      <input v-else class="profile-fullname editing" v-model="fullName" :class="{ error: fullNameError }" @change="onFullNameChange"/>
+      <div v-if="fullNameError" class="error-message">{{ fullNameError }}</div>
+      <p v-if="!editing" class="profile-email">{{ email }}</p>
+      <input v-else class="profile-email editing" v-model="email" :class="{ error: emailError }" @change="onEmailChange"/>
+      <div v-if="emailError" class="error-message">{{ emailError }}</div>
       <div class="profile-stats">
         <div class="profile-wins">
           <p class="stat-label">Wins</p>
@@ -19,7 +23,7 @@
           <p class="stat-value">200</p>
         </div>
       </div>
-      <button class="edit-button">Edit Profile</button>
+      <button class="edit-button" @click="toggleEditing" :disabled="fullNameError || emailError">{{ editing ? 'Save' : 'Edit Profile' }}</button>
     </div>
   </div>
 
@@ -35,8 +39,50 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 export default {
-  name: "UserPage",
-  components: {NavBar},
+  data() {
+    return {
+      fullName: 'ibrahim ghzawi',
+      email: 'Test@gmail.com',
+      editing: false,
+      emailError: null,
+      fullNameError: null,
+    };
+  },
+  methods: {
+    toggleEditing() {
+      this.editing = !this.editing;
+    },
+    onEmailChange() {
+      this.emailError = null;
+    },
+    onFullNameChange() {
+      this.fullNameError = null;
+    },
+    emailValidation() {
+      if (!this.email.match("/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/")) {
+        this.emailError = 'Please enter a valid email address.';
+      } else {
+        this.emailError = null;
+      }
+    },
+    fullNameValidation() {
+      if (!this.fullName.match("/^[a-zA-Z]+$/")) {
+        this.fullNameError = 'Please enter a valid full name.';
+      } else {
+        this.fullNameError = null;
+      }
+    },
+  },
+  watch: {
+    email: function () {
+      this.emailValidation();
+    },
+    fullName: function() {
+      this.fullNameValidation();
+    },
+    name: "UserPage",
+    components: {NavBar},
+  }
 }
 </script>
 
@@ -72,17 +118,19 @@ export default {
 .profile-info {
   flex: 1;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .profile-username {
   font-size: 2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .profile-fullname {
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+
 }
 
 .profile-email {
@@ -92,15 +140,17 @@ export default {
 
 .profile-stats {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
+  flex-direction: row;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  justify-content: center;
 }
 
 .profile-wins,
 .profile-coins {
   display: flex;
   flex-direction: column;
-  margin-right: 1rem;
+  margin: 1rem;
 }
 
 .stat-label {
@@ -113,6 +163,10 @@ export default {
   font-size: 1.5rem;
 }
 
+/**
+Editing css
+ */
+
 .edit-button {
   background-color: #007aff;
   color: #fff;
@@ -123,8 +177,21 @@ export default {
   cursor: pointer;
 }
 
+.editing {
+  border: 2px solid yellow;
+  background-color: #ffffcc;
+  margin: 1rem;
+}
+
 .edit-button:hover {
   background-color: #0065cc;
+}
+
+.error {
+  border-color: red;
+}
+.error-message {
+  color: red;
 }
 
 .background, .background img {
