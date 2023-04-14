@@ -227,10 +227,12 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
+// import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
 
 export default {
   name: "LoginScreen",
   components: {NavBar},
+  props: ['selectedColor'],
   data() {
     return {
       pawns: [],
@@ -244,6 +246,8 @@ export default {
   },
 
   created() {
+
+      this.selectedcolor = this.$route.query.selectedColor;
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {
@@ -271,23 +275,23 @@ export default {
     //Make it so only can move pawns that have the same color as you selected.
     //Will make it more effecient if the start-up game will give a selectedColor attribute to the
     //Component
-    if (this.selectedcolor === null || this.selectedcolor === "green") {
-      this.selectedcolor = "green"
+    if (this.selectedcolor === null || this.selectedcolor === 'green') {
+      this.selectedcolor = 'green'
       for (let i = 0; i < 4; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "yellow") {
+    if (this.selectedcolor === 'yellow') {
       for (let i = 4; i < 8; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "red") {
+    if (this.selectedcolor === 'red') {
       for (let i = 8; i < 12; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "blue") {
+    if (this.selectedcolor === 'blue') {
       for (let i = 12; i < 16; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
