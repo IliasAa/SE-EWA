@@ -105,4 +105,11 @@ public class UserController {
         return new UserResponse(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
     }
 
+    record RefreshResponse(String token) {}
+
+    @PostMapping(value = "/refresh")
+    public RefreshResponse refresh(@CookieValue("refresh_token" ) String refreshToken) {
+        return new RefreshResponse(userService.refreshAccess(refreshToken).getAccesToken().getToken());
+    }
+
 }

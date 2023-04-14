@@ -56,4 +56,11 @@ public class UserService {
     }
 
 
+    public Login refreshAccess(String refreshToken) {
+        var userId = Token.from(refreshToken, refreshTokenSecret);
+
+        return Login.of(userId, accessTokenSecret, Token.of(refreshToken));
+
+
+    }
 }
