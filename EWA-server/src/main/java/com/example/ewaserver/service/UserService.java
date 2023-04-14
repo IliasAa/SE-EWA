@@ -50,4 +50,10 @@ public class UserService {
         // return user
         return Login.of(user.getUserId(),  accessTokenSecret , refreshTokenSecret);
     }
+
+    public User getUserFromToken(String token) {
+        return userRepository.findById(Token.from(token, accessTokenSecret));
+    }
+
+
 }

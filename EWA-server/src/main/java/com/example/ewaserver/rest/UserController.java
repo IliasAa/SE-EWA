@@ -6,6 +6,7 @@ import com.example.ewaserver.repositories.UserRepository;
 import com.example.ewaserver.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -89,4 +90,19 @@ public class UserController {
         return new LoginResponse(login.getAccesToken().getToken());
 
     }
+
+    record UserResponse(
+            @JsonProperty("username") String username,
+            @JsonProperty("firstname") String firstname,
+            @JsonProperty("lastname") String lastname,
+            String email) {}
+
+
+    @GetMapping(value = "/token")
+    public UserResponse user(HttpServletRequest request) {
+        var user = (User) request.getAttribute("user");
+
+        return new UserResponse(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
+    }
+
 }
