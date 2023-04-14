@@ -50,16 +50,20 @@
         <div class="house yellow" style="right: 0">
           <div class="box">
             <div id="2000" class="square square-one yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[4]"
+                      class="yellow-pawn 1"></button>
             </div>
             <div id="2001" class="square square-two yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[5]"
+                      class="yellow-pawn 2"></button>
             </div>
             <div id="2002" class="square square-three yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[6]"
+                      class="yellow-pawn 3"></button>
             </div>
             <div id="2003" class="square square-four yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[7]"
+                      class="yellow-pawn 4"></button>
             </div>
           </div>
         </div>

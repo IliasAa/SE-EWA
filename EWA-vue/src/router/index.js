@@ -7,7 +7,7 @@ import RegisterScreen from "@/components/RegisterScreen.vue";
 import homePage from "@/components/homePage.vue";
 import settingsPage from "@/components/settingsPage.vue";
 import ActiveGamesScreen from "@/components/ActiveGamesScreen.vue"
-import Userpage from "@/components/userpage/Userpage.vue";
+import Userpage from "@/components/userpage/userPage.vue";
 import LeaderboardPage from "@/components/LeaderboardPage.vue";
 
 const routes = [
