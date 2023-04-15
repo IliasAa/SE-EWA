@@ -25,6 +25,24 @@
             ></v-text-field>
           </div>
         </div>
+          <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="firstname"
+                type="text"
+                v-model="firstname"
+            ></v-text-field>
+          </div>
+        </div>
+          <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="lastname"
+                type="text"
+                v-model="lastname"
+            ></v-text-field>
+          </div>
+        </div>
         <div class="row mb-2">
           <div class="col">
             <v-text-field
@@ -39,7 +57,7 @@
     </form>
     <div class="row px-3 pb-3">
       <div class="col">
-        <v-btn @click="redirect" type="submit" variant="flat" color="indigo-darken-4" class="w-100" style="transition-duration: 0.5s;">
+        <v-btn @click="createUser()" type="submit" variant="flat" color="indigo-darken-4" class="w-100" style="transition-duration: 0.5s;">
           Submit
         </v-btn>
       </div>
@@ -55,25 +73,26 @@
 </template>
 
 <script>
+import UserRepository from "@/reposetory/UserRepository";
+
 export default {
   name: "RegisterScreen",
   data() {
     return {
-      email: '',
-      password: '',
-      username: '',
+      UserRepository: new UserRepository(),
+      Username: '',
+      Email: '',
+      firstname: '',
+      lastname: '',
+      password: null
+
+
     };
   },
-
-  computed: {
-    hasChanged() {
-      return this.email !== '' && this.password !== '' && this.username !== '';
-    }
-  },
-
   methods: {
-    redirect(){
-      this.$router.push("/Dashboard");
+    async createUser() {
+        await this.UserRepository.registerUser(this.Username, this.firstname, this.lastname, this.Email, this.password)
+        console.log(this.createUser());
     }
   }
 }
