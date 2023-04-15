@@ -39,6 +39,8 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 export default {
+  name: "UserPage",
+  components: {NavBar},
   data() {
     return {
       fullName: 'ibrahim ghzawi',
