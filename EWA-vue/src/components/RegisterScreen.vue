@@ -25,6 +25,15 @@
             ></v-text-field>
           </div>
         </div>
+          <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="Email address"
+                type="email"
+                v-model="email"
+            ></v-text-field>
+          </div>
+        </div>
         <div class="row mb-2">
           <div class="col">
             <v-text-field
@@ -32,6 +41,16 @@
                 type="password"
                 hint="Enter your password to access this website"
                 v-model="password"
+            ></v-text-field>
+          </div>
+        </div>
+          <div class="row mb-2">
+          <div class="col">
+            <v-text-field
+                label="Password-confirm"
+                type="password"
+                hint="Enter your password to access this website"
+                v-model=""
             ></v-text-field>
           </div>
         </div>
