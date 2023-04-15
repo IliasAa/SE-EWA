@@ -74,14 +74,16 @@
 
 <script>
 import UserRepository from "@/reposetory/UserRepository";
+import User from "@/models/user";
 
 export default {
   name: "RegisterScreen",
+  inject: ['userService', 'loginService'],
   data() {
     return {
       UserRepository: new UserRepository(),
-      Username: '',
-      Email: '',
+      username: '',
+      email: '',
       firstname: '',
       lastname: '',
       password: null
@@ -91,8 +93,14 @@ export default {
   },
   methods: {
     async createUser() {
-        await this.UserRepository.registerUser(this.Username, this.firstname, this.lastname, this.Email, this.password)
-        console.log(this.createUser());
+      try {
+        const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
+        await this.userService.asyncSave(newuser);
+        await this.loginService.asyncLogIn(this.username,this.password)
+        this.$router.push("/Dashboard");
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 }

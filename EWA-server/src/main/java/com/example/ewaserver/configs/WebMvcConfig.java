@@ -1,4 +1,4 @@
-package com.example.ewaserver.config;
+package com.example.ewaserver.configs;
 
 import com.example.ewaserver.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;

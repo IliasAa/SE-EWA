@@ -28,20 +28,20 @@ public class UserService {
         this.refreshTokenSecret = refreshTokenSecret;
     }
 
-    public User register(int userId, String username, String firstname, String lastname, String email, String password, String passwordConfirm,  String role) {
-        if (!Objects.equals(password, passwordConfirm))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password do not match");
+//    public User register(int userId, String username, String firstname, String lastname, String email, String password, String passwordConfirm,  String role) {
+//        if (!Objects.equals(password, passwordConfirm))
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password do not match");
+//
+//        return userRepository.Save(
+//                User.of(userId, username, firstname, lastname, email, passwordEncoder.encode(password), role)
+//        );
+//    }
 
-        return userRepository.Save(
-                User.of(userId, username, firstname, lastname, email, passwordEncoder.encode(password), role)
-        );
-    }
-
-    public Login  login(String email, String password) {
+    public Login  login(String userName, String password) {
         // find user by email
-        var user = userRepository.findByEmail(email);
+        User user = userRepository.findByUsername(userName);
 
-        System.out.println(userRepository.findByEmail(email));
+        System.out.println(user);
 
         // see if the passwords match
         if (!passwordEncoder.matches(password, user.getPassword()))

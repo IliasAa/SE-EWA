@@ -1,4 +1,4 @@
-package com.example.ewaserver.config;
+package com.example.ewaserver.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

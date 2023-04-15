@@ -1,17 +1,23 @@
 package com.example.ewaserver.rest;
 
 
+import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
 import com.example.ewaserver.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -34,61 +40,37 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    record RegisterRequest(
-            int userId,
-            @JsonProperty("username") String username,
-            @JsonProperty("firstname") String firstname,
-            @JsonProperty("lastname") String lastname,
-            String email,
-            String password,
-            @JsonProperty("password_confirm") String passwordConfirm,
-            String role
-    ){ }
 
-    record RegisterRespone(
-            @JsonProperty("username") String username,
-            @JsonProperty("firstname") String firstname,
-            @JsonProperty("lastname") String lastname,
-            String email
-    ) {}
+    @PostMapping(path = "", produces = "application/json")
+    public ResponseEntity<Object> registerUser(@RequestBody User user) {
 
+        System.out.println(user);
+        User saveduser = userRepository.Save(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().
+                path("/{id}").buildAndExpand(saveduser.getUserId()).toUri();
 
-    @PostMapping(value = "/register")
-    public RegisterRespone registerUser(@RequestBody RegisterRequest registerRequest) {
-
-        var user =  userService.register(
-                registerRequest.userId(),
-                registerRequest.username(),
-                registerRequest.firstname(),
-                registerRequest.lastname(),
-                registerRequest.email(),
-                registerRequest.password,
-                registerRequest.passwordConfirm(),
-                registerRequest.role()
-        );
-
-        return new RegisterRespone(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail()
-        );
+        return ResponseEntity.created(location).body(saveduser);
     }
-
-    record LoginRequest(String email, String password) { }
-    record LoginResponse(String token) {
-    }
-
 
     @PostMapping(value = "/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        var login = userService.login(loginRequest.email(), loginRequest.password());
+    public ResponseEntity<User> login(@RequestBody ObjectNode signInInfo, HttpServletRequest response) {
+        String username = signInInfo.get("username").asText();
+        String password = signInInfo.get("password").asText();
 
-        jakarta.servlet.http.Cookie cookie = new Cookie("refresh_token", login.getRefreshToken().getToken());
-        cookie.setMaxAge(3600);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/users");
+        User user = userRepository.findByUsername(username);
 
-        response.addCookie(cookie);
+        if (user == null) {
+            throw new ResourceNotFoundException("User with username: " + username + " does not exist");
+        }
 
-        return new LoginResponse(login.getAccesToken().getToken());
-
+        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION).body(user);
+        //jwt token for later
+//        var login = userService.login(username,password);
+//        jakarta.servlet.http.Cookie cookie = new Cookie("refresh_token", login.getRefreshToken().getToken());
+//        cookie.setMaxAge(3600);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/users");
+//        return new ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION).body(user);
     }
 
     record UserResponse(

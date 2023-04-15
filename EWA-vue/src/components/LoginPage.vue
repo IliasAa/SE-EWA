@@ -31,7 +31,8 @@
     </form>
     <div class="row px-3 pb-3">
       <div class="col">
-        <v-btn @click="redirect" type="submit" variant="flat" color="indigo-darken-4" class="w-100" style="transition-duration: 0.5s;">
+        <v-btn @click="loginRedirect" type="submit" variant="flat" color="indigo-darken-4" class="w-100"
+               style="transition-duration: 0.5s;">
           Submit
         </v-btn>
       </div>
@@ -50,6 +51,7 @@
 
 export default {
   name: "LoginPage",
+  inject: ['loginService'],
   data() {
     return {
       email: '',
@@ -69,17 +71,24 @@ export default {
   },
 
   methods: {
-    redirect() {
-      this.$router.push("/Dashboard");
+    async loginRedirect() {
+      let account = await this.loginService.asyncLogIn(this.username, this.password)
+      if (account == null) {
+        console.log("Wrong credentials")
+      } else {
+        this.$router.push("/Dashboard");
+      }
     }
   }
 }
+
 </script>
 
 <style scoped>
-.title{
+.title {
   text-align: center;
 }
+
 .login-form {
   width: 90vw;
   max-width: 400px;

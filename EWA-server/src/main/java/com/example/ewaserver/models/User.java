@@ -29,11 +29,6 @@ public class User {
 
 
 
-    public static User of(int userId,String username, String firstname, String lastname, String email, String password, String role){
-        return new User(userId, username, firstname, lastname, email, password, role);
-    }
-
-
     public User(int userId, String username, String firstname, String lastname, String email, String password, String role) {
         this.userId = userId;
         this.username = username;
@@ -43,10 +38,28 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-
-    public User() {
+    public User(String username, String firstname, String lastname, String email, String password, String role) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
 
+    protected User() {}
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
