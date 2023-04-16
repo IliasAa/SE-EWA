@@ -1,10 +1,13 @@
 package com.example.ewaserver.rest;
 
 
+import com.example.ewaserver.Config;
 import com.example.ewaserver.exceptions.ResourceNotFoundException;
+import com.example.ewaserver.exceptions.UnAuthorizedException;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.UserRepository;
-import com.example.ewaserver.service.UserService;
+
+import com.example.ewaserver.service.JWToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.Cookie;
@@ -24,18 +27,19 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
 
-    private final UserService userService;
+
+    @Autowired
+    Config apiconfig;
 
     @Autowired
     private UserRepository userRepository;
 
-    public UserController(UserService userService, UserRepository userRepository) {
-        this.userService = userService;
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    @GetMapping(path = "",  produces = "application/json")
+    @GetMapping(path = "", produces = "application/json")
     public List<User> getSummary() {
         return userRepository.findAll();
     }
@@ -53,31 +57,32 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<User> login(@RequestBody ObjectNode signInInfo, HttpServletRequest response) {
+    public ResponseEntity<User> login(@RequestBody ObjectNode signInInfo) {
         String username = signInInfo.get("username").asText();
         String password = signInInfo.get("password").asText();
 
         User user = userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new ResourceNotFoundException("User with username: " + username + " does not exist");
+
+        if (user == null || !user.verifyPassword(password)) {
+            throw new ResourceNotFoundException("Cannot find an account related to " + username);
         }
 
-        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION).body(user);
-        //jwt token for later
-//        var login = userService.login(username,password);
-//        jakarta.servlet.http.Cookie cookie = new Cookie("refresh_token", login.getRefreshToken().getToken());
-//        cookie.setMaxAge(3600);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/users");
-//        return new ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION).body(user);
+        JWToken jwToken = new JWToken(user.getUsername(), (long) user.getUserId(), user.getRole());
+        String tokenString = jwToken.encode(this.apiconfig.getIssuer(), this.apiconfig.getPassphrase(),
+                this.apiconfig.getTokenDurationOfValidity());
+
+
+        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
+                .body(user);
     }
 
     record UserResponse(
             @JsonProperty("username") String username,
             @JsonProperty("firstname") String firstname,
             @JsonProperty("lastname") String lastname,
-            String email) {}
+            String email) {
+    }
 
 
     @GetMapping(value = "/token")
@@ -87,14 +92,10 @@ public class UserController {
         return new UserResponse(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
     }
 
-    record RefreshResponse(String token) {}
 
-    @PostMapping(value = "/refresh")
-    public RefreshResponse refresh(@CookieValue("refresh_token" ) String refreshToken) {
-        return new RefreshResponse(userService.refreshAccess(refreshToken).getAccesToken().getToken());
+    record LogoutResponse(String message) {
     }
 
-    record LogoutResponse(String message) {}
     @PostMapping(value = "/logout")
     public LogoutResponse logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("refresh_token", null);
@@ -104,6 +105,21 @@ public class UserController {
         response.addCookie(cookie);
 
         return new LogoutResponse("Succes");
+    }
+
+    @DeleteMapping(path = "{id}")
+    public User deleteUser(@PathVariable() int id,
+                           @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {
+        if (jwtInfo == null || !jwtInfo.isAdmin()) {
+            throw new UnAuthorizedException(
+                    "Admin role is required to remove an user");
+        }
+        User user = this.userRepository.deleteById(id);
+        if (user == null) {
+            throw new ResourceNotFoundException(
+                    "Cannot delete an user with id=" + id);
+        }
+        return user;
     }
 
 }

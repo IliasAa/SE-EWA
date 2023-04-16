@@ -1,10 +1,9 @@
 package com.example.ewaserver.rest;
 
+
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.repositories.LobbyRepository;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/Lobby")
 public class LobbyController {
 
-    private Lobby lobby;
     private LobbyRepository lobbyRepository;
 
-    public long getAllLobbys(long id){
+    public long getAllLobbys(int id){
         return this.lobbyRepository.findById(id).getLobbyId();
     }
 
@@ -28,19 +26,19 @@ public class LobbyController {
     }
 
     @PostMapping(value = "/Lobby")
-    public LobbyController.LobbyRequest Join() {
+    public LobbyController.LobbyRequest Join(Lobby lobby) {
 
         return new LobbyRequest(lobby.getLobbyCode(), lobby.getLobbyId());
     }
 
     @PostMapping(value = "/Lobby/Offline")
-    public LobbyController.AiBot BotAmount(int amount) {
+    public LobbyController.AiBot BotAmount(Lobby lobby, int amount) {
 
         return new AiBot(lobby.setBotAmount(amount));
     }
 
     @PostMapping(value = "/Lobby/Online")
-    public LobbyController.LobbyResponse Start(String lobbyCode) {
+    public LobbyController.LobbyResponse Start(Lobby lobby,String lobbyCode) {
 
         return new LobbyResponse(lobby.setLobbyCode(lobbyCode));
     }
