@@ -39,6 +39,7 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "LeaderboardPage",
   components: {NavBar},
+  inject: ['leaderboardService'],
   data() {
     return {
       leaderboardData: [
@@ -79,6 +80,11 @@ export default {
           coins: 50
         },
       ]
+    }
+  },
+  methods: {
+    async getAllUsers() {
+      await this.leaderboardService.findAll()
     }
   }
 }

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import UserRepository from "@/reposetory/UserRepository";
+import UserRepository from "@/repository/UserRepository";
 import User from "@/models/user";
 
 export default {
