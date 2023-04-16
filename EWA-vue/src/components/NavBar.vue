@@ -5,7 +5,7 @@
         <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a></router-link>
       </div>
       <ul class="menu">
-        <router-link to="/UserPage"><li><a href="#">Profile</a></li></router-link>
+        <router-link to="/LoginPage"><li><a href="#">Logout</a></li></router-link>
         <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
         <div class="dropdown">
         <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
@@ -19,8 +19,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <router-link v-if="this.isLoggedIn === false" to="LoginPage"><p>{{checkPage}}</p></router-link>
-          <p v-else>{{checkPage}}</p>
+          <router-link to="UserPage"><p>{{checkPage}}</p></router-link>
         </div>
       </ul>
     </nav>
