@@ -75,6 +75,22 @@ public class UserController {
         return new LogoutResponse("Succes");
     }
 
+    @PutMapping("{id}")
+    public User updateUser(@PathVariable long id, @RequestBody User user) {
+
+        //id is temporarily a fixed variable: 1
+        id = 1;
+
+        User userDetails = this.userRepository.findById((int) id);
+
+        //It is only possible to change the username and email for now
+        userDetails.setUsername(user.getUsername());
+        userDetails.setEmail(user.getEmail());
+
+        userRepository.Save(user);
+        return userDetails;
+    }
+
     @DeleteMapping(path = "{id}")
     public User deleteUser(@PathVariable() int id,
                            @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {
