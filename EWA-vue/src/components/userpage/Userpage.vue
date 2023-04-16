@@ -2,6 +2,7 @@
   <NavBar></NavBar>
 
   <div class="profile-card">
+    <button class="delete-button" @click="onDelete">Delete Account</button>
     <div class="profile-avatar">
       <img src="@/assets/icon.png">
     </div>
@@ -41,6 +42,7 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "UserPage",
   components: {NavBar},
+  inject: ['userService'],
   data() {
     return {
       fullName: 'ibrahim ghzawi',
@@ -72,6 +74,20 @@ export default {
         this.fullNameError = 'Please enter a valid full name.';
       } else {
         this.fullNameError = null;
+      }
+    },
+
+    async onDelete() {
+      const confirmationMessage = confirm("Weet je zeker dat u het account wilt verwijderen?")
+
+      if (confirmationMessage === true) {
+        try {
+          // await this.userService.asyncDeleteById(User.id);
+          this.$router.push("/Dashboard");
+        } catch (e) {
+          console.log(e);
+          alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
+        }
       }
     },
   },
@@ -177,6 +193,22 @@ Editing css
   padding: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.delete-button {
+  display: flex;
+  justify-self: center;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: lightcoral;
 }
 
 .editing {

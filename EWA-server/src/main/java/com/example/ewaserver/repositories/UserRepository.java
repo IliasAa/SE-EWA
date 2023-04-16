@@ -44,8 +44,13 @@ public class UserRepository implements EntityRepository<User> {
         return null;
     }
 
+
     public User findByEmail(String email) {
         return this.em.createQuery("select u from User u where email = ?1", User.class).setParameter(1, email).getSingleResult();
+    }
+
+    public User findByUsername(String username) {
+        return this.em.createQuery("select u from User u where username = ?1", User.class).setParameter(1, username).getSingleResult();
     }
 
 
