@@ -7,25 +7,38 @@
       <button class="ai" @click="maxPlayer()" v-on:click="players= 0">-</button>
       <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
     </div>
+    <div class="playerColor">
+      <p>Choose a starting color:</p>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
+              id="playerRed" @click="colorChoosing('red')">Red</button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
+              id="playerBlue" @click="colorChoosing('blue')">Blue</button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
+              id="playerYellow" @click="colorChoosing('yellow')">Yellow</button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
+              id="playerGreen" @click="colorChoosing('green')">Green</button>
+    </div>
 
 
-    <router-link to="/gamepage" v-if="this.players >= 1">
+    <router-link :to="{ path: '/gamepage', query: { selectedColor: selectedColor } }"
+                 v-if="players >= 1 && selectedColor !== null">
       <p></p>
-      <button class="start" >Start game</button>
+      <button class="start">Start game</button>
     </router-link>
-    <p v-else>there has to he a minimal of one AI bot</p>
+
+    <p v-else>Player must select a color <br> There has to be a minimal of 1 AI bot</p>
 
   </div>
 
 </template>
 
 <script>
-
 export default {
   name: "DetailOfflineGame",
   data(){
     return {
-      players: 0
+      players: 0,
+      selectedColor: null
     }
   },
   methods: {
@@ -36,20 +49,26 @@ export default {
       if (this.players > 2){
         return this.players = 2;
       }
+    },
+
+    colorChoosing(color) {
+      this.selectedColor = color;
     }
   }
 }
 </script>
 
 <style scoped>
+
 .body {
   border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
-  max-width: 500px;
-  height: 300px;
-
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
 .players {
   background-color: white;
@@ -58,6 +77,15 @@ export default {
   border: solid blue;
   border-radius: 12px;
 }
+
+.playerColor {
+  background-color: white;
+  text-align: center;
+  margin: 10px;
+  border: solid blue;
+  border-radius: 12px;
+}
+
 .ai {
   background: dodgerblue;
   border-radius: 5px;
@@ -65,6 +93,37 @@ export default {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+.playerColorButton {
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 5px;
+}
+
+
+#playerRed:hover {
+  background-color: red;
+}
+
+#playerBlue:hover {
+  background-color: blue;
+}
+
+#playerYellow:hover {
+  background-color: yellow;
+}
+
+#playerGreen:hover {
+  background-color: green;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
 .start {
   background-color: #002B7F;
   color: white;

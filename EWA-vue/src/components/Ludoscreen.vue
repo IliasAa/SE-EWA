@@ -50,16 +50,20 @@
         <div class="house yellow" style="right: 0">
           <div class="box">
             <div id="2000" class="square square-one yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 1"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[4]"
+                      class="yellow-pawn 1"></button>
             </div>
             <div id="2001" class="square square-two yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 2"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[5]"
+                      class="yellow-pawn 2"></button>
             </div>
             <div id="2002" class="square square-three yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 3"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[6]"
+                      class="yellow-pawn 3"></button>
             </div>
             <div id="2003" class="square square-four yellow">
-              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" class="yellow-pawn 4"></button>
+              <button :disabled="hasChanged" @click="checkIfPawnOnField($event)" v-bind="this.pawns[7]"
+                      class="yellow-pawn 4"></button>
             </div>
           </div>
         </div>
@@ -227,10 +231,12 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
+// import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
 
 export default {
   name: "LoginScreen",
   components: {NavBar},
+  props: ['selectedColor'],
   data() {
     return {
       pawns: [],
@@ -244,6 +250,8 @@ export default {
   },
 
   created() {
+
+      this.selectedcolor = this.$route.query.selectedColor;
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {
@@ -271,23 +279,23 @@ export default {
     //Make it so only can move pawns that have the same color as you selected.
     //Will make it more effecient if the start-up game will give a selectedColor attribute to the
     //Component
-    if (this.selectedcolor === null || this.selectedcolor === "green") {
-      this.selectedcolor = "green"
+    if (this.selectedcolor === null || this.selectedcolor === 'green') {
+      this.selectedcolor = 'green'
       for (let i = 0; i < 4; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "yellow") {
+    if (this.selectedcolor === 'yellow') {
       for (let i = 4; i < 8; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "red") {
+    if (this.selectedcolor === 'red') {
       for (let i = 8; i < 12; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
     }
-    if (this.selectedcolor === "blue") {
+    if (this.selectedcolor === 'blue') {
       for (let i = 12; i < 16; i++) {
         this.playablePawns.push(this.pawns[i]);
       }
