@@ -45,38 +45,6 @@ public class UserController {
     }
 
 
-    @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<Object> registerUser(@RequestBody User user) {
-
-        System.out.println(user);
-        User saveduser = userRepository.Save(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(saveduser.getUserId()).toUri();
-
-        return ResponseEntity.created(location).body(saveduser);
-    }
-
-    @PostMapping(value = "/login")
-    public ResponseEntity<User> login(@RequestBody ObjectNode signInInfo) {
-        String username = signInInfo.get("username").asText();
-        String password = signInInfo.get("password").asText();
-
-        User user = userRepository.findByUsername(username);
-
-
-        if (user == null || !user.verifyPassword(password)) {
-            throw new ResourceNotFoundException("Cannot find an account related to " + username);
-        }
-
-        JWToken jwToken = new JWToken(user.getUsername(), (long) user.getUserId(), user.getRole());
-        String tokenString = jwToken.encode(this.apiconfig.getIssuer(), this.apiconfig.getPassphrase(),
-                this.apiconfig.getTokenDurationOfValidity());
-
-
-        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
-                .body(user);
-    }
-
     record UserResponse(
             @JsonProperty("username") String username,
             @JsonProperty("firstname") String firstname,

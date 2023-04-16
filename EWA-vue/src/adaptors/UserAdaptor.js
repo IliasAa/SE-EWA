@@ -24,13 +24,6 @@ export class UserAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
     }
 
-    async asyncSave(user) {
-            await this.fetchJSon(this.RESOURCE_URL, {
-                headers: {'Content-Type': 'application/json'},
-                method: 'POST',
-                body: JSON.stringify(user)
-            },)
-    }
 
     async asyncDeleteById(id) {
         return this.fetchJSon(this.RESOURCE_URL + "/" + id,

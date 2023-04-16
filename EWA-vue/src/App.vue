@@ -4,7 +4,7 @@
 
 <script>
 import {UserAdaptor} from "@/adaptors/UserAdaptor";
-import {LoginAdaptor} from "@/adaptors/LoginAdaptor";
+import {AuthenticationAdaptor} from "@/adaptors/AuthenticationAdaptor";
 
 export default {
   name: 'App',
@@ -15,7 +15,7 @@ export default {
 
     return {
       userService: new UserAdaptor(URL + "/users"),
-      loginService: new LoginAdaptor(URL + "/users"),
+      loginService: new AuthenticationAdaptor(URL + "/authentication"),
     }
   }
 }

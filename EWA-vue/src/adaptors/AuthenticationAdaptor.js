@@ -1,18 +1,18 @@
-export class LoginAdaptor {
+export class AuthenticationAdaptor {
 
     RESOURCE_URL;
 
     constructor(resourceurl) {
         this.RESOURCE_URL = resourceurl;
-        //for jwt
-
     }
 
-    async fetchJson(url, options = null) {
-        let response = await fetch(url, options)
-        if (response.ok) {
-            return await response.json();
+    async fetchJSon(url, options = null) {
+        let respone = await fetch(url, options)
+        if (respone.ok) {
+            return await respone.json();
         } else {
+            // response body provides the http-error information
+            console.log(respone, !respone.bodyUsed ? await respone.text() : "");
             return null;
         }
     }
@@ -34,5 +34,13 @@ export class LoginAdaptor {
             console.log(response)
             return null;
         }
+    }
+
+    async asyncSave(user) {
+        await this.fetchJSon(this.RESOURCE_URL + "/register", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify(user)
+        },)
     }
 }

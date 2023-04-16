@@ -95,7 +95,7 @@ export default {
     async createUser() {
       try {
         const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
-        await this.userService.asyncSave(newuser);
+        await this.loginService.asyncSave(newuser);
         await this.loginService.asyncLogIn(this.username,this.password)
         this.$router.push("/Dashboard");
       } catch (e) {
