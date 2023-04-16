@@ -40,13 +40,13 @@ public class JWToken {
                 .setIssuer(issuer)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
-                .signWith(key, SignatureAlgorithm.HS512)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     private static Key getKey(String passphrase) {
         byte[] hmacKey = passphrase.getBytes(StandardCharsets.UTF_8);
-        return new SecretKeySpec(hmacKey, SignatureAlgorithm.HS512.getJcaName());
+        return new SecretKeySpec(hmacKey, SignatureAlgorithm.HS256.getJcaName());
     }
 
     public static JWToken decode(String token, String issuer, String passphrase)
