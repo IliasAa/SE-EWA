@@ -52,12 +52,24 @@ public class UserController {
             String email) {
     }
 
+    @GetMapping(value = "/info")
+    public UserResponse user(HttpServletRequest request){
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        JWToken decoded = JWToken.decode(token,apiconfig.getIssuer(),
+                apiconfig.getPassphrase());
+
+        User user = this.userRepository.findById((int) decoded.getAccountId());
+        if (user == null){
+            throw new ResourceNotFoundException("Cannot find an account related to " + decoded.getAccountId());
+        }
+
+        return new UserResponse(user.getUsername(),user.getFirstname(),user.getLastname(),user.getEmail());
+    }
+
 
     @GetMapping(value = "/token")
-    public UserResponse user(HttpServletRequest request) {
-        var user = (User) request.getAttribute("user");
-
-        return new UserResponse(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
+    public String token(HttpServletRequest request) {
+        return request.getHeader("Authorization").replace("Bearer ", "");
     }
 
 
@@ -105,5 +117,6 @@ public class UserController {
         }
         return user;
     }
+
 
 }

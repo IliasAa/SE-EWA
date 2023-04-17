@@ -124,9 +124,7 @@ public class JWToken {
     public static String getIpAddress(HttpServletRequest request) {
         // obtain the source IP-address of the current request
         String ipAddress = null;
-        if (Config.IP_FORWARDED_FOR != null) {
-            ipAddress = request.getHeader(Config.IP_FORWARDED_FOR);
-        }
+        ipAddress = request.getHeader(Config.IP_FORWARDED_FOR);
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
