@@ -82,8 +82,9 @@ export default {
 
       if (confirmationMessage === true) {
         try {
-          // await this.userService.asyncDeleteById(User.id);
-          this.$router.push("/Dashboard");
+          alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
+          // await this.userService.asyncDeleteById(67);
+          // this.$router.push("/Dashboard");
         } catch (e) {
           console.log(e);
           alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
