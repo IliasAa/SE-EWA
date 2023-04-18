@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,6 +30,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public AuthenticationController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -47,6 +51,11 @@ public class AuthenticationController {
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
 
         System.out.println(user);
+
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         User saveduser = userRepository.Save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().
                 path("/{id}").buildAndExpand(saveduser.getUserId()).toUri();
