@@ -75,6 +75,8 @@
 <script>
 import UserRepository from "@/reposetory/UserRepository";
 import User from "@/models/user";
+import {toast} from "vue3-toastify";
+
 
 export default {
   name: "RegisterScreen",
@@ -87,8 +89,6 @@ export default {
       firstname: '',
       lastname: '',
       password: null
-
-
     };
   },
   methods: {
@@ -98,8 +98,10 @@ export default {
         await this.loginService.asyncSave(newuser);
         await this.loginService.asyncLogIn(this.username,this.password)
         this.$router.push("/Dashboard");
+        toast.success("User Created",);
       } catch (e) {
         console.log(e);
+        toast.error("User not Created");
       }
     }
   }
