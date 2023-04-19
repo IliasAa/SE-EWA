@@ -16,24 +16,28 @@ export class FetchInterceptor {
 
     request(url, options) {
         let token = FetchInterceptor.theInstance.sessionService.currentToken;
-        //console.log("FetchInterceptor request: ", url, options, token);
+        console.log("FetchInterceptor request: ", url, options, token);
 
         if (token == null) {
             return [url, options];
         } else if (options == null) {
-            return [url, { headers: { Authorization: token }}]
+            return [url, {headers: {Authorization: token}}]
         } else {
-            let newOptions = { ...options };
+            let newOptions = {...options};
             // TODO combine existing headers with new Authorization header
+            newOptions.headers = {
+                ...newOptions.headers,
+                Authorization: token
+            };
 
 
-
-            // console.log("FetchInterceptor request: ", url, newOptions);
+            console.log("FetchInterceptor request: ", url, newOptions.headers);
             return [url, newOptions];
         }
     }
+
     response(response) {
-        // console.log("FetchInterceptor response: ", response);
+        console.log("FetchInterceptor response: ", response);
         FetchInterceptor.theInstance.tryRecoverNewJWToken(response);
         if (response.status >= 400 && response.status < 600) {
             FetchInterceptor.theInstance.handleErrorInResponse(response);
@@ -46,6 +50,7 @@ export class FetchInterceptor {
         console.log("FetchInterceptor requestError: ", error);
         return Promise.reject(error);
     }
+
     responseError(error) {
         // Handle a fetch error
         console.log("FetchInterceptor responseError: ", error);
@@ -57,19 +62,19 @@ export class FetchInterceptor {
             // TODO handle an UNAUTHORISED response
             // unauthorised request, redirect to signIn page
             // this.router.navigate(['/sign-out']);    // ng-router
-            this.router.push({ path: '/sign-out',});   // vue-router
+            this.router.push({path: '/sign-out',});   // vue-router
         } else if (response.status != 406) {
             // 406='Not Acceptable' error is used for logon failure
             // TODO handle any other error
         }
     }
 
-    tryRecoverNewJWToken(response) {
+    async tryRecoverNewJWToken(response) {
         // TODO check the response on availability of a JWT
         //  and request the session service to save that
-        let token = response.getHeader("Authorization")
+        let token = response.headers.get("Authorization")
         if (token != null){
-            return response
+            this.sessionService.saveTokenIntoBrowserStorage(token,null)
         }
 
     }

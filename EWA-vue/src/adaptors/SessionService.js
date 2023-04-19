@@ -38,6 +38,13 @@ export class SessionService {
 
         if (this._currentToken == null) {
             // TODO try to find the token+account in local storage and replicate to this session if found
+            const localToken = localStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME);
+            const localAccount = localStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
+
+            if (localToken != null && localAccount != null){
+                window.sessionStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME, localToken)
+                window.sessionStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC", localAccount)
+            }
         }
         if (jsonAccount != null) {
             this._currentAccount = JSON.parse(jsonAccount);
@@ -56,19 +63,38 @@ export class SessionService {
         // both isolate the items per server domain of the page (including port number?)
         if (token == null) {
             this._currentAccount = null;
+            const sessionToken = window.sessionStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME);
+            const sessionAccount = window.sessionStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
             window.sessionStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME);
             window.sessionStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
             // TODO remove the token+account from local storage, if localStorage and session storage are equal
-        } else {
-            console.log("New token for " + account.name + ": " + token);
+            const localToken = localStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME);
+            const localAccount = localStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
+
+            if (sessionToken === localToken && sessionAccount === localAccount) {
+                localStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME);
+                localStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
+            }
+        } else{
+            if (account != null){
+                console.log("New token for " + account.username + ": " + token);
+                window.sessionStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC", JSON.stringify(account));
+                localStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME + "_ACC", JSON.stringify(account));
+            }else{
+                localStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC")
+                window.sessionStorage.removeItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC");
+
+            }
+
             window.sessionStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME, token);
-            window.sessionStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME+"_ACC", JSON.stringify(account));
             // TODO also save the new token+account in localStorage
+            localStorage.setItem(this.BROWSER_STORAGE_ITEM_NAME, token);
+
         }
     }
 
-    async asyncSignIn(email, password) {
-        const body = JSON.stringify({ email: email, password: password });
+    async asyncSignIn(username, password) {
+        const body = JSON.stringify({ username: username, password: password });
         let response = await fetch(this.RESOURCES_URL + "/login",
             {
                 method: 'POST',

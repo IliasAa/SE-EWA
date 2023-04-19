@@ -5,9 +5,9 @@
 <script>
 import {UserAdaptor} from "@/adaptors/UserAdaptor";
 import {AuthenticationAdaptor} from "@/adaptors/AuthenticationAdaptor";
-// import {shallowReactive} from "vue";
-// import {SessionService} from "@/adaptors/SessionService";
-// import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
+import {shallowReactive} from "vue";
+import {SessionService} from "@/adaptors/SessionService";
+import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
 
 
 export default {
@@ -15,21 +15,23 @@ export default {
   components: {},
   provide() {
     const URL = "http://localhost:8081";
-    // this.theSessionService = shallowReactive(
-    //     new SessionService(URL + "/authentication", "JWT_LUDO"));
-    // this.theFetchInterceptor =
-    //     new FetchInterceptor(this.theSessionService, this.$router);
+
+    this.theSessionService = shallowReactive(
+        new SessionService(URL + "/authentication", "JWT_LUDO"));
+
+    this.theFetchInterceptor =
+        new FetchInterceptor(this.theSessionService);
 
 
     return {
       userService: new UserAdaptor(URL + "/users"),
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
-      // SessionService: this.SessionService
+      SessionService: this.theSessionService
     }
   },
-  // beforeUnmount() {
-  //   this.theFetchInterceptor.unregister();
-  // }
+  beforeUnmount() {
+    this.theFetchInterceptor.unregister();
+  }
 }
 
 </script>
