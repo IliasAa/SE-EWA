@@ -76,7 +76,7 @@ export default {
       if (account == null) {
         console.log("Wrong credentials")
       } else {
-        // this.$router.push("/Dashboard");
+        this.$router.push("/Dashboard");
       }
     }
   }
