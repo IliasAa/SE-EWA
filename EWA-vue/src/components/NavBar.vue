@@ -27,6 +27,7 @@
 </template>
 
 <script>
+
 export default {
   name: "NavBar.vue",
   props: ["isLoggedIn"],
@@ -41,6 +42,7 @@ export default {
         return "Log in"
       }else {
         return "cyber_samurai"
+
       }
     }
   }

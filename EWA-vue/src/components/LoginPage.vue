@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import {toast} from "vue3-toastify";
 
 export default {
   name: "LoginPage",
@@ -75,8 +76,10 @@ export default {
       let account = await this.SessionService.asyncSignIn(this.username,this.password);
       if (account == null) {
         console.log("Wrong credentials")
+        toast.error("Wrong credentials")
       } else {
         this.$router.push("/Dashboard");
+        toast.success("Login successful");
       }
     }
   }
