@@ -14,7 +14,7 @@
                 type="text"
                 @keyup="checkUsername()"
                 v-model="username"
-                :error-messages="usernameErrorMessage"
+                :error-messages="usernameErrorMessage ? usernameErrorMessage : []"
             ></v-text-field>
           </div>
         </div>
@@ -136,8 +136,13 @@ export default {
       }
     },
     checkUsername() {
-        this.usernameValidated = !usernameRegex.test(this.username);
-        this.usernameErrorMessage = 'Username must contain at least 4 characters';
+        if (!usernameRegex.test(this.username)) {
+            this.usernameValidated = false
+            this.usernameErrorMessage = 'Username must contain at least 4 characters';
+        } else {
+            this.usernameValidated = true;
+            this.usernameErrorMessage = '';
+        }
     },
     checkFirstname() {
         if (this.firstname.length >= 2) {
