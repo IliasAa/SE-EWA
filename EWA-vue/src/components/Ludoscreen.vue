@@ -232,6 +232,7 @@
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
 // import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
+import {toast} from "vue3-toastify";
 
 export default {
   name: "LoginScreen",
@@ -319,6 +320,9 @@ export default {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
         if (this.playablePawns[i].onField === 1) {
+          if (i === 0){
+            toast.success('Achievement unlocked:\nFirst Move!')
+          }
           pawnId = this.playablePawns[i].id;
           arrayPos = i;
           break;
@@ -377,6 +381,7 @@ export default {
           this.playablePawns[arrayPos].onField = 3;
 
           if (finishPosIndexAvailable === 3) {
+            toast.success("Achievement unlocked:\nFirst Win!")
             this.winConfirmation();
           }
         }
