@@ -8,7 +8,7 @@ import {AuthenticationAdaptor} from "@/adaptors/AuthenticationAdaptor";
 import {shallowReactive} from "vue";
 import {SessionService} from "@/adaptors/SessionService";
 import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
-
+import {toast} from "vue3-toastify";
 
 export default {
   name: 'App',
@@ -20,7 +20,7 @@ export default {
         new SessionService(URL + "/authentication", "JWT_LUDO"));
 
     this.theFetchInterceptor =
-        new FetchInterceptor(this.theSessionService);
+        new FetchInterceptor(this.theSessionService, this.$router, toast);
 
 
     return {

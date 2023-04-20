@@ -7,7 +7,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <p>cyber_samurai</p>
+          <p>{{dummyName()}}</p>
         </div>
         <div class="action-bar">
           <button class="chat">CHAT</button>
@@ -237,6 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
+  inject: ['SessionService'],
   data() {
     return {
       pawns: [],
@@ -445,6 +446,15 @@ export default {
       } else {
         alert("Je kan alleen een pion van je eigen kleur kiezen en die in het veld staat.")
       }
+    },
+
+    dummyName(){
+      // let username = this.SessionService.currentAccount.username.toString();
+      if (this.SessionService !== null){
+        return this.SessionService.currentAccount.username.toString();
+      }
+      return "Cyber_samurai"
+
     }
   },
 
@@ -569,7 +579,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px 10px 10px;
+  padding: 10px 10px 10px 0;
   height: 500px;
 }
 

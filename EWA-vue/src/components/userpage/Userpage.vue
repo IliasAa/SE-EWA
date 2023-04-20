@@ -7,7 +7,7 @@
       <img src="@/assets/icon.png">
     </div>
     <div class="profile-info">
-      <h1 class="profile-username">TheDoomedChicken</h1>
+      <h1 class="profile-username">{{username}}</h1>
       <p v-if="!editing" class="profile-fullname">{{ fullName }}</p>
       <input v-else class="profile-fullname editing" v-model="fullName" :class="{ error: fullNameError }" @change="onFullNameChange"/>
       <div v-if="fullNameError" class="error-message">{{ fullNameError }}</div>
@@ -50,7 +50,25 @@ export default {
       editing: false,
       emailError: null,
       fullNameError: null,
+      username: "Hello"
     };
+  },
+
+  async mounted(){
+    try{
+      let userService = await this.userService.asyncGetInfo();
+      if (userService !== null){
+        this.username = userService.username;
+        this.email = userService.email;
+        this.fullName = userService.firstname + " " + userService.lastname
+    }
+
+      }catch (error){
+      console.error(error);
+    }
+
+
+
   },
   methods: {
     toggleEditing() {
@@ -92,12 +110,13 @@ export default {
       }
     },
   },
+
   watch: {
     email: function () {
-      this.emailValidation();
+      // this.emailValidation();
     },
     fullName: function() {
-      this.fullNameValidation();
+      // this.fullNameValidation();
     },
     name: "UserPage",
     components: {NavBar},

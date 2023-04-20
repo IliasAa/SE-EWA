@@ -5,12 +5,15 @@ export class FetchInterceptor {
     static theInstance; // the singleton instance that has been registered
     sessionService;     // the sessionService which tracks the authorisation
     unregister;         // callback function to unregister this instance
+    toast;
 
-    constructor(sessionService) {
+    constructor(sessionService, router, toast) {
         FetchInterceptor.theInstance = this;
         this.sessionService = sessionService;
         // fetchIntercept does not register the object closure, only the methods as functions
         this.unregister = fetchIntercept.register(this);
+        this.$router = router;
+        this.toast = toast;
         console.log("FetchInterceptor has been registered.");
     }
 
@@ -27,7 +30,8 @@ export class FetchInterceptor {
             // TODO combine existing headers with new Authorization header
             newOptions.headers = {
                 ...newOptions.headers,
-                Authorization: token
+                Authorization: token,
+                'X-Forwarded-For': '1.1.1.1',
             };
 
 
@@ -58,12 +62,15 @@ export class FetchInterceptor {
     }
 
     async handleErrorInResponse(response) {
-        if (response.status == 401) {
+        if (response.status === 401) {
             // TODO handle an UNAUTHORISED response
+            this.sessionService.signOut();
             // unauthorised request, redirect to signIn page
             // this.router.navigate(['/sign-out']);    // ng-router
-            this.router.push({path: '/sign-out',});   // vue-router
-        } else if (response.status != 406) {
+            this.$router.push('/Loginpage');   // vue-router
+            console.log(this.toast)
+            this.toast.error("Session is expired or unauthorized")
+        } else if (response.status !== 406) {
             // 406='Not Acceptable' error is used for logon failure
             // TODO handle any other error
         }
@@ -73,8 +80,8 @@ export class FetchInterceptor {
         // TODO check the response on availability of a JWT
         //  and request the session service to save that
         let token = response.headers.get("Authorization")
-        if (token != null){
-            this.sessionService.saveTokenIntoBrowserStorage(token,null)
+        if (token != null) {
+            this.sessionService.saveTokenIntoBrowserStorage(token, null)
         }
 
     }
