@@ -9,6 +9,7 @@ import {shallowReactive} from "vue";
 import {SessionService} from "@/adaptors/SessionService";
 import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
 import {toast} from "vue3-toastify";
+import {LeaderboardAdaptor} from "@/adaptors/LeaderboardAdaptor";
 
 export default {
   name: 'App',
@@ -26,6 +27,7 @@ export default {
     return {
       userService: new UserAdaptor(URL + "/users"),
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
+      leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
       SessionService: this.theSessionService
     }
   },

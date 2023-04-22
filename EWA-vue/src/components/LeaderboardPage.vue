@@ -15,12 +15,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(player, index) in leaderboardData" :key="player.username">
+        <tr v-for="user in users" :key="user.username">
           <td>{{ index + 1 }}</td>
-          <td><img :src="player.avatarUrl" alt="Avatar" width="50"></td>
-          <td>{{ player.username }}</td>
-          <td>{{ player.wins }}</td>
-          <td>{{ player.coins }}</td>
+          <td><img  alt="Avatar" width="50"></td>
+          <td>{{ user.username }}</td>
+          <td>{{  }}</td>
+          <td>{{  }}</td>
         </tr>
         </tbody>
       </table>
@@ -39,47 +39,14 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "LeaderboardPage",
   components: {NavBar},
+  inject: ['leaderboardService'],
   data() {
     return {
-      leaderboardData: [
-        {
-          username: 'JohnDoe',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 20,
-          coins: 150
-        },
-        {
-          username: 'JaneDoe',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 18,
-          coins: 120
-        },
-        {
-          username: 'BobSmith',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 16,
-          coins: 90
-        },
-        {
-          username: 'AliceSmith',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 14,
-          coins: 75
-        },
-        {
-          username: 'MarkJohnson',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 12,
-          coins: 60
-        },
-        {
-          username: 'MaryJohnson',
-          avatarUrl: 'https://via.placeholder.com/150',
-          wins: 10,
-          coins: 50
-        },
-      ]
+     users: [],
     }
+  },
+  async created() {
+    this.users = await this.leaderboardService.asyncFindAll();
   }
 }
 </script>
