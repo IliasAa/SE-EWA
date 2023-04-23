@@ -32,15 +32,15 @@ public class LobbyController {
         return new LobbyRequest(lobby.getLobbyCode(), lobby.getLobbyId());
     }
 
-    @PostMapping(value = "/Lobby/Offline")
-    public LobbyController.AiBot BotAmount(Lobby lobby, int amount) {
-
-        return new AiBot(lobby.setBotAmount(amount));
-    }
-
-    @PostMapping("/Lobby/Online")
-    public LobbyController.LobbyResponse Start(Lobby lobby,String lobbyCode) {
-
-        return new LobbyResponse(lobby.setLobbyCode(lobbyCode));
-    }
+//    @PostMapping(value = "/Lobby/Offline")
+//    public LobbyController.AiBot BotAmount(Lobby lobby, int amount) {
+//
+//        return new AiBot(lobby.setBotAmount(amount));
+//    }
+//
+//    @PostMapping("/Lobby/Online")
+//    public LobbyController.LobbyResponse Start(Lobby lobby,String lobbyCode) {
+//
+//        return new LobbyResponse(lobby.setLobbyCode(lobbyCode));
+//    }
 }

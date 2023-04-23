@@ -7,7 +7,6 @@ export class FakeUser{
     wins;
 
     constructor(userId, userName, email, coins, wins){
-        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.coins = coins;

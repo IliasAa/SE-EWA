@@ -6,6 +6,9 @@
       <p>jan</p>
       <p>Erik</p>
       <p>maike</p>
+<!--      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">-->
+<!--        <td class="thumbnail">{{players.username}}</td>-->
+<!--      </tr>-->
     </div>
 
   </div>
@@ -13,8 +16,43 @@
 </template>
 
 <script>
+import {FakeUser} from "@/models/FakeUser";
+
 export default {
-  name: "DetailLobby"
+  name: "DetailLobby",
+  data(){
+    return {
+      // User: new UserAdaptor().asyncFindAll(),
+      tag: [],
+      players: [],
+      // lobby: [],
+      player: FakeUser
+    }
+  },
+  created() {
+
+    for (let i = 0; i < 3; i++) {
+      this.players.push(FakeUser.createSampleUser(this.playerNumber))
+      console.log(this.players)
+    }
+  },
+
+  methods: {
+    playerNumber() {
+      let number = 0;
+
+
+      if (this.players.length === 0){
+        return 0;
+      } else {
+        number = this.players.length;
+      }
+      return number;
+    },
+    removeFromList(){
+      this.players = this.players.filter(player => player);
+    }
+  }
 }
 </script>
 
