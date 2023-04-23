@@ -30,5 +30,9 @@ export default class config {
         return await this.send(url, "POST", body, headers);
     }
 
+    static async update(url, body, headers){
+        return await this.send(url, "PUT", body, headers);
+    }
+
 
 }
