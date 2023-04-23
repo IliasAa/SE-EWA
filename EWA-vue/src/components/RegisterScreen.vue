@@ -108,7 +108,6 @@ export default {
             const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
             await this.loginService.asyncSave(newuser);
             this.$router.push("/Dashboard");
-            toast.success("User Created",);
         } else {
             toast.error("Error encouterd check your input");
         }

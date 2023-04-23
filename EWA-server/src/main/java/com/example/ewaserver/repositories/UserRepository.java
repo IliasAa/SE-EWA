@@ -41,7 +41,9 @@ public class UserRepository implements EntityRepository<User> {
 
     @Override
     public User deleteById(int id) {
-        return null;
+        User user = this.findById(id);
+        em.remove(user);
+        return user;
     }
 
 

@@ -1,7 +1,12 @@
 <template>
   <NavBar></NavBar>
   <div class="profile-card">
-    <button class="delete-button" @click="onDelete">Delete Account</button>
+    <div class="profile-buttons">
+      <button class="delete-button" @click="onDelete">Delete Account</button>
+      <button class="edit-button" @click="toggleEditing" :disabled="firstNameError || lastNameError || emailError">
+        Edit profile
+      </button>
+    </div>
     <div class="profile-avatar">
       <img src="@/assets/icon.png">
     </div>
@@ -13,7 +18,7 @@
                @change="onFirstNameChange"/>
         <input class="profile-lastname editing" v-model="lastName" :class="{ error: lastNameError }"
                @change="onLastNameChange"/>
-        <div v-if="firstNameError || lastNameError" class="error-message">{{ firstNameError || lastNameError }}</div>
+<!--        <div v-if="firstNameError || lastNameError" class="error-message">{{ firstNameError || lastNameError }}</div>-->
       </div>
       <p v-if="!editing" class="profile-email">{{ email }}</p>
       <input v-else class="profile-email editing" v-model="email" :class="{ error: emailError }"
@@ -29,8 +34,9 @@
           <p class="stat-value">200</p>
         </div>
       </div>
-      <button class="edit-button" @click="onUpdate" :disabled="firstNameError || lastNameError || emailError">
-        {{ editing ? 'Save' : 'Edit Profile' }}
+      <button class="save-button" @click="onUpdate"  :disabled="!editing"
+              :class="{ 'opacity-100': editing, 'opacity-50': !editing }">
+        Save
       </button>
     </div>
   </div>
@@ -41,12 +47,12 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-
+import {toast} from "vue3-toastify";
 
 export default {
   name: "UserPage",
   components: {NavBar},
-  inject: ['userService'],
+  inject: ['userService', 'SessionService'],
   data() {
     return {
       firstName: null,
@@ -57,11 +63,13 @@ export default {
       fullNameError: null,
       username: null,
       user: null,
+      userId: null
     };
   },
 
   async created() {
     this.user = await this.userService.asyncGetInfo();
+    this.userId = this.user.userId;
 
 
     console.log(this.user)
@@ -75,6 +83,8 @@ export default {
   methods: {
     toggleEditing() {
       this.editing = !this.editing;
+
+
     },
     onEmailChange() {
       this.emailError = null;
@@ -82,32 +92,32 @@ export default {
     onFullNameChange() {
       this.fullNameError = null;
     },
-    emailValidation() {
-      if (!this.email.match("/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/")) {
-        this.emailError = 'Please enter a valid email address.';
-      } else {
-        this.emailError = null;
-      }
-    },
-    fullNameValidation() {
-      if (!this.firstName.match("/^[a-zA-Z]+$/") || !this.lastName.match("/^[a-zA-Z]+$/")) {
-        this.fullNameError = 'Please enter a valid full name.';
-      } else {
-        this.fullNameError = null;
-      }
-    },
+    // emailValidation() {
+    //   if (!this.email.match("/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/")) {
+    //     this.emailError = 'Please enter a valid email address.';
+    //   } else {
+    //     this.emailError = null;
+    //   }
+    // },
+    // fullNameValidation() {
+    //   if (!this.firstName.match("/^[a-zA-Z]+$/") || !this.lastName.match("/^[a-zA-Z]+$/")) {
+    //     this.fullNameError = 'Please enter a valid full name.';
+    //   } else {
+    //     this.fullNameError = null;
+    //   }
+    // },
 
     async onDelete() {
-      const confirmationMessage = confirm("Weet je zeker dat u het account wilt verwijderen?")
+      const confirmationMessage = confirm("Are you sure you want to delete your account?")
 
       if (confirmationMessage === true) {
         try {
-          alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
-          // await this.userService.asyncDeleteById(67);
-          // this.$router.push("/Dashboard");
+          alert("Account succesfully deleted!")
+          await this.userService.asyncDeleteById(this.userId);
+          this.SessionService.signOut();
         } catch (e) {
           console.log(e);
-          alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
+          alert("Account couldn't be deleted, please check the console.")
         }
       }
     },
@@ -120,6 +130,7 @@ export default {
       this.user.email = this.email;
 
       await this.userService.asyncUpdate(this.user)
+      toast.success("Account succesfully edited!");
     },
   },
 
@@ -218,25 +229,51 @@ Editing css
  */
 
 .edit-button {
-  background-color: #007aff;
-  color: #fff;
+  display: flex;
+  align-self: flex-start;
+  background-color: blue;
+  color: white;
   border: none;
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: 1rem;
+  padding: 5px 10px;
+  margin-left: 10rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .delete-button {
   display: flex;
-  justify-self: center;
+  align-self: flex-end;
   background-color: red;
   color: white;
   border: none;
   padding: 5px 10px;
+  margin-right: 10rem;
   margin-bottom: 2rem;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.save-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.opacity-100 {
+  opacity: 1.0;
+}
+
+.opacity-50 {
+  background-color: white;
+}
+
+.profile-buttons {
+  display: flex;
+  flex-direction: row;
 }
 
 .delete-button:hover {

@@ -108,13 +108,24 @@ public class UserController {
         return ResponseEntity.ok().body(saveUser);
     }
 
-    @DeleteMapping(path = "{id}")
-    public User deleteUser(@PathVariable() int id,
-                           @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {
-        if (jwtInfo == null || !jwtInfo.isAdmin()) {
-            throw new UnAuthorizedException(
-                    "Admin role is required to remove an user");
-        }
+//    @DeleteMapping(path = "/{id}")
+//    public User deleteUser(@PathVariable() int id,
+//                           @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {
+//        if (jwtInfo == null || !jwtInfo.isAdmin()) {
+//            throw new UnAuthorizedException(
+//                    "Admin role is required to remove an user");
+//        }
+//        User user = this.userRepository.deleteById(id);
+//        if (user == null) {
+//            throw new ResourceNotFoundException(
+//                    "Cannot delete an user with id=" + id);
+//        }
+//        return user;
+//    }
+
+    @DeleteMapping(path = "/{id}")
+    public User deleteOwnUser(@PathVariable() int id) {
+
         User user = this.userRepository.deleteById(id);
         if (user == null) {
             throw new ResourceNotFoundException(
