@@ -147,10 +147,8 @@ export class SessionService {
             })
         if (response.ok) {
             this._currentToken = response;
-            return response;
-        } else {
-            throw new Error('Failed to refresh token');
         }
+        return response;
     }
 
     async getRefreshToken(account) {
