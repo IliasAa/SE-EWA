@@ -1,6 +1,5 @@
 <template>
   <NavBar></NavBar>
-
   <div class="profile-card">
     <button class="delete-button" @click="onDelete">Delete Account</button>
     <div class="profile-avatar">
@@ -8,9 +7,12 @@
     </div>
     <div class="profile-info">
       <h1 class="profile-username">{{username}}</h1>
-      <p v-if="!editing" class="profile-fullname">{{ fullName }}</p>
-      <input v-else class="profile-fullname editing" v-model="fullName" :class="{ error: fullNameError }" @change="onFullNameChange"/>
-      <div v-if="fullNameError" class="error-message">{{ fullNameError }}</div>
+      <p v-if="!editing" class="profile-fullname">{{ firstName }} {{ lastName }}</p>
+      <div v-if="editing">
+        <input class="profile-firstname editing" v-model="firstName" :class="{ error: firstNameError }" @change="onFirstNameChange"/>
+        <input class="profile-lastname editing" v-model="lastName" :class="{ error: lastNameError }" @change="onLastNameChange"/>
+        <div v-if="firstNameError || lastNameError" class="error-message">{{ firstNameError || lastNameError }}</div>
+      </div>
       <p v-if="!editing" class="profile-email">{{ email }}</p>
       <input v-else class="profile-email editing" v-model="email" :class="{ error: emailError }" @change="onEmailChange"/>
       <div v-if="emailError" class="error-message">{{ emailError }}</div>
@@ -24,44 +26,45 @@
           <p class="stat-value">200</p>
         </div>
       </div>
-      <button class="edit-button" @click="toggleEditing" :disabled="fullNameError || emailError">{{ editing ? 'Save' : 'Edit Profile' }}</button>
+      <button class="edit-button" @click="onUpdate" :disabled="firstNameError || lastNameError || emailError">{{ editing ? 'Save' : 'Edit Profile' }}</button>
     </div>
   </div>
-
-
-
-
   <div class="background">
     <img src="../userpage/Ludobackground.png">
   </div>
-
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import UserRepository from "@/reposetory/UserRepository";
 export default {
   name: "UserPage",
   components: {NavBar},
   inject: ['userService'],
   data() {
     return {
-      fullName: 'ibrahim ghzawi',
-      email: 'Test@gmail.com',
+      UserRepository: new UserRepository(),
+      firstName: null,
+      lastName: null,
+      email: null,
       editing: false,
       emailError: null,
       fullNameError: null,
-      username: "Hello"
+      username: null
     };
   },
 
   async mounted(){
     try{
       let userService = await this.userService.asyncGetInfo();
+
       if (userService !== null){
         this.username = userService.username;
         this.email = userService.email;
-        this.fullName = userService.firstname + " " + userService.lastname
-    }
+        this.firstName = userService.firstname;
+        this.lastName = userService.lastname;
+
+     }
 
       }catch (error){
       console.error(error);
@@ -88,7 +91,7 @@ export default {
       }
     },
     fullNameValidation() {
-      if (!this.fullName.match("/^[a-zA-Z]+$/")) {
+      if (!this.firstName.match("/^[a-zA-Z]+$/") || !this.lastName.match("/^[a-zA-Z]+$/")) {
         this.fullNameError = 'Please enter a valid full name.';
       } else {
         this.fullNameError = null;
@@ -108,6 +111,13 @@ export default {
           alert("Account verwijderen mislukt! Check de console en probeer later nog eens.")
         }
       }
+    },
+
+    async onUpdate() {
+      this.editing = !this.editing;
+
+      // await this.UserRepository.updateUser(this.firstName, this.lastName, this.email)
+      console.log(this.firstName, this.lastName, this.email)
     },
   },
 

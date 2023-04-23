@@ -16,4 +16,13 @@ export default class UserRepository {
             }
         );
     }
+
+    async updateUser(firstname, lastname, email){
+        return await config.update(
+            this.url + "/UserPage",
+            {
+                firstname, lastname, email
+            }
+        );
+    }
 }

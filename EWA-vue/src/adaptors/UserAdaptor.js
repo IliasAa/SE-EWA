@@ -40,8 +40,19 @@ export class UserAdaptor {
     async asyncDeleteById(id) {
         return this.fetchJSon(this.RESOURCE_URL + "/" + id,
             {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.asyncFindId(id))
             });
     }
 
+    async asyncUpdate(firstname, lastname, email) {
+        await this.fetchJSon(this.RESOURCE_URL + "/UserPage", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'PUT',
+            body: JSON.stringify(firstname, lastname, email)
+        });
+    }
 }
