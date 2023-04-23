@@ -1,4 +1,4 @@
-export class User{
+export class User {
 
     username;
     firstname;
@@ -17,9 +17,10 @@ export class User{
         this.role = role;
     }
 
-    static createUser(username, firstname, lastname, email, password, role){
-        return new User(username, firstname, lastname, email, password,role)
+    static createUser(username, firstname, lastname, email, password, role) {
+        return new User(username, firstname, lastname, email, password, role)
     }
+
 
 }
 

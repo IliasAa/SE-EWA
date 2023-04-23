@@ -6,15 +6,18 @@
       <img src="@/assets/icon.png">
     </div>
     <div class="profile-info">
-      <h1 class="profile-username">{{username}}</h1>
+      <h1 class="profile-username">{{ username }}</h1>
       <p v-if="!editing" class="profile-fullname">{{ firstName }} {{ lastName }}</p>
       <div v-if="editing">
-        <input class="profile-firstname editing" v-model="firstName" :class="{ error: firstNameError }" @change="onFirstNameChange"/>
-        <input class="profile-lastname editing" v-model="lastName" :class="{ error: lastNameError }" @change="onLastNameChange"/>
+        <input class="profile-firstname editing" v-model="firstName" :class="{ error: firstNameError }"
+               @change="onFirstNameChange"/>
+        <input class="profile-lastname editing" v-model="lastName" :class="{ error: lastNameError }"
+               @change="onLastNameChange"/>
         <div v-if="firstNameError || lastNameError" class="error-message">{{ firstNameError || lastNameError }}</div>
       </div>
       <p v-if="!editing" class="profile-email">{{ email }}</p>
-      <input v-else class="profile-email editing" v-model="email" :class="{ error: emailError }" @change="onEmailChange"/>
+      <input v-else class="profile-email editing" v-model="email" :class="{ error: emailError }"
+             @change="onEmailChange"/>
       <div v-if="emailError" class="error-message">{{ emailError }}</div>
       <div class="profile-stats">
         <div class="profile-wins">
@@ -26,7 +29,9 @@
           <p class="stat-value">200</p>
         </div>
       </div>
-      <button class="edit-button" @click="onUpdate" :disabled="firstNameError || lastNameError || emailError">{{ editing ? 'Save' : 'Edit Profile' }}</button>
+      <button class="edit-button" @click="onUpdate" :disabled="firstNameError || lastNameError || emailError">
+        {{ editing ? 'Save' : 'Edit Profile' }}
+      </button>
     </div>
   </div>
   <div class="background">
@@ -36,42 +41,36 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import UserRepository from "@/reposetory/UserRepository";
+
+
 export default {
   name: "UserPage",
   components: {NavBar},
   inject: ['userService'],
   data() {
     return {
-      UserRepository: new UserRepository(),
       firstName: null,
       lastName: null,
       email: null,
       editing: false,
       emailError: null,
       fullNameError: null,
-      username: null
+      username: null,
+      user: null,
     };
   },
 
-  async mounted(){
-    try{
-      let userService = await this.userService.asyncGetInfo();
+  async created() {
+    this.user = await this.userService.asyncGetInfo();
 
-      if (userService !== null){
-        this.username = userService.username;
-        this.email = userService.email;
-        this.firstName = userService.firstname;
-        this.lastName = userService.lastname;
 
-     }
-
-      }catch (error){
-      console.error(error);
+    console.log(this.user)
+    if (this.user !== null) {
+      this.username = this.user.username;
+      this.email = this.user.email;
+      this.firstName = this.user.firstname;
+      this.lastName = this.user.lastname;
     }
-
-
-
   },
   methods: {
     toggleEditing() {
@@ -115,9 +114,12 @@ export default {
 
     async onUpdate() {
       this.editing = !this.editing;
+      this.user.firstname = this.firstName;
+      this.user.lastname = this.lastName;
+      this.user.username = this.username;
+      this.user.email = this.email;
 
-      // await this.UserRepository.updateUser(this.firstName, this.lastName, this.email)
-      console.log(this.firstName, this.lastName, this.email)
+      await this.userService.asyncUpdate(this.user)
     },
   },
 
@@ -125,7 +127,7 @@ export default {
     email: function () {
       // this.emailValidation();
     },
-    fullName: function() {
+    fullName: function () {
       // this.fullNameValidation();
     },
     name: "UserPage",
@@ -254,6 +256,7 @@ Editing css
 .error {
   border-color: red;
 }
+
 .error-message {
   color: red;
 }

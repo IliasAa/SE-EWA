@@ -2,6 +2,7 @@ package com.example.ewaserver.rest;
 
 
 import com.example.ewaserver.Config;
+import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.exceptions.UnAuthorizedException;
 import com.example.ewaserver.models.User;
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/info")
-    public UserResponse user(HttpServletRequest request){
+    public ResponseEntity<User> userInfo(HttpServletRequest request){
         String token = request.getHeader("Authorization").replace("Bearer ", "");
         JWToken decoded = JWToken.decode(token,apiconfig.getIssuer(),
                 apiconfig.getPassphrase());
@@ -63,7 +64,7 @@ public class UserController {
             throw new ResourceNotFoundException("Cannot find an account related to " + decoded.getAccountId());
         }
 
-        return new UserResponse(user.getUsername(),user.getFirstname(),user.getLastname(),user.getEmail());
+        return ResponseEntity.ok().body(user);
     }
 
 
@@ -87,20 +88,24 @@ public class UserController {
         return new LogoutResponse("Succes");
     }
 
-    @PutMapping("{id}")
-    public User updateUser(@PathVariable long id, @RequestBody User user) {
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable int id) {
+        User saveUser = userRepository.findById(id);
+        if (saveUser.getUserId() != id) {
+            throw new PreConditionFailed("Id is not equal.");
+        }
 
-        //id is temporarily a fixed variable: 1
-        id = 1;
+        if (user == null) {
+            throw new PreConditionFailed("Need a user");
+        }
 
-        User userDetails = this.userRepository.findById((int) id);
+        saveUser.setEmail(user.getEmail());
+        saveUser.setUsername(user.getUsername());
+        saveUser.setFirstname(user.getFirstname());
+        saveUser.setLastname(user.getLastname());
 
-        //It is only possible to change the username and email for now
-        userDetails.setUsername(user.getUsername());
-        userDetails.setEmail(user.getEmail());
-
-        userRepository.Save(user);
-        return userDetails;
+        userRepository.Save(saveUser);
+        return ResponseEntity.ok().body(saveUser);
     }
 
     @DeleteMapping(path = "{id}")

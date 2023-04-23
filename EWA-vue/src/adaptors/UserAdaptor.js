@@ -21,9 +21,9 @@ export class UserAdaptor {
 
     }
 
-    async asyncGetInfo(){
+    async asyncGetInfo() {
         console.log("Info about client is being retrieved...")
-        return  await this.fetchJSon(this.RESOURCE_URL + "/info",
+        return await this.fetchJSon(this.RESOURCE_URL + "/info",
             {
                 method: 'GET',
                 headers: {
@@ -48,11 +48,20 @@ export class UserAdaptor {
             });
     }
 
-    async asyncUpdate(firstname, lastname, email) {
-        await this.fetchJSon(this.RESOURCE_URL + "/UserPage", {
-            headers: {'Content-Type': 'application/json'},
-            method: 'PUT',
-            body: JSON.stringify(firstname, lastname, email)
-        });
+    async asyncUpdate(user) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
+                headers: {'Content-Type': 'application/json'},
+                method: 'PUT',
+                body: JSON.stringify({
+                    "userId": user.id,
+                    "email": user.email,
+                    "password": user.password,
+                    "role": user.role,
+                    "username": user.username,
+                    "firstname": user.firstname,
+                    "lastname": user.lastname
+                })
+            },
+        );
     }
 }
