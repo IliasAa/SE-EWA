@@ -56,11 +56,11 @@ public class AuthenticationController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        User saveduser = userRepository.Save(user);
+        User savedUser = userRepository.Save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(saveduser.getUserId()).toUri();
+                path("/{id}").buildAndExpand(savedUser.getUserId()).toUri();
 
-        return ResponseEntity.created(location).body(saveduser);
+        return ResponseEntity.created(location).body(savedUser);
     }
 
     @PostMapping(value = "/login", produces = "application/json")
@@ -70,8 +70,7 @@ public class AuthenticationController {
 
         User user = userRepository.findByUsername(username);
 
-
-        if (user == null || !user.verifyPassword(password)) {
+        if (user == null || !passwordEncoder.matches(password,user.getPassword())) {
             throw new ResourceNotFoundException("Cannot find an account related to " + username);
         }
 

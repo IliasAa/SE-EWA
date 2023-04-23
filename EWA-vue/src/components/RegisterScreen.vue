@@ -5,14 +5,16 @@
         <h2>Register</h2>
       </v-banner>
     </div>
-    <form>
+    <form v-on:submit.prevent="createUser()">
       <div class="px-3 pt-3">
         <div class="row mb-2">
           <div class="col">
             <v-text-field
                 label="Username"
                 type="text"
+                @keyup="checkUsername()"
                 v-model="username"
+                :error-messages="usernameErrorMessage ? usernameErrorMessage : []"
             ></v-text-field>
           </div>
         </div>
@@ -75,6 +77,11 @@
 <script>
 import UserRepository from "@/reposetory/UserRepository";
 import User from "@/models/user";
+import {toast} from "vue3-toastify";
+
+//two regex's to validate input and check if its valid
+let usernameRegex = new RegExp("^(?=.*[a-z]*)(?=.*[A-Z]*)(?=.*[0-9]*)(?=.{4,})");
+
 
 export default {
   name: "RegisterScreen",
@@ -86,22 +93,33 @@ export default {
       email: '',
       firstname: '',
       lastname: '',
-      password: null
-
-
+      password: null,
+      usernameValidated: false,
+      usernameErrorMessage: '',
+      firstnameValidated: false,
+      lastnameValidated: false,
+      passwordValidated: false,
     };
   },
   methods: {
     async createUser() {
       try {
-        const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
-        await this.loginService.asyncSave(newuser);
-        await this.loginService.asyncLogIn(this.username,this.password)
-        this.$router.push("/Dashboard");
+        if (!this.usernameValidated ) {
+            const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
+            await this.loginService.asyncSave(newuser);
+            this.$router.push("/Dashboard");
+            toast.success("User Created",);
+        } else {
+            toast.error("Error encouterd check your input");
+        }
       } catch (e) {
         console.log(e);
+        toast.error("User not Created");
       }
-    }
+    },
+    checkUsername() {
+        this.usernameValidated = !usernameRegex.test(this.username);
+    },
   }
 }
 </script>
@@ -136,5 +154,6 @@ export default {
 .register{
   text-align: center;
 }
+
 
 </style>

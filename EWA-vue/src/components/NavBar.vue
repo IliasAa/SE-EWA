@@ -5,7 +5,7 @@
         <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a></router-link>
       </div>
       <ul class="menu">
-        <router-link to="/LoginPage"><li><a href="#">Logout</a></li></router-link>
+        <router-link to="/LoginPage"><li v-on:click="handleLogout()"><a href="#">Logout</a></li></router-link>
         <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
         <div class="dropdown">
         <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
@@ -27,20 +27,32 @@
 </template>
 
 <script>
+
 export default {
   name: "NavBar.vue",
   props: ["isLoggedIn"],
+  inject: ['SessionService'],
   data(){
     return {
     }
   },
 
+  methods: {
+    handleLogout(){
+      this.SessionService.signOut();
+    }
+  },
   computed: {
     checkPage(){
       if (this.isLoggedIn === false){
         return "Log in"
-      }else {
-        return "cyber_samurai"
+      }else{
+        if (this.SessionService.currentAccount != null){
+          return this.SessionService.currentAccount.username.toString();
+        }
+        return ""
+
+
       }
     }
   }

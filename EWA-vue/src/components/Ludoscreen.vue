@@ -7,7 +7,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <p>cyber_samurai</p>
+          <p>{{dummyName()}}</p>
         </div>
         <div class="action-bar">
           <button class="chat">CHAT</button>
@@ -232,11 +232,13 @@
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
 // import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
+import {toast} from "vue3-toastify";
 
 export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
+  inject: ['SessionService'],
   data() {
     return {
       pawns: [],
@@ -318,6 +320,9 @@ export default {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
         if (this.playablePawns[i].onField === 1) {
+          if (i === 0){
+            toast.success('Achievement unlocked:\nFirst Move!')
+          }
           pawnId = this.playablePawns[i].id;
           arrayPos = i;
           break;
@@ -376,6 +381,7 @@ export default {
           this.playablePawns[arrayPos].onField = 3;
 
           if (finishPosIndexAvailable === 3) {
+            toast.success("Achievement unlocked:\nFirst Win!")
             this.winConfirmation();
           }
         }
@@ -445,6 +451,15 @@ export default {
       } else {
         alert("Je kan alleen een pion van je eigen kleur kiezen en die in het veld staat.")
       }
+    },
+
+    dummyName(){
+      // let username = this.SessionService.currentAccount.username.toString();
+      if (this.SessionService !== null){
+        return this.SessionService.currentAccount.username.toString();
+      }
+      return "Cyber_samurai"
+
     }
   },
 
@@ -569,7 +584,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px 10px 10px;
+  padding: 10px 10px 10px 0;
   height: 500px;
 }
 

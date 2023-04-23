@@ -13,6 +13,8 @@
     "fetch-intercept": "^2.4.0",
     "vue": "^3.2.13",
     "vue-router": "^4.1.6",
+    "vue-toasted": "^1.1.28",
+    "vue3-toastify": "^0.1.7",
     "vuetify": "^3.1.10"
   },
   "devDependencies": {
