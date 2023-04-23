@@ -1,6 +1,5 @@
 package com.example.ewaserver.models;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class Lobby {
@@ -22,10 +21,6 @@ public class Lobby {
         return LobbyId;
     }
 
-    public void setLobbyId(long lobbycode) {
-        LobbyId = lobbycode;
-    }
-
     public int getPlayerNumber() {
         return playerNumber;
     }
@@ -42,18 +37,20 @@ public class Lobby {
         return LobbyList;
     }
 
+    public void setLobbyId(long lobbyId) {
+        LobbyId = lobbyId;
+    }
+
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
     }
 
-    public String setLobbyCode(String lobbyCode) {
+    public void setLobbyCode(String lobbyCode) {
         LobbyCode = lobbyCode;
-        return lobbyCode;
     }
 
-    public int setBotAmount(int botAmount) {
+    public void setBotAmount(int botAmount) {
         BotAmount = botAmount;
-        return botAmount;
     }
 
     public void setLobbyList(List<Lobby> lobbyList) {

@@ -23,17 +23,17 @@
 <!--          <p>> Maak een-->
 <!--            <router-link class="underline" to="/registreren">account</router-link>-->
 <!--            aan en log in. Je kan dan een lobby aanmaken of een bestaande lobby joinen.-->
-<!--            <router-link class="underline" to=""></router-link>-->
-<!--            test test-->
-<!--          </p>-->
-<!--          <h2 class="mb-2 text-xl text-green-800 mt-4 font-bold">Moet ik een student zijn?</h2>-->
-<!--          <p>> Nee natuurlijk niet! Iedereen is welkom om te werken aan de-->
-<!--            <a class="underline" href="" target="_blank"></a></p>-->
-<!--          <div class="modal-footer mt-3">-->
-<!--            <h3>Als je nog meer vragen hebt kan je de rechtsonder de chatbot gebruiken!</h3>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--            <router-link class="underline" to=""></router-link>-->
+      <!--            test test-->
+      <!--          </p>-->
+      <!--          <h2 class="mb-2 text-xl text-green-800 mt-4 font-bold">Moet ik een student zijn?</h2>-->
+      <!--          <p>> Nee natuurlijk niet! Iedereen is welkom om te werken aan de-->
+      <!--            <a class="underline" href="" target="_blank"></a></p>-->
+      <!--          <div class="modal-footer mt-3">-->
+      <!--            <h3>Als je nog meer vragen hebt kan je de rechtsonder de chatbot gebruiken!</h3>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
       <div class="card-buttons">
       <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Host Offline Game</button>
@@ -84,13 +84,14 @@ import DetailOnlineGame from "@/components/details/DetailOnlineGame.vue";
 import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
 import DetailLobby from "@/components/details/DetailLobby.vue";
 import NavBar from "@/components/NavBar.vue";
-import {Lobby} from "@/models/Lobby";
+import LobbyRepo from "@/reposetory/lobbyRepo";
 
 export default {
   name: "DashboardScreen",
   components: {NavBar, DetailOnlineGame, DetailOfflineGame, DetailLobby},
   data() {
     return {
+      lobbyRepo: new LobbyRepo(),
       showPopup1: false,
       showPopup2: false,
       showPopup3: false,
@@ -99,16 +100,10 @@ export default {
     }
   },
   methods: {
-    LobbyCode(){
-      this.lobby.push(Lobby.creatSampleLobby())
+    async LobbyCode(){
+      await this.lobbyRepo.creatSampleLobby();
+      // this.lobby.push(Lobby.creatSampleLobby())
     },
-    // earthPressed() {
-    //   this.showModal = !this.showModal;
-    //   return this.showModal;
-    // },
-    created() {
-
-    }
   }
 
 }

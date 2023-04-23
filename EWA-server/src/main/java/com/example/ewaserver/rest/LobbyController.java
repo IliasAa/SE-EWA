@@ -3,6 +3,7 @@ package com.example.ewaserver.rest;
 
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.repositories.LobbyRepository;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class LobbyController {
 
     }
 
-    @PostMapping(value = "/Lobby")
+    @GetMapping("/Lobby/join")
     public LobbyController.LobbyRequest Join(Lobby lobby) {
 
         return new LobbyRequest(lobby.getLobbyCode(), lobby.getLobbyId());
@@ -37,7 +38,7 @@ public class LobbyController {
         return new AiBot(lobby.setBotAmount(amount));
     }
 
-    @PostMapping(value = "/Lobby/Online")
+    @PostMapping("/Lobby/Online")
     public LobbyController.LobbyResponse Start(Lobby lobby,String lobbyCode) {
 
         return new LobbyResponse(lobby.setLobbyCode(lobbyCode));

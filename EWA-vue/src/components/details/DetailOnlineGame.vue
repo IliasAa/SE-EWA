@@ -1,17 +1,16 @@
 <template>
   <div class="body">
     <h1>Game lobby</h1>
-    <p>lobby code: {{ lobby.LobbyCode }}</p>
+    <p>lobby code: {{lobby}}</p>
     <div class="players">
       <h2>Joint game:</h2>
       <div>
         <tr v-for="(player, index) in players" :key="index">
-          <td class="thumbnail">{{player.userName}}</td>
-          <button onclick="removeFromList(player.userId)">kick player</button>
+          <td class="thumbnail">{{player}}</td>
+<!--          <button onclick="removeFromList(player)">kick player</button>-->
         </tr>
       </div>
     </div>
-
 
     <router-link to="/gamepage">
       <button>start game</button>
@@ -20,29 +19,32 @@
 </template>
 
 <script>
-import {User} from "@/models/user";
-import {Lobby} from "@/models/Lobby";
-// import {Lobby} from "@/models/Lobby";
+import LobbyRepo from "@/reposetory/lobbyRepo";
+import {UserAdaptor} from "@/adaptors/UserAdaptor";
+
 
 export default {
   name: "DetailOnlineGame",
   data(){
     return {
+      User: new UserAdaptor().asyncFindAll(),
       tag: [],
       players: [],
       lobby: [],
     }
   },
   created() {
+
     for (let i = 0; i < 3; i++) {
-      this.players.push(User.createSampleUser(this.playerNumber))
+      this.players.push()
     }
-    this.lobby.push(Lobby.creatSampleLobby())
+    this.lobby.push(this.lobbyRepo.creatSampleLobby())
   },
 
   methods: {
     playerNumber() {
       let number = 0;
+
 
       if (this.players.length === 0){
         return 0;
@@ -51,8 +53,8 @@ export default {
       }
       return number;
     },
-    removeFromList(userId){
-      this.players = this.players.filter(player => player.userId !== userId);
+    removeFromList(){
+      this.players = this.players.filter(player => player);
     }
   }
 }
