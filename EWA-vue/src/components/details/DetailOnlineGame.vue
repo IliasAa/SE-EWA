@@ -1,15 +1,13 @@
 <template>
   <div class="body">
     <h1>Game lobby</h1>
-    <p>lobby code: {{lobby}}</p>
+    <p>lobby code: njkde</p>
     <div class="players">
       <h2>Joint game:</h2>
-      <div>
-        <tr v-for="(player, index) in players" :key="index">
-          <td class="thumbnail">{{player}}</td>
-<!--          <button onclick="removeFromList(player)">kick player</button>-->
-        </tr>
-      </div>
+      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">
+        <td class="thumbnail">{{players.username}}</td>
+      </tr>
+
     </div>
 
     <router-link to="/gamepage">
@@ -19,26 +17,27 @@
 </template>
 
 <script>
-import LobbyRepo from "@/reposetory/lobbyRepo";
-import {UserAdaptor} from "@/adaptors/UserAdaptor";
+// import {UserAdaptor} from "@/adaptors/UserAdaptor";
+import {FakeUser} from "@/models/FakeUser"
 
 
 export default {
   name: "DetailOnlineGame",
   data(){
     return {
-      User: new UserAdaptor().asyncFindAll(),
+      // User: new UserAdaptor().asyncFindAll(),
       tag: [],
       players: [],
-      lobby: [],
+      // lobby: [],
+      player: FakeUser
     }
   },
   created() {
 
     for (let i = 0; i < 3; i++) {
-      this.players.push()
+      this.players.push(FakeUser.createSampleUser(this.playerNumber))
+      console.log(this.players)
     }
-    this.lobby.push(this.lobbyRepo.creatSampleLobby())
   },
 
   methods: {
