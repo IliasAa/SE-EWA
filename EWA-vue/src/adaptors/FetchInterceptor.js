@@ -35,7 +35,7 @@ export class FetchInterceptor {
             };
 
 
-            console.log("FetchInterceptor request: ", url, newOptions.headers);
+            // console.log("FetchInterceptor request: ", url, newOptions.headers);
             return [url, newOptions];
         }
     }
@@ -64,16 +64,39 @@ export class FetchInterceptor {
     async handleErrorInResponse(response) {
         if (response.status === 401) {
             // TODO handle an UNAUTHORISED response
-            this.sessionService.signOut();
-            // unauthorised request, redirect to signIn page
-            // this.router.navigate(['/sign-out']);    // ng-router
-            this.$router.push('/Loginpage');   // vue-router
-            console.log(this.toast)
-            this.toast.error("Session is expired or unauthorized")
+            let refresh = await this.sessionService.refresh(this.getCookie("refresh_token"));
+            console.log(refresh + "Hey jij hier? Hallo Hallo")
+            if (!refresh.ok){
+                await this.sessionService.signOut();
+                // unauthorised request, redirect to signIn page
+                // this.router.navigate(['/sign-out']);    // ng-router
+                this.$router.push('/Loginpage');   // vue-router
+                this.toast.error("Session is expired or unauthorized")
+            }else{
+                alert("New session for 20min")
+                location.reload();
+            }
+
         } else if (response.status !== 406) {
             // 406='Not Acceptable' error is used for logon failure
             // TODO handle any other error
         }
+    }
+
+    getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
 
     async tryRecoverNewJWToken(response) {

@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,11 +49,16 @@ public class UserRepository implements EntityRepository<User> {
 
 
     public User findByEmail(String email) {
-        return this.em.createQuery("select u from User u where email = ?1", User.class).setParameter(1, email).getSingleResult();
+        return this.em.createQuery("select u from User u where u.email = ?1", User.class).setParameter(1, email).getSingleResult();
     }
 
     public User findByUsername(String username) {
-        return this.em.createQuery("select u from User u where username = ?1", User.class).setParameter(1, username).getSingleResult();
+        return this.em.createQuery("select u from User u where u.username = ?1", User.class).setParameter(1, username).getSingleResult();
+    }
+
+    public User findByRefreshToken(long id, String refreshToken, Date expired_at) {
+        return (User) this.em.createQuery("select u from User u inner join Token t on u.userId = t.user.userId where u.userId = ?1 and t.refreshToken = ?2 and t.expired_at >= ?3",
+                User.class).setParameter(1, id).setParameter(2, refreshToken).setParameter(3, expired_at).getSingleResult();
     }
 
 

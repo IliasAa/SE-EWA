@@ -1,14 +1,20 @@
 package com.example.ewaserver.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
+import java.util.Set;
+
+
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -23,8 +29,13 @@ public class User {
 
     private String email;
     private String password;
-
     private String role = "Player";
+
+    @OneToMany (mappedBy = "user")
+    @JsonBackReference
+    @JsonIgnore
+    private Set<Token> tokens;
+
 
 
 
@@ -64,6 +75,10 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    public void addToken(Token token){
+        this.tokens.add(token);
     }
 
     public int getUserId() {

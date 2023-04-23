@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class JWToken {
@@ -22,6 +23,8 @@ public class JWToken {
     private String callName = null;
     private String role = null;
     private String ipAddress;
+    private Date issued_at;
+    private Date expired_at;
 
 
     public JWToken(String callName, Long accountId, String role) {
@@ -32,14 +35,16 @@ public class JWToken {
 
     public String encode(String issuer, String passphrase, int expiration) {
         Key key = getKey(passphrase);
+        this.issued_at = new Date();
+        this.expired_at = new Date(System.currentTimeMillis() + expiration * 1000L);
         return Jwts.builder()
                 .claim(JWT_CALLNAME_CLAIM, this.callName)
                 .claim(JWT_ACCOUNTID_CLAIM, this.accountId)
                 .claim(JWT_ROLE_CLAIM, this.role)
                 .claim(JWT_IPADDRESS_CLAIM, this.ipAddress != null ? this.ipAddress : "1.1.1.1")
                 .setIssuer(issuer)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
+                .setIssuedAt(this.issued_at)
+                .setExpiration(this.expired_at)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -67,6 +72,8 @@ public class JWToken {
                 claims.get(JWT_ROLE_CLAIM).toString()
         );
         jwToken.setIpAddress((String) claims.get(JWT_IPADDRESS_CLAIM));
+        jwToken.setIssued_at(claims.getIssuedAt());
+        jwToken.setExpired_at(claims.getExpiration());
         return jwToken;
     }
 
@@ -131,4 +138,19 @@ public class JWToken {
         return ipAddress;
     }
 
+    public Date getIssued_at() {
+        return issued_at;
+    }
+
+    public void setIssued_at(Date issued_at) {
+        this.issued_at = issued_at;
+    }
+
+    public Date getExpired_at() {
+        return expired_at;
+    }
+
+    public void setExpired_at(Date expired_at) {
+        this.expired_at = expired_at;
+    }
 }

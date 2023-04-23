@@ -32,20 +32,26 @@ public class Config implements WebMvcConfigurer {
     private static final double REBOOT_CODE = 63.0427; // Math.random();
 
     // JWT configuration that can be adjusted from application.properties
-    @Value("${jwt.issuer:private company}")
+    @Value("${jwt.issuer:EWA_team_2}")
     private String issuer;
 
     @Value("${jwt.passphrase:This is very secret information for my private encryption key.}")
     private String passphrase;
 
+    @Value("${jwt.passphrase:This is very secret information for my private refresh encryption key.}")
+    private String refreshPassphrase;
+
     @Value("${jwt.duration-of-validity:1200}") // default 20 minutes;
     private int tokenDurationOfValidity;
+
+    @Value("${jwt.duration-of-validity:6000}") // default 100 minutes;
+    private int refreshTokenDurationOfValidity;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").
                 allowedOriginPatterns("http://localhost:*")
-                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR)
+                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, "Refresh_token")
                 .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
                 .allowCredentials(true);
 
@@ -65,5 +71,11 @@ public class Config implements WebMvcConfigurer {
         return tokenDurationOfValidity;
     }
 
+    public String getRefreshPassphrase() {
+        return refreshPassphrase;
+    }
 
+    public int getRefreshTokenDurationOfValidity() {
+        return refreshTokenDurationOfValidity;
+    }
 }
