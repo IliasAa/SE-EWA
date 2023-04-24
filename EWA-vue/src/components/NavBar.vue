@@ -27,6 +27,14 @@
                           </a>
                       </router-link>
 
+                      <router-link to="UserPage" v-if="isAdmin">
+                          <a href="#" class="sub-menu-link">
+                              <img src="../assets/profile.png">
+                              <p>Test</p>
+                              <span> > </span>
+                          </a>
+                      </router-link>
+
                       <router-link to="settings">
                           <a href="#" class="sub-menu-link">
                               <img src="../assets/setting.png">
@@ -90,6 +98,9 @@ export default {
         return ""
       }
     },
+    isAdmin(){
+        return this.SessionService.isAdmin();
+    }
 
   }
 }
