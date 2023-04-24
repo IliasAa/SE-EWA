@@ -1,28 +1,61 @@
 <template>
   <header>
-    <nav>
-      <div class="logo">
-        <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" alt="Hva logo"></a></router-link>
-      </div>
-      <ul class="menu">
-        <router-link to="/LoginPage"><li v-on:click="handleLogout()"><a href="#">Logout</a></li></router-link>
-        <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
-        <div class="dropdown">
-        <router-link to="settings"><button class="dropbtn">Settings</button></router-link>
-        <div class="dropdown-content">
-          <router-link to="rulePage" target="_blank">Rules</router-link>
-          <router-link to="Dashboard">Invite friend</router-link>
-          <router-link to="Dashboard">Leave Game</router-link>
-        </div>
-      </div>
-        <div class="username">
-          <div class="logo">
-            <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
-          </div>
-          <router-link to="UserPage"><p>{{checkPage}}</p></router-link>
-        </div>
-      </ul>
-    </nav>
+          <nav>
+              <div class="logo">
+                  <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" height="70" alt="Hva logo"></a></router-link>
+              </div>
+              <h3 class="logo">Hva Ludo King</h3>
+              <ul>
+                  <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
+                  <router-link to="Dashboard"><li><a href="#">Invite a friend</a></li></router-link>
+              </ul>
+              <img src="../assets/icon.png" class="user-pic" @click="toggleMenu()">
+
+              <div ref="subMenu" class="sub-menu-wrap" id="subMenu">
+                  <div class="sub-menu">
+                      <div class="user-info">
+                          <img src="../assets/icon.png">
+                          <h3> {{checkPage}}</h3>
+                      </div>
+                      <hr>
+
+                      <router-link to="UserPage">
+                          <a href="#" class="sub-menu-link">
+                              <img src="../assets/profile.png">
+                              <p>Edit Profile</p>
+                              <span> > </span>
+                          </a>
+                      </router-link>
+
+                      <router-link to="settings">
+                          <a href="#" class="sub-menu-link">
+                              <img src="../assets/setting.png">
+                              <p>Settings</p>
+                              <span> > </span>
+                          </a>
+                      </router-link>
+
+                      <router-link to="/rulePage" target="_blank">
+                          <a href="#" class="sub-menu-link">
+                              <img src="../assets/help.png">
+                              <p>Rules</p>
+                              <span> > </span>
+                          </a>
+                      </router-link>
+
+                      <router-link to="/LoginPage">
+                          <a  v-on:click="handleLogout()" href="#" class="sub-menu-link">
+                              <img src="../assets/logout.png">
+                              <p>Logout</p>
+                              <span> > </span>
+                          </a>
+                      </router-link>
+
+
+                  </div>
+              </div>
+
+          </nav>
   </header>
 </template>
 
@@ -34,13 +67,17 @@ export default {
   inject: ['SessionService'],
   data(){
     return {
+        drawer: null,
     }
   },
 
   methods: {
     handleLogout(){
       this.SessionService.signOut();
-    }
+    },
+      toggleMenu(){
+          this.$refs.subMenu.classList.toggle("open-menu");
+      }
   },
   computed: {
     checkPage(){
@@ -51,134 +88,125 @@ export default {
           return this.SessionService.currentAccount.username.toString();
         }
         return ""
-
-
       }
-    }
+    },
+
   }
 }
 </script>
 
 <style scoped>
 
-header{
-  background-color: #333;
-  padding-inline: 10px;
-  margin: 0;
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  margin: 0;
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
+nav{
+    background: black;
+    width: 100%;
+    padding: 10px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 }
 
-.username {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color:  #002B7F;
-  border-radius: 10px;
-  margin-left: 50px;
-}
-
-.username p{
-  color: white;
-  margin-bottom: 0;
-  margin-right: 10px;
+.logo{
+    width: 300px;
+    color: white;
 }
 
 
-li:first-child {
-  margin-left: 0;
+
+.user-pic{
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 30px;
+}
+nav ul{
+    width: 100%;
+    text-align: right;
+}
+nav ul li{
+    display: inline-block;
+    list-style: none;
+    margin: 10px 20px;
+}
+nav ul li a{
+    color: white;
+    text-decoration: none;
 }
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  margin: 0;
-  text-decoration: none;
-  border-right: 1px solid white;
+nav ul li a:hover{
+    color: yellow;
+}
+.sub-menu-wrap{
+    position: absolute;
+    top: 100%;
+    right: 10%;
+    width: 320px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.sub-menu-wrap.open-menu{
+    max-height: 400px;
 }
 
-li a:hover {
-  background-color: #111;
+.sub-menu{
+    background: white;
+    padding: 20px;
+    margin: 10px;
 }
-
-.logo {
-  padding: 10px;
+.user-info{
+    display: flex;
+    align-items: center;
 }
-
-.logo img {
-  height: 50px;
+.user-info h3{
+    font-weight: bold;
 }
-/* Style The Dropdown Button */
-.dropbtn {
-  color: white;
-  background-color: #333;
-  font-size: 16px;
-  padding: 14px 16px;
-  margin-right: 5px;
-  border: none;
-  cursor: pointer;
-  border-right: 1px solid white;
-  border-left: 1px solid white;
+.user-info img{
+    width: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
 }
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-  margin: 0;
+.sub-menu hr{
+    border: 0;
+    height: 2px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px;
 }
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  margin: 0;
+.sub-menu-link{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
 }
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  margin: 0;
+.sub-menu-link p{
+    width: 100%;
 }
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
+.sub-menu-link img{
+    width: 40px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
 }
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #111;
+.sub-menu-link span{
+    font-size: 22px;
+    transition: transform 0.5s;
 }
-
+.sub-menu-link:hover span{
+    transform: translate(5px);
+}
+.sub-menu-link:hover p{
+    font-weight: 600;
+}
 
 </style>
