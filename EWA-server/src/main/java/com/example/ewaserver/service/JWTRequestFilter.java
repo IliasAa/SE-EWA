@@ -86,9 +86,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         //response.addHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, X-Forwarded-For, Content-Type, Accept");
         //response.addHeader("Access-Control-Expose-Headers", "Authorization, Content-Type");
         response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-                HttpHeaders.AUTHORIZATION + ", " + HttpHeaders.CONTENT_TYPE + ", " + apiConfig.IP_FORWARDED_FOR);
+                HttpHeaders.AUTHORIZATION + ", " + HttpHeaders.CONTENT_TYPE + ", " + Config.IP_FORWARDED_FOR);
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
-                HttpHeaders.AUTHORIZATION + ", " + HttpHeaders.CONTENT_TYPE + ", " + apiConfig.IP_FORWARDED_FOR);
+                HttpHeaders.AUTHORIZATION + ", " + HttpHeaders.CONTENT_TYPE + ", " + Config.IP_FORWARDED_FOR);
     }
 
     private void logRequestContextAndCookies(HttpServletRequest request) {

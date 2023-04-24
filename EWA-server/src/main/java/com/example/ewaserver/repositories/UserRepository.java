@@ -57,7 +57,7 @@ public class UserRepository implements EntityRepository<User> {
     }
 
     public User findByRefreshToken(long id, String refreshToken, Date expired_at) {
-        return (User) this.em.createQuery("select u from User u inner join Token t on u.userId = t.user.userId where u.userId = ?1 and t.refreshToken = ?2 and t.expired_at >= ?3",
+        return this.em.createQuery("select u from User u inner join Token t on u.userId = t.user.userId where u.userId = ?1 and t.refreshToken = ?2 and t.expired_at >= ?3",
                 User.class).setParameter(1, id).setParameter(2, refreshToken).setParameter(3, expired_at).getSingleResult();
     }
 

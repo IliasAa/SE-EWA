@@ -15,7 +15,7 @@ import java.util.List;
 public class LeaderboardController {
     @Autowired
     Config apiconfig;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public LeaderboardController(UserRepository userRepository) {
         this.userRepository = userRepository;
