@@ -10,6 +10,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
+@NamedQueries({
+        @NamedQuery(name = "amountUsers", query = "SELECT COUNT(u) FROM User u")
+})
+
 
 @Entity
 @Getter
@@ -35,8 +39,6 @@ public class User {
     @JsonBackReference
     @JsonIgnore
     private Set<Token> tokens;
-
-
 
 
 

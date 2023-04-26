@@ -134,5 +134,10 @@ public class UserController {
         return user;
     }
 
+    @GetMapping(path = "/count")
+    public int getAmountOfUsers() {
+        return userRepository.getAmounOfUsers();
+    }
+
 
 }
