@@ -145,12 +145,14 @@ export default {
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   margin-top: 50px;
   align-items: center;
   background: white;
   width: 50%;
+  z-index: 1;
 }
 
 .lobbyContent {
