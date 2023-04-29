@@ -15,6 +15,14 @@
                 </v-banner>
             </div>
 
+            <h1 class="header-statistics ">Statistieken</h1>
+            <div class="col-4">
+                <div class="background-chart">
+                    <p class="new_users">{{this.amountUser}}</p>
+                    <div class="new_users_span">
+                        <span style="color: white;">Geregistreerde Gebruikers</span>
+                    </div>
+                </div>
 
         </div>
 
@@ -24,7 +32,7 @@
     <div class="background">
         <img src="../adminpage/Ludobackground.png">
     </div>
-
+    </div>
 
 </template>
 
@@ -33,7 +41,18 @@ import NavBar from "@/components/NavBar.vue";
 
 export default {
     name: "AdminDashboard",
-    components: {NavBar}
+    inject: [''],
+    components: {NavBar},
+
+    data(){
+        return {
+            amountUser: 0,
+        }
+    },
+    async created() {
+    }
+
+
 }
 </script>
 
@@ -65,6 +84,36 @@ export default {
     align-items: center;
     background: white;
     width: 50%;
+}
+
+.header-statistics {
+    margin: 1pc 0pc 3pc 0pc;
+}
+
+.background-chart {
+    background-color: #050B62FF;
+    padding: 5pc 1pc 5pc 1pc;
+    border-radius: 1pc;
+}
+
+.background-chart:hover {
+    background-color: #0911af;
+}
+
+.new_users {
+    font-size: 4pc;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border: 7px solid white;
+    border-radius: 4pc;
+    width: 7pc;
+    margin: 0 auto;
+}
+
+.new_users_span {
+    color: white;
+    text-align: center;
 }
 
 </style>

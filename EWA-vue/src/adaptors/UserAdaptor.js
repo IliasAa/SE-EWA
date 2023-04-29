@@ -48,6 +48,10 @@ export class UserAdaptor {
             });
     }
 
+    async getNumberOfUsers() {
+        return  await this.fetchJSon(this.RESOURCE_URL + "/count");
+    }
+
     async asyncUpdate(user) {
         await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
                 headers: {'Content-Type': 'application/json'},
@@ -64,4 +68,6 @@ export class UserAdaptor {
             },
         );
     }
+
+
 }
