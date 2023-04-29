@@ -3,6 +3,8 @@
   <div class="wrapper">
     <main class="page-main">
       <div class="container flex-column">
+        <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
+        <button class="btn btn-primary btn-lg" >Join a lobby using a code</button>
         <table class="table">
 <!--          <h3 class="table-header">List of Active Games</h3>-->
           <thead>
@@ -27,6 +29,10 @@
         <button class="btn btn-info" @click="newGame">New Game</button>
       </div>
     </main>
+  </div>
+
+  <div class="background">
+    <img src="../../assets/Ludobackground.png">
   </div>
 </template>
 
@@ -76,46 +82,41 @@ export default {
 </script>
 
 <style scoped>
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(20%);
-  min-height: 100vh;
-  background-image: url("../assets/Ludobackground.png");
-  background-position: center;
-  background-size: cover;
-  background-color: #080931;
-  font-family: "Arial Hebrew";
+.back-button {
+  height: 30px;
+  width: 30px;
 }
 
-.wrapper > * {
-  padding: 20px;
-  overflow: hidden;
-}
 .page-main {
   flex-grow: 1;
   backdrop-filter: blur(10px);
 }
-img {
-  max-width: 100%;
-  height: auto;
-}
-.table-header {
-  text-align: center;
-}
+
 .container {
   display: flex;
-  width: 100vh;
   background-color: white;
   padding: 3%;
   margin-top: 7%;
 }
+
 .delete, .play {
   border-radius: 50%;
   text-align: center;
 }
 .play {
   padding-left: 10px;
+}
+
+.background, .background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  filter: brightness(0.7);
+  background-color: rgba(5, 11, 98, 1);
 }
 </style>
