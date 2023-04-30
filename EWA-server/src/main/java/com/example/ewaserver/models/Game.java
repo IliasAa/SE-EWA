@@ -18,10 +18,12 @@ public class Game {
     @GeneratedValue
     private int idgame;
     private int lobby_idlobby;
+    private String game_status;
 
-    public Game(int idgame, int lobby_idlobby) {
+    public Game(int idgame, int lobby_idlobby, String game_status) {
         this.idgame = idgame;
         this.lobby_idlobby = lobby_idlobby;
+        this.game_status = game_status;
     }
 
     protected Game() {
