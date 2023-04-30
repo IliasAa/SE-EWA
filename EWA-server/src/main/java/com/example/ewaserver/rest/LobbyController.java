@@ -1,6 +1,7 @@
 package com.example.ewaserver.rest;
 
 
+import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
@@ -20,12 +21,12 @@ public class LobbyController {
     @Autowired
     private LobbyRepository lobbyRepository;
 
-    @GetMapping("")
+    @GetMapping(path = "", produces = "application/json")
     public List<Lobby> getAllLobbys(){
         return lobbyRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = "application/json")
     public Lobby getLobbyByCode(@PathVariable int id){
         Lobby lobbyCode = lobbyRepository.findById(id);
         if (lobbyCode == null) {
@@ -34,7 +35,7 @@ public class LobbyController {
         return lobbyCode;
     }
 
-    @PostMapping("/onlineGame")
+    @PostMapping(path = "/onlineGame", produces = "application/json")
     public ResponseEntity<Object> CreateNewLobby(@RequestBody Lobby lobby) {
 
         Lobby saveLobby = lobbyRepository.Save(lobby);
@@ -43,7 +44,24 @@ public class LobbyController {
         return ResponseEntity.created(location).body(saveLobby);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @PutMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<Lobby> updateUser(@RequestBody Lobby lobby,@PathVariable int id) {
+        Lobby saveLobby = lobbyRepository.findById(id);
+        if (saveLobby.getLobbyId() != id) {
+            throw new PreConditionFailed("Id is not equal.");
+        }
+
+
+        saveLobby.setLobbyCode(lobby.getLobbyCode());
+        saveLobby.setCollorList(lobby.getCollorList());
+        saveLobby.setPlayerList(lobby.getPlayerList());
+
+        lobbyRepository.Save(saveLobby);
+        return ResponseEntity.ok().body(saveLobby);
+    }
+
+
+    @DeleteMapping(path = "/delete", produces = "application/json")
     public Lobby deleteOwnUser(@PathVariable() int id) {
 
         Lobby lobby = this.lobbyRepository.deleteById(id);
