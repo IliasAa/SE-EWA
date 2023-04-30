@@ -41,7 +41,7 @@ import NavBar from "@/components/NavBar.vue";
 
 export default {
     name: "AdminDashboard",
-    inject: [''],
+    inject: ['userService'],
     components: {NavBar},
 
     data(){
@@ -50,6 +50,8 @@ export default {
         }
     },
     async created() {
+        this.amountUser = await this.userService.getNumberOfUsers();
+        console.log(this.amountUser);
     }
 
 

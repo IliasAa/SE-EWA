@@ -28,7 +28,7 @@ export default {
       userService: new UserAdaptor(URL + "/users"),
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
-      SessionService: this.theSessionService
+      SessionService: this.theSessionService,
     }
   },
   beforeUnmount() {
