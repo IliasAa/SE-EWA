@@ -40,21 +40,20 @@ public class LobbyController {
 
         Lobby saveLobby = lobbyRepository.Save(lobby);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(saveLobby.getLobbyId()).toUri();
+                path("/{id}").buildAndExpand(saveLobby.getIdLobby()).toUri();
         return ResponseEntity.created(location).body(saveLobby);
     }
 
     @PutMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Lobby> updateUser(@RequestBody Lobby lobby,@PathVariable int id) {
         Lobby saveLobby = lobbyRepository.findById(id);
-        if (saveLobby.getLobbyId() != id) {
+        if (saveLobby.getIdLobby() != id) {
             throw new PreConditionFailed("Id is not equal.");
         }
 
 
-        saveLobby.setLobbyCode(lobby.getLobbyCode());
-        saveLobby.setCollorList(lobby.getCollorList());
-        saveLobby.setPlayerList(lobby.getPlayerList());
+        saveLobby.setJoin_code(lobby.getJoin_code());
+        saveLobby.setSelected_color(lobby.getSelected_color());
 
         lobbyRepository.Save(saveLobby);
         return ResponseEntity.ok().body(saveLobby);

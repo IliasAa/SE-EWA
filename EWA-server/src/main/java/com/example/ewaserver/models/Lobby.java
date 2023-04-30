@@ -1,49 +1,38 @@
 package com.example.ewaserver.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Entity
+@Getter
+@Setter
+@Table(name = "lobby")
 public class Lobby {
-    private long LobbyId;
-    private String LobbyCode;
-    private List<Lobby> PlayerList;
-    private List<Lobby> CollorList;
 
-    public Lobby(long lobbyId, String lobbyCode, List<Lobby> playerList, List<Lobby> collorList) {
-        LobbyId = lobbyId;
-        LobbyCode = lobbyCode;
-        PlayerList = playerList;
-        CollorList = collorList;
+    @Id
+    @GeneratedValue
+    private int idLobby;
+    private String join_code;
+    private String selected_color;
+    private int isPrivateLobby;
+    private int player_size;
+    private int max_allowed_Players;
+
+    public Lobby(int idLobby, String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players) {
+        this.idLobby = idLobby;
+        this.join_code = join_code;
+        this.selected_color = selected_color;
+        this.isPrivateLobby = isPrivateLobby;
+        this.player_size = player_size;
+        this.max_allowed_Players = max_allowed_Players;
     }
 
-    public long getLobbyId() {
-        return LobbyId;
-    }
+    protected Lobby (){}
 
-    public String getLobbyCode() {
-        return LobbyCode;
-    }
-
-    public List<Lobby> getPlayerList() {
-        return PlayerList;
-    }
-
-    public List<Lobby> getCollorList() {
-        return CollorList;
-    }
-
-    public void setLobbyId(long lobbyId) {
-        LobbyId = lobbyId;
-    }
-
-    public void setLobbyCode(String lobbyCode) {
-        LobbyCode = lobbyCode;
-    }
-
-    public void setPlayerList(List<Lobby> playerList) {
-        PlayerList = playerList;
-    }
-
-    public void setCollorList(List<Lobby> collorList) {
-        CollorList = collorList;
-    }
 }
