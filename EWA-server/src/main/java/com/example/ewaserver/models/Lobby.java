@@ -4,56 +4,46 @@ import java.util.List;
 
 public class Lobby {
     private long LobbyId;
-    private int playerNumber;
     private String LobbyCode;
-    private int BotAmount;
-    private List<Lobby> LobbyList;
+    private List<Lobby> PlayerList;
+    private List<Lobby> CollorList;
 
-    public Lobby(long lobbyId, int playerNumber, String lobbyCode, int botAmount, List<Lobby> lobbyList) {
+    public Lobby(long lobbyId, String lobbyCode, List<Lobby> playerList, List<Lobby> collorList) {
         LobbyId = lobbyId;
-        this.playerNumber = playerNumber;
         LobbyCode = lobbyCode;
-        BotAmount = botAmount;
-        LobbyList = lobbyList;
+        PlayerList = playerList;
+        CollorList = collorList;
     }
 
     public long getLobbyId() {
         return LobbyId;
     }
 
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
     public String getLobbyCode() {
         return LobbyCode;
     }
 
-    public int getBotAmount() {
-        return BotAmount;
+    public List<Lobby> getPlayerList() {
+        return PlayerList;
     }
 
-    public List<Lobby> getLobbyList() {
-        return LobbyList;
+    public List<Lobby> getCollorList() {
+        return CollorList;
     }
 
     public void setLobbyId(long lobbyId) {
         LobbyId = lobbyId;
     }
 
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
-    }
-
     public void setLobbyCode(String lobbyCode) {
         LobbyCode = lobbyCode;
     }
 
-    public void setBotAmount(int botAmount) {
-        BotAmount = botAmount;
+    public void setPlayerList(List<Lobby> playerList) {
+        PlayerList = playerList;
     }
 
-    public void setLobbyList(List<Lobby> lobbyList) {
-        LobbyList = lobbyList;
+    public void setCollorList(List<Lobby> collorList) {
+        CollorList = collorList;
     }
 }

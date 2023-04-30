@@ -3,7 +3,7 @@
     <h1>Game lobby</h1>
     <p>lobby code: njkde</p>
     <div class="players">
-      <h2>Joint game:</h2>
+      <h2>Join game:</h2>
       <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">
         <td class="thumbnail">{{players.username}}</td>
       </tr>
@@ -34,10 +34,10 @@ export default {
   },
   created() {
 
-    for (let i = 0; i < 3; i++) {
-      this.players.push(FakeUser.createSampleUser(this.playerNumber))
-      console.log(this.players)
-    }
+    // for (let i = 0; i < 3; i++) {
+    //   this.players.push(FakeUser.createSampleUser(this.playerNumber))
+    //   console.log(this.players)
+    // }
   },
 
   methods: {
