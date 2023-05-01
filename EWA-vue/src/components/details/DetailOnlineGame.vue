@@ -23,6 +23,7 @@ import {FakeUser} from "@/models/FakeUser"
 
 export default {
   name: "DetailOnlineGame",
+  inject: ['userService', 'SessionService'],
   data(){
     return {
       // User: new UserAdaptor().asyncFindAll(),

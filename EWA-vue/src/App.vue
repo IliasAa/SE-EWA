@@ -10,6 +10,7 @@ import {SessionService} from "@/adaptors/SessionService";
 import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
 import {toast} from "vue3-toastify";
 import {LeaderboardAdaptor} from "@/adaptors/LeaderboardAdaptor";
+import {LobbyAdaptor} from "@/adaptors/LobbyAdaptor";
 
 export default {
   name: 'App',
@@ -28,6 +29,7 @@ export default {
       userService: new UserAdaptor(URL + "/users"),
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
+      lobbyService: new LobbyAdaptor(URL + "/Dashboard"),
       SessionService: this.theSessionService,
     }
   },
