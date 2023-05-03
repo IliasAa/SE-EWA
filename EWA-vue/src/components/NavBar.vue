@@ -4,7 +4,7 @@
               <div class="logo">
                   <router-link to="/Dashboard"><a href="#"><img src="../assets/Hvalogo.png" height="70" alt="Hva logo"></a></router-link>
               </div>
-              <h3 class="logo">Hva Ludo King</h3>
+            <h3 class="logo">Hva Ludo King</h3>
               <ul>
                   <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
                   <router-link to="Dashboard"><li><a href="#">Invite a friend</a></li></router-link>
@@ -65,6 +65,7 @@
 
           </nav>
   </header>
+
 </template>
 
 <script>
@@ -116,16 +117,15 @@ export default {
 }
 
 nav{
-    background: black;
     width: 100%;
-    padding: 10px 10%;
+    padding: 15px 5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
 }
 
-.logo{
+.logo {
     width: 300px;
     color: white;
 }
@@ -158,8 +158,8 @@ nav ul li a:hover{
 .sub-menu-wrap{
     position: absolute;
     top: 100%;
-    right: 10%;
-    width: 320px;
+    right: 5%;
+    width: 250px;
     max-height: 0px;
     overflow: hidden;
     transition: max-height 0.5s;
@@ -219,5 +219,6 @@ nav ul li a:hover{
 .sub-menu-link:hover p{
     font-weight: 600;
 }
+
 
 </style>

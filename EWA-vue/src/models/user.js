@@ -5,16 +5,18 @@ export class User {
     lastname;
     email;
     password;
+    points;
     isAdmin;
     role;
 
 
-    constructor(username, firstname, lastname, email, password, isAdmin, role) {
+    constructor(username, firstname, lastname, email, password, points, isAdmin, role) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.points = points;
         this.isAdmin = isAdmin;
         this.role = role;
     }
@@ -26,6 +28,8 @@ export class User {
     get isAdmin() {
         return this.isAdmin;
     }
+
+
 
 
 }
