@@ -39,13 +39,23 @@ public class LobbyController {
     public ResponseEntity<Object> CreateNewLobby(@RequestBody Lobby lobby) {
 
         Lobby saveLobby = lobbyRepository.Save(lobby);
+        StringBuilder code = new StringBuilder();
+        int tagLength = 8;
+        String characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < tagLength; i++) {
+            code.append(characterSet.charAt((int) (Math.random() * 62)));
+        }
+        saveLobby.setJoin_code(code.toString());
+        saveLobby.setPlayer_size(1);
+        saveLobby.setMax_allowed_Players(4);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().
                 path("/{id}").buildAndExpand(saveLobby.getIdLobby()).toUri();
         return ResponseEntity.created(location).body(saveLobby);
     }
 
-    @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Lobby> updateUser(@RequestBody Lobby lobby,@PathVariable int id) {
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Lobby> updateLobby(@RequestBody Lobby lobby,@PathVariable int id) {
         Lobby saveLobby = lobbyRepository.findById(id);
         if (saveLobby.getIdLobby() != id) {
             throw new PreConditionFailed("Id is not equal.");
@@ -53,15 +63,14 @@ public class LobbyController {
 
 
         saveLobby.setJoin_code(lobby.getJoin_code());
-        saveLobby.setSelected_color(lobby.getSelected_color());
 
         lobbyRepository.Save(saveLobby);
         return ResponseEntity.ok().body(saveLobby);
     }
 
 
-    @DeleteMapping(path = "/delete", produces = "application/json")
-    public Lobby deleteOwnUser(@PathVariable() int id) {
+    @DeleteMapping(path = "/{id}")
+    public Lobby deletelobby(@PathVariable() int id) {
 
         Lobby lobby = this.lobbyRepository.deleteById(id);
         if (lobby == null) {

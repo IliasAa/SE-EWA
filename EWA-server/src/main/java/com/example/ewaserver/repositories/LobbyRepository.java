@@ -19,7 +19,7 @@ public class LobbyRepository implements EntityRepository<Lobby>{
 
     @Override
     public List<Lobby> findAll() {
-        TypedQuery<Lobby> query = this.em.createQuery("select u from User u", Lobby.class);
+        TypedQuery<Lobby> query = this.em.createQuery("select l from Lobby l", Lobby.class);
 
         return query.getResultList();
     }
