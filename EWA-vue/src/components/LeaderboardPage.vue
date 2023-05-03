@@ -2,6 +2,7 @@
   <NavBar></NavBar>
 
   <div class="leaderboard">
+    <router-link to="/Dashboard"><img src="../assets/back.png" class="back-button"></router-link>
     <h1 class="leaderboard-heading">Leaderboard</h1>
     <div class="leaderboard-table">
       <table>
@@ -64,6 +65,10 @@ export default {
 </script>
 
 <style scoped>
+.back-button {
+  height: 30px;
+  width: 30px;
+}
 .leaderboard {
   background-color: #fff;
   border-radius: 10px;

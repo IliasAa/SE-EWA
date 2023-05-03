@@ -166,6 +166,8 @@ export class SessionService {
         }
     }
 
+
+
     async signOut() {
         // delete all tokens from db
         await fetch(this.RESOURCES_URL + "/" + this._currentAccount.userId,

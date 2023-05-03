@@ -1,4 +1,4 @@
-export class UserAdaptor {
+export class LobbyAdaptor {
     RESOURCE_URL;
 
     constructor(resourceUrl) {
@@ -17,13 +17,12 @@ export class UserAdaptor {
     }
 
     async asyncFindAll() {
-        console.log('UserAdaptor.asyncFindAll()...');
-
+        return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncGetInfo() {
-        console.log("Info about client is being retrieved...")
-        return await this.fetchJSon(this.RESOURCE_URL + "/info",
+    async asyncGetLobby() {
+        console.log("Info about lobby is being retrieved...")
+        return await this.fetchJSon(this.RESOURCE_URL + "/id",
             {
                 method: 'GET',
                 headers: {
@@ -32,21 +31,9 @@ export class UserAdaptor {
             })
     }
 
-    async getNumberOfUsers() {
-        return  await this.fetchJSon(this.RESOURCE_URL + "/count",
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-    }
-
     async asyncFindId(id) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
     }
-
-
     async asyncDeleteById(id) {
         return this.fetchJSon(this.RESOURCE_URL + "/" + id,
             {
@@ -58,24 +45,27 @@ export class UserAdaptor {
             });
     }
 
-
-
-    async asyncUpdate(user) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
+    async asyncUpdate(lobby) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + lobby.lobbyId, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
                 body: JSON.stringify({
-                    "userId": user.id,
-                    "email": user.email,
-                    "password": user.password,
-                    "role": user.role,
-                    "username": user.username,
-                    "firstname": user.firstname,
-                    "lastname": user.lastname
+                    "lobbyId": lobby.id,
+                    "lobbyCode": lobby.code,
+                    "user": lobby.user,
+                    "color": lobby.color,
+                    "private": lobby.private
                 })
             },
         );
     }
 
+    async asyncSave(lobby) {
+        await this.fetchJSon(this.RESOURCE_URL + "/id", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify(lobby)
+        },)
+    }
 
 }

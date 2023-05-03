@@ -1,46 +1,81 @@
 package com.example.ewaserver.rest;
 
 
+import com.example.ewaserver.exceptions.PreConditionFailed;
+import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
+import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.LobbyRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/Lobby")
 public class LobbyController {
 
+    @Autowired
     private LobbyRepository lobbyRepository;
 
-    public long getAllLobbys(int id){
-        return this.lobbyRepository.findById(id).getLobbyId();
+    @GetMapping(path = "", produces = "application/json")
+    public List<Lobby> getAllLobbys(){
+        return lobbyRepository.findAll();
+    }
+
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public Lobby getLobbyByCode(@PathVariable int id){
+        Lobby lobbyCode = lobbyRepository.findById(id);
+        if (lobbyCode == null) {
+            throw new ResourceNotFoundException("lobby not found with id: " + id);
+        }
+        return lobbyCode;
+    }
+
+    @PostMapping(path = "/onlineGame", produces = "application/json")
+    public ResponseEntity<Object> CreateNewLobby(@RequestBody Lobby lobby) {
+
+        Lobby saveLobby = lobbyRepository.Save(lobby);
+        StringBuilder code = new StringBuilder();
+        int tagLength = 8;
+        String characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < tagLength; i++) {
+            code.append(characterSet.charAt((int) (Math.random() * 62)));
+        }
+        saveLobby.setJoin_code(code.toString());
+        saveLobby.setPlayer_size(1);
+        saveLobby.setMax_allowed_Players(4);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().
+                path("/{id}").buildAndExpand(saveLobby.getIdLobby()).toUri();
+        return ResponseEntity.created(location).body(saveLobby);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Lobby> updateLobby(@RequestBody Lobby lobby,@PathVariable int id) {
+        Lobby saveLobby = lobbyRepository.findById(id);
+        if (saveLobby.getIdLobby() != id) {
+            throw new PreConditionFailed("Id is not equal.");
+        }
+
+
+        saveLobby.setJoin_code(lobby.getJoin_code());
+
+        lobbyRepository.Save(saveLobby);
+        return ResponseEntity.ok().body(saveLobby);
     }
 
 
-    record LobbyRequest(String LobbyCode, long LobbiId) { }
-    record LobbyResponse(String LobbyCode) {
+    @DeleteMapping(path = "/{id}")
+    public Lobby deletelobby(@PathVariable() int id) {
+
+        Lobby lobby = this.lobbyRepository.deleteById(id);
+        if (lobby == null) {
+            throw new ResourceNotFoundException("Cannot delete an lobby with id=" + id);
+        }
+        return lobby;
     }
-    record AiBot(int amount){
-
-    }
-
-    @GetMapping("/Lobby/join")
-    public LobbyController.LobbyRequest Join(Lobby lobby) {
-
-        return new LobbyRequest(lobby.getLobbyCode(), lobby.getLobbyId());
-    }
-
-//    @PostMapping(value = "/Lobby/Offline")
-//    public LobbyController.AiBot BotAmount(Lobby lobby, int amount) {
-//
-//        return new AiBot(lobby.setBotAmount(amount));
-//    }
-//
-//    @PostMapping("/Lobby/Online")
-//    public LobbyController.LobbyResponse Start(Lobby lobby,String lobbyCode) {
-//
-//        return new LobbyResponse(lobby.setLobbyCode(lobbyCode));
-//    }
 }

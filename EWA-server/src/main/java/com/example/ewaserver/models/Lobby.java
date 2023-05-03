@@ -1,59 +1,38 @@
 package com.example.ewaserver.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Entity
+@Getter
+@Setter
+@Table(name = "lobby")
 public class Lobby {
-    private long LobbyId;
-    private int playerNumber;
-    private String LobbyCode;
-    private int BotAmount;
-    private List<Lobby> LobbyList;
 
-    public Lobby(long lobbyId, int playerNumber, String lobbyCode, int botAmount, List<Lobby> lobbyList) {
-        LobbyId = lobbyId;
-        this.playerNumber = playerNumber;
-        LobbyCode = lobbyCode;
-        BotAmount = botAmount;
-        LobbyList = lobbyList;
+    @Id
+    @GeneratedValue
+    private int idLobby;
+    private String join_code;
+    private String selected_color;
+    private int isPrivateLobby;
+    private int player_size;
+    private int max_allowed_Players;
+
+    public Lobby(int idLobby, String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players) {
+        this.idLobby = idLobby;
+        this.join_code = join_code;
+        this.selected_color = selected_color;
+        this.isPrivateLobby = isPrivateLobby;
+        this.player_size = player_size;
+        this.max_allowed_Players = max_allowed_Players;
     }
 
-    public long getLobbyId() {
-        return LobbyId;
-    }
+    protected Lobby (){}
 
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
-    public String getLobbyCode() {
-        return LobbyCode;
-    }
-
-    public int getBotAmount() {
-        return BotAmount;
-    }
-
-    public List<Lobby> getLobbyList() {
-        return LobbyList;
-    }
-
-    public void setLobbyId(long lobbyId) {
-        LobbyId = lobbyId;
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
-    }
-
-    public void setLobbyCode(String lobbyCode) {
-        LobbyCode = lobbyCode;
-    }
-
-    public void setBotAmount(int botAmount) {
-        BotAmount = botAmount;
-    }
-
-    public void setLobbyList(List<Lobby> lobbyList) {
-        LobbyList = lobbyList;
-    }
 }

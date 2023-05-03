@@ -14,6 +14,4 @@ public interface EntityRepository<E> {
 
     E deleteById(int id);
 
-
-
 }

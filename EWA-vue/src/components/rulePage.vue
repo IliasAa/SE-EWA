@@ -1,6 +1,7 @@
 <template>
   <NavBar></NavBar>
  <body>
+ <router-link to="/Dashboard"><img src="../assets/back.png" class="back-button"></router-link>
   <div class="container">
     <div class="row">
 
@@ -148,6 +149,11 @@ export default {
 </script>
 
 <style scoped>
+
+.back-button {
+  height: 30px;
+  width: 30px;
+}
 
 .img-fluid {
   max-height: 200px;

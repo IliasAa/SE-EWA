@@ -1,6 +1,7 @@
 <template>
   <NavBar></NavBar>
   <div class="form-container">
+    <router-link to="/Dashboard"><img src="../assets/back.png" class="back-button"></router-link>
     <div class="card-title">
       <h1>Ludo Game Settings</h1>
     </div>
@@ -51,6 +52,11 @@ export default {
 </script>
 
 <style scoped>
+
+.back-button {
+  height: 30px;
+  width: 30px;
+}
 
 .background, .background img {
   width: 100vw;

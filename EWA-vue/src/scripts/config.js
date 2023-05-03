@@ -26,6 +26,10 @@ export default class config {
         return await response.json();
     }
 
+    static async get(url){
+        return await this.send(url, "GET");
+    }
+
     static async post(url, body, headers){
         return await this.send(url, "POST", body, headers);
     }
