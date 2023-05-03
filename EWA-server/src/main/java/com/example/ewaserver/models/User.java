@@ -29,6 +29,7 @@ public class User {
 
     private String email;
     private String password;
+    private int points;
     private String role = "Player";
 
     @OneToMany (mappedBy = "user")
@@ -40,21 +41,25 @@ public class User {
 
 
 
-    public User(int userId, String username, String firstname, String lastname, String email, String password, String role) {
+    public User(int userId, String username, String firstname, String lastname, String email, String password,
+                int points, String role) {
         this.userId = userId;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.points = points;
         this.role = role;
     }
-    public User(String username, String firstname, String lastname, String email, String password, String role) {
+    public User(String username, String firstname, String lastname, String email, String password,
+                int points, String role) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.points = points;
         this.role = role;
     }
 
@@ -127,5 +132,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

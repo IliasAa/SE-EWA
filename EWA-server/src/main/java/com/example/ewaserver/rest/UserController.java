@@ -103,6 +103,7 @@ public class UserController {
         saveUser.setUsername(user.getUsername());
         saveUser.setFirstname(user.getFirstname());
         saveUser.setLastname(user.getLastname());
+        saveUser.setPoints(user.getPoints());
 
         userRepository.Save(saveUser);
         return ResponseEntity.ok().body(saveUser);
