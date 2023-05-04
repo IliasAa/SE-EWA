@@ -20,20 +20,7 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncGetLobby() {
-        console.log("Info about lobby is being retrieved...")
-        return await this.fetchJSon(this.RESOURCE_URL + "/id",
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-    }
 
-    async asyncFindId(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
-    }
     async asyncDeleteById(id) {
         return this.fetchJSon(this.RESOURCE_URL + "/" + id,
             {
@@ -60,8 +47,11 @@ export class LobbyAdaptor {
         );
     }
 
+    async asyncFindByjoincode(join_code) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
+    }
     async asyncSave(lobby) {
-        await this.fetchJSon(this.RESOURCE_URL + "/id", {
+        await this.fetchJSon(this.RESOURCE_URL, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(lobby)

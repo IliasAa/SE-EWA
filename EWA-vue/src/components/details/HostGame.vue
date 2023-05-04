@@ -30,7 +30,7 @@
 
 
       <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">Host Online Game</button>
-      <popup class="popup" v-if="showPopup2" v-on:click="new LobbyCode()">
+      <popup class="popup" v-if="showPopup2">
         <div class="lobbyDetail" :style="{display: showPopup2 ? 'block' : 'none'}">
           <div class="lobbyContent">
             <span @click="showPopup2 = !showPopup2" class="close">&times;</span>

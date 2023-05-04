@@ -26,31 +26,25 @@ public class LobbyController {
         return lobbyRepository.findAll();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public Lobby getLobbyByCode(@PathVariable int id){
-        Lobby lobbyCode = lobbyRepository.findById(id);
-        if (lobbyCode == null) {
-            throw new ResourceNotFoundException("lobby not found with id: " + id);
+    @GetMapping(path = "/{join_code}", produces = "application/json")
+    public Lobby getLobbyByCode(@PathVariable String join_code){
+        Lobby lobby = lobbyRepository.findByLobbyCode(join_code);
+        if (lobby == null) {
+            throw new ResourceNotFoundException("lobby not found with join_code:" + join_code);
         }
-        return lobbyCode;
+        return lobby;
     }
 
-    @PostMapping(path = "/onlineGame", produces = "application/json")
+    @PostMapping(path = "", produces = "application/json")
     public ResponseEntity<Object> CreateNewLobby(@RequestBody Lobby lobby) {
 
         Lobby saveLobby = lobbyRepository.Save(lobby);
-        StringBuilder code = new StringBuilder();
-        int tagLength = 8;
-        String characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for (int i = 0; i < tagLength; i++) {
-            code.append(characterSet.charAt((int) (Math.random() * 62)));
-        }
-        saveLobby.setJoin_code(code.toString());
-        saveLobby.setPlayer_size(1);
-        saveLobby.setMax_allowed_Players(4);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(saveLobby.getIdLobby()).toUri();
+        URI location = ServletUriComponentsBuilder.
+                fromCurrentRequest()
+                .path("/{id}").
+                buildAndExpand(saveLobby.getIdLobby()).toUri();
+
         return ResponseEntity.created(location).body(saveLobby);
     }
 

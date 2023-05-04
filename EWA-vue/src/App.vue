@@ -29,7 +29,7 @@ export default {
       userService: new UserAdaptor(URL + "/users"),
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
-      lobbyService: new LobbyAdaptor(URL + "/Dashboard"),
+      lobbyService: new LobbyAdaptor(URL + "/Lobby"),
       SessionService: this.theSessionService,
     }
   },

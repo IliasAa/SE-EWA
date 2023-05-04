@@ -21,24 +21,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @JsonProperty("username") private String username;
+    @JsonProperty("username")
+    private String username;
 
-    @JsonProperty("firstname") private String firstname;
+    @JsonProperty("firstname")
+    private String firstname;
 
-    @JsonProperty("lastname") private String lastname;
+    @JsonProperty("lastname")
+    private String lastname;
 
     private String email;
     private String password;
     private int points;
     private String role = "Player";
 
-    @OneToMany (mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     @JsonBackReference
     @JsonIgnore
     private Set<Token> tokens;
 
-
-
+    @ManyToMany(mappedBy = "users")
+    @JsonBackReference
+    @JsonIgnore
+    private Set<Lobby> lobbySet;
 
 
     public User(int userId, String username, String firstname, String lastname, String email, String password,
@@ -52,6 +57,7 @@ public class User {
         this.points = points;
         this.role = role;
     }
+
     public User(String username, String firstname, String lastname, String email, String password,
                 int points, String role) {
         this.username = username;
@@ -63,7 +69,8 @@ public class User {
         this.role = role;
     }
 
-    protected User() {}
+    protected User() {
+    }
 
     public boolean verifyPassword(String GivenPassword) {
         return this.password.equals(GivenPassword);
@@ -82,7 +89,7 @@ public class User {
                 '}';
     }
 
-    public void addToken(Token token){
+    public void addToken(Token token) {
         this.tokens.add(token);
     }
 

@@ -29,6 +29,11 @@ public class LobbyRepository implements EntityRepository<Lobby>{
         return this.em.find(Lobby.class, id);
     }
 
+
+    public Lobby findByLobbyCode(String join_code) {
+        return this.em.find(Lobby.class, join_code);
+    }
+
     @Override
     public Lobby Save(Lobby entity) {
         return this.em.merge(entity);
