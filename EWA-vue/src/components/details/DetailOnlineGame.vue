@@ -64,7 +64,8 @@ export default {
         const newlobby = Lobby.createLobby(this.selectedColor,0,this.players,this.players);
         await this.lobbyService.asyncSave(newlobby);
         const createdLobby = await this.lobbyService.asyncFindByjoincode(newlobby.join_code)
-        console.log(createdLobby);
+
+        this.$router.push(this.$route.matched[0].path + "/" + createdLobby[0].idLobby)
       } else {
         alert("je bent iets vergeten");
       }

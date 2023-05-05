@@ -9,6 +9,11 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Set;
 
+@NamedQueries({
+        @NamedQuery(name = "Lobby_find_by_code",
+                query = "select l from Lobby l where l.join_code = ?1 "),
+})
+
 @Entity
 @Getter
 @Setter

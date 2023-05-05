@@ -61,4 +61,9 @@ public class TokenRepository implements EntityRepository<Token>{
                 .setParameter(3, expired_at)
                 .getSingleResult();
     }
+
+    @Override
+    public List<Token> findByQuery(String jpqlName, Object... params) {
+        return null;
+    }
 }

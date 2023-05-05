@@ -27,12 +27,8 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/{join_code}", produces = "application/json")
-    public Lobby getLobbyByCode(@PathVariable String join_code){
-        Lobby lobby = lobbyRepository.findByLobbyCode(join_code);
-        if (lobby == null) {
-            throw new ResourceNotFoundException("lobby not found with join_code:" + join_code);
-        }
-        return lobby;
+    public List<Lobby> getLobbyByCode(@PathVariable String join_code){
+        return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
     }
 
     @PostMapping(path = "", produces = "application/json")

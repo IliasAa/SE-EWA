@@ -29,11 +29,6 @@ public class LobbyRepository implements EntityRepository<Lobby>{
         return this.em.find(Lobby.class, id);
     }
 
-
-    public Lobby findByLobbyCode(String join_code) {
-        return this.em.find(Lobby.class, join_code);
-    }
-
     @Override
     public Lobby Save(Lobby entity) {
         return this.em.merge(entity);
@@ -49,4 +44,15 @@ public class LobbyRepository implements EntityRepository<Lobby>{
         Lobby lobby = this.findById(id);
         em.remove(lobby);
         return lobby;    }
+
+    @Override
+    public List<Lobby> findByQuery(String jpqlName, Object... params) {
+        TypedQuery<Lobby> query =
+                this.em.createNamedQuery(jpqlName, Lobby.class);
+
+        for (int i = 0; i < params.length; i++) {
+            query.setParameter(i+1, params[i]);
+        }
+        return query.getResultList();
+    }
 }

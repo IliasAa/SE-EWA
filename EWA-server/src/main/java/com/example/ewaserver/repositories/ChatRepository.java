@@ -21,6 +21,11 @@ public class ChatRepository implements EntityRepository<Chat>{
     }
 
     @Override
+    public List<Chat> findByQuery(String jpqlName, Object... params) {
+        return null;
+    }
+
+    @Override
     public Chat findById(int id) {
         return null;
     }
