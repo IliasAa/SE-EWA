@@ -23,7 +23,6 @@
                         <span style="color: white;">Geregistreerde Gebruikers</span>
                     </div>
                 </div>
-
         </div>
 
     </div>
@@ -85,7 +84,7 @@ export default {
     margin-top: 50px;
     align-items: center;
     background: white;
-    width: 50%;
+    width: 75%;
 }
 
 .header-statistics {

@@ -35,7 +35,7 @@
           <router-link to="/adminPage" v-if="isAdmin">
             <a href="#" class="sub-menu-link">
               <img src="../assets/profile.png">
-              <p>Test</p>
+              <p>Admin Dashboard</p>
               <span> > </span>
             </a>
           </router-link>
