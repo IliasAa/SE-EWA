@@ -26,26 +26,26 @@ public class LobbyController {
         return lobbyRepository.findAll();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public Lobby getLobbyByCode(@PathVariable int id){
-        Lobby lobbyCode = lobbyRepository.findById(id);
-        if (lobbyCode == null) {
-            throw new ResourceNotFoundException("lobby not found with id: " + id);
-        }
-        return lobbyCode;
+    @GetMapping(path = "/{join_code}", produces = "application/json")
+    public List<Lobby> getLobbyByCode(@PathVariable String join_code){
+        return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
     }
 
-    @PostMapping(path = "/onlineGame", produces = "application/json")
+    @PostMapping(path = "", produces = "application/json")
     public ResponseEntity<Object> CreateNewLobby(@RequestBody Lobby lobby) {
 
         Lobby saveLobby = lobbyRepository.Save(lobby);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().
-                path("/{id}").buildAndExpand(saveLobby.getIdLobby()).toUri();
+
+        URI location = ServletUriComponentsBuilder.
+                fromCurrentRequest()
+                .path("/{id}").
+                buildAndExpand(saveLobby.getIdLobby()).toUri();
+
         return ResponseEntity.created(location).body(saveLobby);
     }
 
-    @PutMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Lobby> updateUser(@RequestBody Lobby lobby,@PathVariable int id) {
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Lobby> updateLobby(@RequestBody Lobby lobby,@PathVariable int id) {
         Lobby saveLobby = lobbyRepository.findById(id);
         if (saveLobby.getIdLobby() != id) {
             throw new PreConditionFailed("Id is not equal.");
@@ -53,15 +53,14 @@ public class LobbyController {
 
 
         saveLobby.setJoin_code(lobby.getJoin_code());
-        saveLobby.setSelected_color(lobby.getSelected_color());
 
         lobbyRepository.Save(saveLobby);
         return ResponseEntity.ok().body(saveLobby);
     }
 
 
-    @DeleteMapping(path = "/delete", produces = "application/json")
-    public Lobby deleteOwnUser(@PathVariable() int id) {
+    @DeleteMapping(path = "/{id}")
+    public Lobby deletelobby(@PathVariable() int id) {
 
         Lobby lobby = this.lobbyRepository.deleteById(id);
         if (lobby == null) {

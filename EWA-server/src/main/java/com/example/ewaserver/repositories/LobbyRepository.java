@@ -19,7 +19,7 @@ public class LobbyRepository implements EntityRepository<Lobby>{
 
     @Override
     public List<Lobby> findAll() {
-        TypedQuery<Lobby> query = this.em.createQuery("select u from User u", Lobby.class);
+        TypedQuery<Lobby> query = this.em.createQuery("select l from Lobby l", Lobby.class);
 
         return query.getResultList();
     }
@@ -44,4 +44,15 @@ public class LobbyRepository implements EntityRepository<Lobby>{
         Lobby lobby = this.findById(id);
         em.remove(lobby);
         return lobby;    }
+
+    @Override
+    public List<Lobby> findByQuery(String jpqlName, Object... params) {
+        TypedQuery<Lobby> query =
+                this.em.createNamedQuery(jpqlName, Lobby.class);
+
+        for (int i = 0; i < params.length; i++) {
+            query.setParameter(i+1, params[i]);
+        }
+        return query.getResultList();
+    }
 }

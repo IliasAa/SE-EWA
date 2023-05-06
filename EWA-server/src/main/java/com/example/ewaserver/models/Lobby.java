@@ -1,13 +1,18 @@
 package com.example.ewaserver.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
+
+@NamedQueries({
+        @NamedQuery(name = "Lobby_find_by_code",
+                query = "select l from Lobby l where l.join_code = ?1 "),
+})
 
 @Entity
 @Getter
@@ -24,13 +29,19 @@ public class Lobby {
     private int player_size;
     private int max_allowed_Players;
 
-    public Lobby(int idLobby, String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players) {
-        this.idLobby = idLobby;
+    @ManyToMany
+    @JsonBackReference
+    @JsonIgnore
+    private List<User> users;
+
+
+    public Lobby(String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players,List<User> users) {
         this.join_code = join_code;
         this.selected_color = selected_color;
         this.isPrivateLobby = isPrivateLobby;
         this.player_size = player_size;
         this.max_allowed_Players = max_allowed_Players;
+        this.users = users;
     }
 
     protected Lobby (){}

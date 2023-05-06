@@ -64,5 +64,8 @@ public class UserRepository implements EntityRepository<User> {
                 User.class).setParameter(1, id).setParameter(2, refreshToken).setParameter(3, expired_at).getSingleResult();
     }
 
-
+    @Override
+    public List<User> findByQuery(String jpqlName, Object... params) {
+        return null;
+    }
 }

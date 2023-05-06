@@ -14,4 +14,6 @@ public interface EntityRepository<E> {
 
     E deleteById(int id);
 
+    List<E> findByQuery(String jpqlName, Object... params);
+
 }

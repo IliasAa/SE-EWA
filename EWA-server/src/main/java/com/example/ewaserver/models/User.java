@@ -10,10 +10,6 @@ import lombok.Setter;
 
 import java.util.Set;
 
-@NamedQueries({
-        @NamedQuery(name = "amountUsers", query = "SELECT COUNT(u) FROM User u")
-})
-
 
 @Entity
 @Getter
@@ -25,42 +21,56 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @JsonProperty("username") private String username;
+    @JsonProperty("username")
+    private String username;
 
-    @JsonProperty("firstname") private String firstname;
+    @JsonProperty("firstname")
+    private String firstname;
 
-    @JsonProperty("lastname") private String lastname;
+    @JsonProperty("lastname")
+    private String lastname;
 
     private String email;
     private String password;
+    private int points;
     private String role = "Player";
 
-    @OneToMany (mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     @JsonBackReference
     @JsonIgnore
     private Set<Token> tokens;
 
+    @ManyToMany(mappedBy = "users")
+    @JsonBackReference
+    @JsonIgnore
+    private Set<Lobby> lobbySet;
 
 
-    public User(int userId, String username, String firstname, String lastname, String email, String password, String role) {
+    public User(int userId, String username, String firstname, String lastname, String email, String password,
+                int points, String role) {
         this.userId = userId;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.points = points;
         this.role = role;
     }
-    public User(String username, String firstname, String lastname, String email, String password, String role) {
+
+    public User(String username, String firstname, String lastname, String email, String password,
+                int points, String role) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.points = points;
         this.role = role;
     }
 
-    protected User() {}
+    protected User() {
+    }
 
     public boolean verifyPassword(String GivenPassword) {
         return this.password.equals(GivenPassword);
@@ -79,7 +89,7 @@ public class User {
                 '}';
     }
 
-    public void addToken(Token token){
+    public void addToken(Token token) {
         this.tokens.add(token);
     }
 
@@ -129,5 +139,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

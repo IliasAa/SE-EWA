@@ -4,7 +4,6 @@
     <main class="page-main">
       <div class="container flex-column">
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
-        <button class="btn btn-primary btn-lg" >Join a lobby using a code</button>
         <table class="table">
 <!--          <h3 class="table-header">List of Active Games</h3>-->
           <thead>
@@ -26,7 +25,7 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn btn-info" @click="newGame">New Game</button>
+        <button class="btn btn-info" @click="newGame">Join a lobby using a code</button>
       </div>
     </main>
   </div>

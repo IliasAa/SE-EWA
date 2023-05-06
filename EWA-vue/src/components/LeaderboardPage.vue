@@ -12,16 +12,14 @@
           <th>Avatar</th>
           <th>Username</th>
           <th>Wins</th>
-          <th>Coins</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="user in users" :key="user.username">
-          <td>{{ index + 1 }}</td>
-          <td><img  alt="Avatar" width="50"></td>
+        <tr v-for="user in even(users)" :key="user">
+          <td>{{ (index++) - 400 }}</td>
+          <td><img alt="Avatar" width="50"></td>
           <td>{{ user.username }}</td>
-          <td>{{  }}</td>
-          <td>{{  }}</td>
+          <td>{{ user.points }}</td>
         </tr>
         </tbody>
       </table>
@@ -43,11 +41,25 @@ export default {
   inject: ['leaderboardService'],
   data() {
     return {
-     users: [],
+      users: [],
+      index: 1
     }
   },
   async created() {
     this.users = await this.leaderboardService.asyncFindAll();
+
+    // Temporary hardcoded amount of wins
+    for (let i = 0; i < this.users.length; i++) {
+      this.users[i].points = Math.round(Math.random() * 1000);
+    }
+  },
+  methods: {
+    // Sort from most wins to least wins
+    even: function(arr) {
+      return arr.slice().sort(function(a, b) {
+        return b.points - a.points;
+      });
+    }
   }
 }
 </script>

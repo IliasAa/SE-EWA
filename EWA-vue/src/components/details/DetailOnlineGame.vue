@@ -1,73 +1,90 @@
 <template>
   <div class="body">
-    <h1>Game lobby</h1>
-    <p>lobby code: njkde</p>
-    <div class="players">
-      <h2>Join game:</h2>
-      <tr v-for="(playerName) in players" :key="playerName" :class="{'selected': player === playerName}">
-        <td class="thumbnail">{{players.username}}</td>
-      </tr>
-
-    </div>
-
-    <router-link to="/gamepage">
-      <button>start game</button>
-    </router-link>
+  <h1>online Game</h1>
+  <div class="players">
+    <p>Aantal spelers</p>
+    <p>{{players}}</p>
+    <button class="ai" @click="maxPlayer()" v-on:click="players--">-</button>
+    <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
   </div>
+  <div class="playerColor">
+    <p>Choose a starting color:</p>
+    <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
+            id="playerRed" @click="colorChoosing('red')">Red</button>
+    <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
+            id="playerBlue" @click="colorChoosing('blue')">Blue</button>
+    <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
+            id="playerYellow" @click="colorChoosing('yellow')">Yellow</button>
+    <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
+            id="playerGreen" @click="colorChoosing('green')">Green</button>
+  </div>
+
+    <button class="start" @click="createLobby">Create lobby</button>
+
+
+</div>
 </template>
 
 <script>
-// import {UserAdaptor} from "@/adaptors/UserAdaptor";
-import {FakeUser} from "@/models/FakeUser"
 
+
+
+import {Lobby} from "@/models/Lobby";
 
 export default {
   name: "DetailOnlineGame",
+  inject: ['userService','lobbyService'],
   data(){
     return {
-      // User: new UserAdaptor().asyncFindAll(),
-      tag: [],
-      players: [],
-      // lobby: [],
-      player: FakeUser
+      players: 1,
+      selectedColor: null,
+      user: null,
+      userId: null,
     }
   },
-  created() {
-
-    // for (let i = 0; i < 3; i++) {
-    //   this.players.push(FakeUser.createSampleUser(this.playerNumber))
-    //   console.log(this.players)
-    // }
-  },
-
   methods: {
-    playerNumber() {
-      let number = 0;
-
-
-      if (this.players.length === 0){
-        return 0;
-      } else {
-        number = this.players.length;
+    maxPlayer(){
+      if (this.players < 1){
+        return this.players = 2;
       }
-      return number;
+      if (this.players > 2){
+        return this.players = 2;
+      }
     },
-    removeFromList(){
-      this.players = this.players.filter(player => player);
+
+    colorChoosing(color) {
+      this.selectedColor = color;
+    },
+
+
+   async createLobby() {
+      if (this.selectedColor !== null && this.players > 1){
+        this.user = await this.userService.asyncGetInfo();
+        this.userId = this.user.userId;
+        const newlobby = Lobby.createLobby(this.selectedColor,0,this.players,this.players);
+        await this.lobbyService.asyncSave(newlobby);
+        const createdLobby = await this.lobbyService.asyncFindByjoincode(newlobby.join_code)
+
+        this.$router.push(this.$route.matched[0].path + "/" + createdLobby[0].idLobby)
+      } else {
+        alert("je bent iets vergeten");
+      }
     }
   }
 }
-
 </script>
 
 <style scoped>
+
 .body {
   border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
-  max-width: 500px;
-  height: 350px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
 .players {
   background-color: white;
@@ -76,14 +93,57 @@ export default {
   border: solid blue;
   border-radius: 12px;
 }
-button {
+
+.playerColor {
+  background-color: white;
+  text-align: center;
+  margin: 10px;
+  border: solid blue;
+  border-radius: 12px;
+}
+
+.ai {
+  background: dodgerblue;
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.playerColorButton {
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 5px;
+}
+
+
+#playerRed:hover {
+  background-color: red;
+}
+
+#playerBlue:hover {
+  background-color: blue;
+}
+
+#playerYellow:hover {
+  background-color: yellow;
+}
+
+#playerGreen:hover {
+  background-color: green;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
+.start {
   background-color: #002B7F;
   color: white;
   border: solid blue;
   padding: 5px;
-}
-h2 {
-  text-decoration: underline;
-
 }
 </style>
