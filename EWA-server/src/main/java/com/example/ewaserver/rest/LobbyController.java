@@ -6,6 +6,7 @@ import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.LobbyRepository;
+import com.example.ewaserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/Lobby")
@@ -20,6 +22,9 @@ public class LobbyController {
 
     @Autowired
     private LobbyRepository lobbyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(path = "", produces = "application/json")
     public List<Lobby> getAllLobbys(){
@@ -29,6 +34,20 @@ public class LobbyController {
     @GetMapping(path = "/{join_code}", produces = "application/json")
     public List<Lobby> getLobbyByCode(@PathVariable String join_code){
         return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
+    }
+
+    @PostMapping(path = "/{userid}/{LobbyId}", produces = "application/json")
+    public Lobby CombineLobbyWithUser(
+            @PathVariable int userid,
+            @PathVariable int LobbyId) {
+        Set<User> usersInLobby = null;
+        User user = userRepository.findById(userid);
+        Lobby lobby = lobbyRepository.findById(LobbyId);
+        usersInLobby = lobby.getUsers();
+        usersInLobby.add(user);
+        lobby.setUsers(usersInLobby);
+        lobby.setPlayer_size(lobby.getPlayer_size() + 1);
+        return lobbyRepository.Save(lobby);
     }
 
     @PostMapping(path = "", produces = "application/json")

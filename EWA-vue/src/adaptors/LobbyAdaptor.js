@@ -50,6 +50,14 @@ export class LobbyAdaptor {
     async asyncFindByjoincode(join_code) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
     }
+
+    async combineUserWithLobby(userid, LobbyId) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + userid + "/" + LobbyId, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+        },)
+    }
+
     async asyncSave(lobby) {
         await this.fetchJSon(this.RESOURCE_URL, {
             headers: {'Content-Type': 'application/json'},
