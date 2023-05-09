@@ -7,11 +7,12 @@ import RegisterScreen from "@/components/RegisterScreen.vue";
 import homePage from "@/components/homePage.vue";
 import UserPage from "@/components/userpage/Userpage.vue";
 import settingsPage from "@/components/settingsPage.vue";
+import detailLobby from "@/components/lobby/DetailLobby.vue";
 
 import LeaderboardPage from "@/components/LeaderboardPage.vue";
 import AdminDashboard from "@/components/adminpage/AdminDashboard.vue";
-import JoinGame from "@/components/details/JoinGame.vue";
-import HostGame from "@/components/details/HostGame.vue";
+import JoinGame from "@/components/lobby/JoinGame.vue";
+import HostGame from "@/components/lobby/HostGame.vue";
 
 const routes = [
     {path: '/homePage', component: homePage},
@@ -26,7 +27,8 @@ const routes = [
     {path: '/joingame', component: JoinGame},
     {path: '/hostgame', component: HostGame},
     {path: '/LeaderboardPage', component: LeaderboardPage},
-    {path: '/adminPage', component: AdminDashboard}
+    {path: '/adminPage', component: AdminDashboard},
+    {path:'/lobby/:joincode', component: detailLobby},
 
 ];
 

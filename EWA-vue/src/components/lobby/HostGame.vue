@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import DetailOnlineGame from "@/components/details/DetailOnlineGame.vue";
-import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
+import DetailOnlineGame from "@/components/lobby/DetailOnlineGame.vue";
+import DetailOfflineGame from "@/components/lobby/DetailOfflineGame.vue";
 import NavBar from "@/components/NavBar.vue";
 import LobbyRepo from "@/reposetory/lobbyRepo";
 

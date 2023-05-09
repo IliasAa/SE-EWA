@@ -1,40 +1,43 @@
 <template>
   <div class="body">
-  <h1>online Game</h1>
-  <div class="players">
-    <p>Aantal spelers</p>
-    <p>{{players}}</p>
-    <button class="ai" @click="maxPlayer()" v-on:click="players--">-</button>
-    <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
-  </div>
-  <div class="playerColor">
-    <p>Choose a starting color:</p>
-    <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
-            id="playerRed" @click="colorChoosing('red')">Red</button>
-    <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
-            id="playerBlue" @click="colorChoosing('blue')">Blue</button>
-    <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
-            id="playerYellow" @click="colorChoosing('yellow')">Yellow</button>
-    <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
-            id="playerGreen" @click="colorChoosing('green')">Green</button>
-  </div>
+    <h1>online Game</h1>
+    <div class="players">
+      <p>Aantal spelers</p>
+      <p>{{ players }}</p>
+      <button class="ai" @click="maxPlayer()" v-on:click="players--">-</button>
+      <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
+    </div>
+    <div class="playerColor">
+      <p>Choose a starting color:</p>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
+              id="playerRed" @click="colorChoosing('red')">Red
+      </button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
+              id="playerBlue" @click="colorChoosing('blue')">Blue
+      </button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
+              id="playerYellow" @click="colorChoosing('yellow')">Yellow
+      </button>
+      <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
+              id="playerGreen" @click="colorChoosing('green')">Green
+      </button>
+    </div>
 
     <button class="start" @click="createLobby">Create lobby</button>
 
 
-</div>
+  </div>
 </template>
 
 <script>
-
 
 
 import {Lobby} from "@/models/Lobby";
 
 export default {
   name: "DetailOnlineGame",
-  inject: ['userService','lobbyService'],
-  data(){
+  inject: ['userService', 'lobbyService'],
+  data() {
     return {
       players: 1,
       selectedColor: null,
@@ -43,11 +46,11 @@ export default {
     }
   },
   methods: {
-    maxPlayer(){
-      if (this.players < 1){
+    maxPlayer() {
+      if (this.players < 1) {
         return this.players = 2;
       }
-      if (this.players > 2){
+      if (this.players > 2) {
         return this.players = 2;
       }
     },
@@ -57,15 +60,17 @@ export default {
     },
 
 
-   async createLobby() {
-      if (this.selectedColor !== null && this.players > 1){
+    async createLobby() {
+      if (this.selectedColor !== null && this.players > 1) {
         this.user = await this.userService.asyncGetInfo();
         this.userId = this.user.userId;
-        const newlobby = Lobby.createLobby(this.selectedColor,0,this.players,this.players);
+        const newlobby = Lobby.createLobby(this.selectedColor, 0, this.players, this.players, this.userId);
         await this.lobbyService.asyncSave(newlobby);
-        const createdLobby = await this.lobbyService.asyncFindByjoincode(newlobby.join_code)
+        const createdLobby = await this.lobbyService.asyncFindByjoincode(newlobby.join_code);
+        await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby);
 
-        this.$router.push(this.$route.matched[0].path + "/" + createdLobby[0].idLobby)
+
+        this.$router.push("/lobby/" + createdLobby[0].join_code)
       } else {
         alert("je bent iets vergeten");
       }
@@ -86,6 +91,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
+
 .players {
   background-color: white;
   text-align: center;

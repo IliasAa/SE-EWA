@@ -43,7 +43,7 @@ export class UserAdaptor {
     }
 
     async asyncFindId(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
+        return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
     }
 
 

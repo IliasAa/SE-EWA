@@ -5,13 +5,16 @@ export class Lobby {
     players_size;
     max_allowed_Players;
 
+    userid_owner;
 
-    constructor(join_code, selected_color, isPrivateLobby, players_size, max_allowed_Players) {
+
+    constructor(join_code, selected_color, isPrivateLobby, players_size, max_allowed_Players, userid_owner) {
         this.join_code = join_code;
         this.selected_color = selected_color;
         this.isPrivateLobby = isPrivateLobby;
         this.players_size = players_size;
         this.max_allowed_Players = max_allowed_Players;
+        this.userid_owner = userid_owner;
     }
 
     static makeLobbycode(length) {
@@ -26,8 +29,9 @@ export class Lobby {
         return result;
     }
 
-    static createLobby(selected_color, isPrivateLobby, players_size, max_allowed_Players){
-        return new Lobby(this.makeLobbycode(7),selected_color,isPrivateLobby,players_size,max_allowed_Players);
+    static createLobby(selected_color, isPrivateLobby, players_size, max_allowed_Players,userid_owner){
+        return new Lobby(this.makeLobbycode(7),selected_color,isPrivateLobby,players_size,
+            max_allowed_Players,userid_owner);
     }
 
 }
