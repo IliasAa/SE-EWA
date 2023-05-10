@@ -66,4 +66,8 @@ export class LobbyAdaptor {
         },)
     }
 
+    async asyncFindId(id) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
+    }
+
 }

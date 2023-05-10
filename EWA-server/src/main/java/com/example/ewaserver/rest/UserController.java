@@ -140,15 +140,4 @@ public class UserController {
         return userRepository.getAmounOfUsers();
     }
 
-    @GetMapping(path = "/get/{id}", produces = "application/json")
-    public User getUserById(@PathVariable int id) {
-
-        User user = userRepository.findById(id);
-        if (user == null) {
-            throw new ResourceNotFoundException("user not found with id: " + id);
-        }
-        return user;
-    }
-
-
 }

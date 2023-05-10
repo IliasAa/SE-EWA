@@ -32,7 +32,12 @@ export default {
   },
   async created() {
     this.lobbyCode = this.$route.params.joincode;
-    this.lobby = this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+    this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+    console.log(this.lobby);
+    let ownerid = this.lobby[0].userid_owner;
+    console.log(ownerid);
+    this.users = await this.lobbyService.asyncFindId(ownerid);
+    console.log(this.users);
   },
 
   methods: {
