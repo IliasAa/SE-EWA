@@ -1,37 +1,37 @@
 <template>
-    <NavBar></NavBar>
+  <NavBar></NavBar>
 
-    <div class="screen">
+  <div class="screen">
 
-        <div class="card">
-            <div class="input">
-                <v-banner>
-                    <div class="container">
-                        <div class="row">
-                            <h3>Welkom</h3>
-                            <p>Hieronder staan een paar uitgelichte gegevens!</p>
-                        </div>
-                    </div>
-                </v-banner>
+    <div class="card">
+      <div class="input">
+        <v-banner>
+          <div class="container">
+            <div class="row">
+              <h3>Welkom</h3>
+              <p>Hieronder staan een paar uitgelichte gegevens!</p>
             </div>
+          </div>
+        </v-banner>
+      </div>
 
-            <h1 class="header-statistics ">Statistieken</h1>
-            <div class="col-4">
-                <div class="background-chart">
-                    <p class="new_users">{{this.amountUser}}</p>
-                    <div class="new_users_span">
-                        <span style="color: white;">Geregistreerde Gebruikers</span>
-                    </div>
-                </div>
+      <h1 class="header-statistics ">Statistieken</h1>
+      <div class="col-4">
+        <div class="background-chart">
+          <p class="new_users">{{ this.amountUser }}</p>
+          <div class="new_users_span">
+            <span style="color: white;">Geregistreerde Gebruikers</span>
+          </div>
         </div>
+      </div>
 
     </div>
 
 
     <div class="background">
-        <img src="../adminpage/Ludobackground.png">
+      <img src="../adminpage/Ludobackground.png">
     </div>
-    </div>
+  </div>
 
 </template>
 
@@ -39,19 +39,21 @@
 import NavBar from "@/components/NavBar.vue";
 
 export default {
-    name: "AdminDashboard",
-    inject: ['userService'],
-    components: {NavBar},
+  name: "AdminDashboard",
+  inject: ['userService'],
+  components: {NavBar},
 
-    data(){
-        return {
-            amountUser: 0,
-        }
-    },
-    async created() {
-        this.amountUser = await this.userService.getNumberOfUsers();
-        console.log(this.amountUser);
+  data() {
+    return {
+      users: [],
+      amountUser: null,
     }
+  },
+  async created() {
+    this.users = await this.userService.asyncFindAll();
+    this.amountUser = this.users.length;
+    console.log(this.amountUser.length);
+  }
 
 
 }
@@ -60,61 +62,61 @@ export default {
 <style scoped>
 
 .background, .background img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: bottom;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1000;
-    filter: brightness(0.7);
-    background-color: rgba(5, 11, 98, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  filter: brightness(0.7);
+  background-color: rgba(5, 11, 98, 1);
 }
 
 .screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    margin-top: 50px;
-    align-items: center;
-    background: white;
-    width: 75%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  align-items: center;
+  background: white;
+  width: 75%;
 }
 
 .header-statistics {
-    margin: 1pc 0pc 3pc 0pc;
+  margin: 1pc 0pc 3pc 0pc;
 }
 
 .background-chart {
-    background-color: #050B62FF;
-    padding: 5pc 1pc 5pc 1pc;
-    border-radius: 1pc;
+  background-color: #050B62FF;
+  padding: 5pc 1pc 5pc 1pc;
+  border-radius: 1pc;
 }
 
 .background-chart:hover {
-    background-color: #0911af;
+  background-color: #0911af;
 }
 
 .new_users {
-    font-size: 4pc;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    border: 7px solid white;
-    border-radius: 4pc;
-    width: 7pc;
-    margin: 0 auto;
+  font-size: 4pc;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: 7px solid white;
+  border-radius: 4pc;
+  width: 7pc;
+  margin: 0 auto;
 }
 
 .new_users_span {
-    color: white;
-    text-align: center;
+  color: white;
+  text-align: center;
 }
 
 </style>
