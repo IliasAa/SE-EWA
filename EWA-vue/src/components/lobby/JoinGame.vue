@@ -17,7 +17,7 @@
           <tbody>
             <tr v-for="game in games" :key="game.id">
               <td>{{ game.idLobby }}</td>
-              <td>{{ this.creatorNames }}</td>
+              <td>{{ this.lobbyCreators.username }}</td>
               <td>{{ game.player_size + "/" + game.max_allowed_Players}}</td>
               <td><button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button></td>
             </tr>
@@ -57,8 +57,6 @@ export default {
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;
 
-    console.log(this.userId);
-
 
     //this is to avoid seeing games that you made yourself.
     for (let i = 0; i < this.games.length; i++) {
@@ -69,25 +67,25 @@ export default {
     }
 
     //this is to find the username of all the lobby owners so it will show in the lobby browser.
+    for (let i = 0; i < this.games.length; i++) {
+      let lobbyOwnerId = this.games[i].userid_owner;
+      this.lobbyCreators[i] = await this.lobbyService.asyncFindId(lobbyOwnerId)
+    }
 
-    // for (let i = 0; i < this.games.length; i++) {
-    //   let lobbyOwnerId = this.games[i].userid_owner;
-    //   this.lobbyCreators += await this.userService.asyncFindId(lobbyOwnerId)
-    // }
-    //
     // for (let i = 0; i < this.lobbyCreators.length; i++) {
     //   this.creatorNames = this.lobbyCreators[i].acc
     //
     // }
-    console.log(this.games);
-    console.log(this.games[0]);
 
   },
 
   methods: {
+    //Async method to join a game using a join code of that lobby
     async Joingame(join_code){
+      //saves the response and send it to the User_has_lobby.
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby);
+      //Push router to lobby with join code so it will see it in the params
       this.$router.push("/lobby/" + createdLobby[0].join_code)
     }
   }
