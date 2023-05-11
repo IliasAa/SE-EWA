@@ -135,6 +135,16 @@ public class UserController {
         return user;
     }
 
+    @GetMapping(path = "/get/{id}", produces = "application/json")
+    public User getUserById(@PathVariable int id) {
+
+        User user = userRepository.findById(id);
+        if (user == null) {
+            throw new ResourceNotFoundException("user not found with id: " + id);
+        }
+        return user;
+    }
+
     @GetMapping(path = "/count")
     public int getAmountOfUsers() {
         return userRepository.getAmounOfUsers();

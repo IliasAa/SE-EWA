@@ -42,7 +42,7 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "DetailLobby",
   components: {NavBar},
-  inject: ['lobbyService'],
+  inject: ['lobbyService','userService'],
   data() {
     return {
       lobbyCode: null,
@@ -56,7 +56,7 @@ export default {
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
     let ownerid = this.lobby[0].userid_owner;
-    this.host = await this.lobbyService.asyncFindId(ownerid);
+    this.host = await this.userService.asyncFindId(ownerid);
     this.users = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby)
 
   },

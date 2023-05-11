@@ -23,6 +23,7 @@ public class Config implements WebMvcConfigurer {
 
 
     public static final String IP_FORWARDED_FOR = "X-Forwarded-For";
+    public static final String REFRESH_TOKEN =  "Refresh_token";
 
     // path prefixes that will be protected by the authentication filter
     public Set<String> SECURED_PATHS =
@@ -51,8 +52,8 @@ public class Config implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").
                 allowedOriginPatterns("http://localhost:*")
-                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, "Refresh_token")
-                .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
+                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN )
+                .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .allowCredentials(true);
 
     }

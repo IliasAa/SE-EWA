@@ -48,7 +48,13 @@ export class UserAdaptor {
     }
 
     async asyncFindId(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
+        return this.fetchJSon(this.RESOURCE_URL + "/get/" + id,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
     }
 
 

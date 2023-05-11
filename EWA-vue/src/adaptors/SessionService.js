@@ -117,67 +117,51 @@ export class SessionService {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: body,
-                withCredentials: true
+                credentials: 'include',
+
             })
         if (response.ok) {
             let account = await response.json();
             this.saveTokenIntoBrowserStorage(
                 response.headers.get('Authorization'),
                 account);
-            await this.getRefreshToken(account)
             return account;
         }
 
         return null;
     }
 
-    setCookie(cname, cvalue, exdays) {
-        const d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        let expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    async refresh(refresh_token) {
+    async refresh() {
         let response = await fetch(this.RESOURCES_URL + "/refresh",
             {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: refresh_token
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                credentials: 'include'
             })
         if (response.ok) {
             this._currentToken = response;
+            console.log(response.body)
         }
         return response;
     }
 
-    async getRefreshToken(account) {
-        console.log(account)
-        let response = await fetch(this.RESOURCES_URL + "/getRefreshToken",
-            {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(account)
-            })
-        if (response.ok) {
-            let refreshTokenJson = await response.json()
-            this.setCookie("refresh_token", refreshTokenJson.refreshToken, 1)
-            return refreshTokenJson;
-        }
-    }
 
 
 
     async signOut() {
         // delete all tokens from db
-        await fetch(this.RESOURCES_URL + "/" + this._currentAccount.userId,
+        await fetch(this.RESOURCES_URL + "/logout/" + this._currentAccount.userId,
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
             })
 
         // delete storage
-        document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "Refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         this.removeSessionAndLocalStorage()
     }
 
