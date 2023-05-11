@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class LobbyRepository implements EntityRepository<Lobby>{
+public class LobbyRepository implements EntityRepository<Lobby> {
 
     @PersistenceContext
     private EntityManager em;
@@ -43,7 +43,8 @@ public class LobbyRepository implements EntityRepository<Lobby>{
     public Lobby deleteById(int id) {
         Lobby lobby = this.findById(id);
         em.remove(lobby);
-        return lobby;    }
+        return lobby;
+    }
 
     @Override
     public List<Lobby> findByQuery(String jpqlName, Object... params) {
@@ -51,7 +52,7 @@ public class LobbyRepository implements EntityRepository<Lobby>{
                 this.em.createNamedQuery(jpqlName, Lobby.class);
 
         for (int i = 0; i < params.length; i++) {
-            query.setParameter(i+1, params[i]);
+            query.setParameter(i + 1, params[i]);
         }
         return query.getResultList();
     }
