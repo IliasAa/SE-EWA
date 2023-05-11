@@ -25,6 +25,7 @@
           </tr>
           </tbody>
         </table>
+        <button class="btn btn-info" @click="startGame()">Start game</button>
       </div>
     </main>
   </div>
@@ -54,18 +55,19 @@ export default {
     //get the lobby code from route param and finds associated lobby
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
-
-    console.log(this.lobby)
-
     let ownerid = this.lobby[0].userid_owner;
-
     this.host = await this.lobbyService.asyncFindId(ownerid);
     this.users = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby)
-    console.log(this.users);
 
   },
 
-  methods: {}
+  methods: {
+    async startGame() {
+      this.lobby[0].lobby_status = 1;
+      await this.lobbyService.asyncUpdate(this.lobby[0]);
+      this.$router.push("/gamepage");
+    }
+  }
 }
 </script>
 

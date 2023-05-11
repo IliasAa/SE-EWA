@@ -27,17 +27,17 @@ public class LobbyController {
     private UserRepository userRepository;
 
     @GetMapping(path = "", produces = "application/json")
-    public List<Lobby> getAllLobbys(){
+    public List<Lobby> getAllLobbys() {
         return lobbyRepository.findAll();
     }
 
     @GetMapping(path = "/{join_code}", produces = "application/json")
-    public List<Lobby> getLobbyByCode(@PathVariable String join_code){
+    public List<Lobby> getLobbyByCode(@PathVariable String join_code) {
         return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
     }
 
     @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
-    public Set<User> getUsersConnectedToLobby(@PathVariable int LobbyId){
+    public Set<User> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         Lobby lobby = lobbyRepository.findById(LobbyId);
         Set<User> users = null;
         users = lobby.getUsers();
@@ -72,15 +72,13 @@ public class LobbyController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Lobby> updateLobby(@RequestBody Lobby lobby,@PathVariable int id) {
+    public ResponseEntity<Lobby> updateLobby(@RequestBody Lobby lobby, @PathVariable int id) {
         Lobby saveLobby = lobbyRepository.findById(id);
         if (saveLobby.getIdLobby() != id) {
             throw new PreConditionFailed("Id is not equal.");
         }
 
-
-        saveLobby.setJoin_code(lobby.getJoin_code());
-
+        saveLobby.setLobby_status(lobby.getLobby_status());
         lobbyRepository.Save(saveLobby);
         return ResponseEntity.ok().body(saveLobby);
     }

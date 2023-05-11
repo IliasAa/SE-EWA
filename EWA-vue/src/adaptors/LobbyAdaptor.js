@@ -33,16 +33,10 @@ export class LobbyAdaptor {
     }
 
     async asyncUpdate(lobby) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + lobby.lobbyId, {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + lobby.idLobby, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
-                body: JSON.stringify({
-                    "lobbyId": lobby.id,
-                    "lobbyCode": lobby.code,
-                    "user": lobby.user,
-                    "color": lobby.color,
-                    "private": lobby.private
-                })
+                body: JSON.stringify({lobby})
             },
         );
     }
@@ -70,7 +64,7 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
     }
 
-    async asyncFindAllConnectedToLobby(LobbyId){
+    async asyncFindAllConnectedToLobby(LobbyId) {
         return await this.fetchJSon(this.RESOURCE_URL + "/lobby/" + LobbyId);
     }
 
