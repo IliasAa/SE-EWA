@@ -5,7 +5,7 @@
       <div class="container flex-column">
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
 
-        <h1>Active game {{this.lobbyCode}}</h1>
+        <h1>Active game {{ this.lobbyCode }}</h1>
       </div>
     </main>
   </div>
@@ -23,7 +23,7 @@ export default {
   name: "DetailLobby",
   components: {NavBar},
   inject: ['lobbyService'],
-  data(){
+  data() {
     return {
       lobbyCode: null,
       lobby: null,
@@ -31,18 +31,17 @@ export default {
     }
   },
   async created() {
+    //get the lobby code from route param and finds associated lobby
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
-    console.log(this.lobby);
+
     let ownerid = this.lobby[0].userid_owner;
-    console.log(ownerid);
+
     this.users = await this.lobbyService.asyncFindId(ownerid);
-    console.log(this.users);
+
   },
 
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 
@@ -68,6 +67,7 @@ export default {
   border-radius: 50%;
   text-align: center;
 }
+
 .play {
   padding-left: 10px;
 }

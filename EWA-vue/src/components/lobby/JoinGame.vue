@@ -5,22 +5,24 @@
       <div class="container flex-column">
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
         <table class="table">
-<!--          <h3 class="table-header">List of Active Games</h3>-->
           <thead>
-            <tr>
-              <th scope="col">GameID</th>
-              <th scope="col">Creator</th>
-              <th scope="col">Participants</th>
-              <th scope="col">Join game</th>>
-            </tr>
+          <tr>
+            <th scope="col">GameID</th>
+            <th scope="col">Creator</th>
+            <th scope="col">Participants</th>
+            <th scope="col">Join game</th>
+            >
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="game in games" :key="game.id">
-              <td>{{ game.idLobby }}</td>
-              <td>{{ this.lobbyCreators.username }}</td>
-              <td>{{ game.player_size + "/" + game.max_allowed_Players}}</td>
-              <td><button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button></td>
-            </tr>
+          <tr v-for="game in games" :key="game.id">
+            <td>{{ game.idLobby }}</td>
+            <td>{{ this.lobbyCreators.username }}</td>
+            <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
+            <td>
+              <button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button>
+            </td>
+          </tr>
           </tbody>
         </table>
         <button class="btn btn-info" @click="newGame">Join a lobby using a code</button>
@@ -40,7 +42,7 @@ export default {
 
   name: "ActiveGamesScreen",
   components: {NavBar},
-  inject: ['lobbyService','userService'],
+  inject: ['lobbyService', 'userService'],
 
   data() {
     return {
@@ -61,8 +63,8 @@ export default {
     //this is to avoid seeing games that you made yourself.
     for (let i = 0; i < this.games.length; i++) {
       console.log(this.games[i].userid_owner);
-      if (this.games[i].userid_owner === this.userId){
-        this.games.splice(i,1);
+      if (this.games[i].userid_owner === this.userId) {
+        this.games.splice(i, 1);
       }
     }
 
@@ -72,16 +74,11 @@ export default {
       this.lobbyCreators[i] = await this.lobbyService.asyncFindId(lobbyOwnerId)
     }
 
-    // for (let i = 0; i < this.lobbyCreators.length; i++) {
-    //   this.creatorNames = this.lobbyCreators[i].acc
-    //
-    // }
-
   },
 
   methods: {
     //Async method to join a game using a join code of that lobby
-    async Joingame(join_code){
+    async Joingame(join_code) {
       //saves the response and send it to the User_has_lobby.
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby);
@@ -114,6 +111,7 @@ export default {
   border-radius: 50%;
   text-align: center;
 }
+
 .play {
   padding-left: 10px;
 }
