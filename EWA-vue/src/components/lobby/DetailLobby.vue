@@ -6,6 +6,25 @@
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
 
         <h1>Active game {{ this.lobbyCode }}</h1>
+
+        <h4>host : {{ this.host.username }} </h4>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Points</th>
+            <th scope="col">SelectedColor</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr v-for="user in this.users" :key="user.userId">
+            <td>{{ user.username }}</td>
+            <td>{{ user.points }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </main>
   </div>
@@ -28,6 +47,7 @@ export default {
       lobbyCode: null,
       lobby: null,
       users: [],
+      host: null,
     }
   },
   async created() {
@@ -35,9 +55,13 @@ export default {
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
 
+    console.log(this.lobby)
+
     let ownerid = this.lobby[0].userid_owner;
 
-    this.users = await this.lobbyService.asyncFindId(ownerid);
+    this.host = await this.lobbyService.asyncFindId(ownerid);
+    this.users = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby)
+    console.log(this.users);
 
   },
 

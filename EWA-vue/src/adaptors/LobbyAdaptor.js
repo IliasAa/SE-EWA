@@ -70,4 +70,8 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
     }
 
+    async asyncFindAllConnectedToLobby(LobbyId){
+        return await this.fetchJSon(this.RESOURCE_URL + "/lobby/" + LobbyId);
+    }
+
 }

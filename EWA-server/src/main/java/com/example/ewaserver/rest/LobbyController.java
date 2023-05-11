@@ -36,6 +36,14 @@ public class LobbyController {
         return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
     }
 
+    @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
+    public Set<User> getUsersConnectedToLobby(@PathVariable int LobbyId){
+        Lobby lobby = lobbyRepository.findById(LobbyId);
+        Set<User> users = null;
+        users = lobby.getUsers();
+        return users;
+    }
+
     @PostMapping(path = "/{userid}/{LobbyId}", produces = "application/json")
     public Lobby CombineLobbyWithUser(
             @PathVariable int userid,

@@ -29,6 +29,7 @@ public class Lobby {
     private int isPrivateLobby;
     private int player_size;
     private int max_allowed_Players;
+    private int lobby_status;
 
     private int userid_owner;
 
