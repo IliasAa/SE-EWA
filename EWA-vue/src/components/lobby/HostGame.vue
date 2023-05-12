@@ -3,41 +3,32 @@
   <div class="screen">
 
     <div class="card">
-<!--      <div class="input">-->
-<!--        <v-banner>-->
-<!--          <h1 id="join" class="h1">Join Lobby</h1>-->
-<!--          <v-text-field label="Lobby Code"></v-text-field>-->
-<!--&lt;!&ndash;          <button @click="earthPressed" class="joinButton">Join</button>&ndash;&gt;-->
-<!--          <button @click="showPopup3 = !showPopup3">Join</button>-->
-<!--        </v-banner>-->
-<!--      </div>-->
-
 
       <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
 
 
       <div class="card-buttons">
 
-      <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Host Offline Game</button>
-      <popup class="popup" v-if="showPopup1">
-        <div class="lobbyDetail" :style="{display: showPopup1 ? 'block' : 'none'}">
-          <div class="lobbyContent">
-            <span @click="showPopup1 = !showPopup1" class="close">&times;</span>
-            <DetailOfflineGame></DetailOfflineGame>
+        <button class="btn btn-primary btn-lg" @click="showPopup1 = !showPopup1">Host Offline Game</button>
+        <popup class="popup" v-if="showPopup1">
+          <div class="lobbyDetail" :style="{display: showPopup1 ? 'block' : 'none'}">
+            <div class="lobbyContent">
+              <span @click="showPopup1 = !showPopup1" class="close">&times;</span>
+              <DetailOfflineGame></DetailOfflineGame>
+            </div>
           </div>
-        </div>
-      </popup>
+        </popup>
 
 
-      <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">Host Online Game</button>
-      <popup class="popup" v-if="showPopup2">
-        <div class="lobbyDetail" :style="{display: showPopup2 ? 'block' : 'none'}">
-          <div class="lobbyContent">
-            <span @click="showPopup2 = !showPopup2" class="close">&times;</span>
-            <DetailOnlineGame></DetailOnlineGame>
+        <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">Host Online Game</button>
+        <popup class="popup" v-if="showPopup2">
+          <div class="lobbyDetail" :style="{display: showPopup2 ? 'block' : 'none'}">
+            <div class="lobbyContent">
+              <span @click="showPopup2 = !showPopup2" class="close">&times;</span>
+              <DetailOnlineGame></DetailOnlineGame>
+            </div>
           </div>
-        </div>
-      </popup>
+        </popup>
       </div>
     </div>
 
@@ -76,7 +67,8 @@ export default {
   height: 30px;
   width: 30px;
 }
-.screen{
+
+.screen {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,7 +134,7 @@ input {
   background: #F2F2F2;
 }
 
-.btn{
+.btn {
   margin-left: 7px;
   margin-bottom: 30px;
 }

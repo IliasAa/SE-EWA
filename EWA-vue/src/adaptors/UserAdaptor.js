@@ -17,8 +17,13 @@ export class UserAdaptor {
     }
 
     async asyncFindAll() {
-        console.log('UserAdaptor.asyncFindAll()...');
-
+        return  await this.fetchJSon(this.RESOURCE_URL,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
     }
 
     async asyncGetInfo() {
@@ -43,7 +48,13 @@ export class UserAdaptor {
     }
 
     async asyncFindId(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
+        return this.fetchJSon(this.RESOURCE_URL + "/get/" + id,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
     }
 
 

@@ -3,20 +3,24 @@
     <h1>Offline Game</h1>
     <div class="players">
       <p>AI bots:</p>
-      <p>{{players}}</p>
+      <p>{{ players }}</p>
       <button class="ai" @click="maxPlayer()" v-on:click="players= 0">-</button>
       <button class="ai" @click="maxPlayer()" v-on:click="players++">+</button>
     </div>
     <div class="playerColor">
       <p>Choose a starting color:</p>
       <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
-              id="playerRed" @click="colorChoosing('red')">Red</button>
+              id="playerRed" @click="colorChoosing('red')">Red
+      </button>
       <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
-              id="playerBlue" @click="colorChoosing('blue')">Blue</button>
+              id="playerBlue" @click="colorChoosing('blue')">Blue
+      </button>
       <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
-              id="playerYellow" @click="colorChoosing('yellow')">Yellow</button>
+              id="playerYellow" @click="colorChoosing('yellow')">Yellow
+      </button>
       <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
-              id="playerGreen" @click="colorChoosing('green')">Green</button>
+              id="playerGreen" @click="colorChoosing('green')">Green
+      </button>
     </div>
 
 
@@ -36,18 +40,18 @@
 export default {
   name: "DetailOfflineGame",
   inject: ['userService', 'SessionService'],
-  data(){
+  data() {
     return {
       players: 0,
       selectedColor: null
     }
   },
   methods: {
-    maxPlayer(){
-      if (this.players < 0){
+    maxPlayer() {
+      if (this.players < 0) {
         return this.players = 1;
       }
-      if (this.players > 2){
+      if (this.players > 2) {
         return this.players = 2;
       }
     },
@@ -71,6 +75,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
+
 .players {
   background-color: white;
   text-align: center;

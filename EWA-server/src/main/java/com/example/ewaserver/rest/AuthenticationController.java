@@ -8,10 +8,8 @@ import com.example.ewaserver.models.User;
 import com.example.ewaserver.repositories.TokenRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import com.example.ewaserver.service.JWToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -56,7 +54,6 @@ public class AuthenticationController {
     @PostMapping(path = "/register", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
 
-        System.out.println(user);
 
         // Encode the password before saving
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -85,6 +82,26 @@ public class AuthenticationController {
         String tokenString = jwToken.encode(this.apiconfig.getIssuer(), this.apiconfig.getPassphrase(),
                 this.apiconfig.getTokenDurationOfValidity());
 
+        // Refresh token
+        JWToken jwTokenRefresh = new JWToken(user.getUsername(), (long) user.getUserId(), user.getRole());
+        String refreshTokenString = jwTokenRefresh.encode(this.apiconfig.getIssuer(),
+                this.apiconfig.getRefreshPassphrase(),
+                this.apiconfig.getRefreshTokenDurationOfValidity());
+
+        // Add the token to the database with the id of the user.
+        Token token = new Token(refreshTokenString, jwTokenRefresh.getExpired_at(), jwTokenRefresh.getIssued_at(), user);
+        this.tokenRepository.Save(token);
+
+        // Set the cookie for the refresh Token that is automatically set when logging in.
+        Cookie cookie = new Cookie("Refresh_token", refreshTokenString);
+        cookie.setMaxAge(36000);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        // Set the Access-Control-Allow-Credentials header to true
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
 
         return ResponseEntity.accepted()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
@@ -92,46 +109,16 @@ public class AuthenticationController {
 
     }
 
-    record RefreshToken(String refreshToken, Date issuedAt, Date refreshToken_issuedAt) {
-    }
-
-    @PostMapping(value = "/getRefreshToken", produces = "application/json")
-    public RefreshToken refreshToken(@RequestBody User user, HttpServletResponse response) {
-        // Refresh token
-        JWToken jwTokenRefresh = new JWToken(user.getUsername(), (long) user.getUserId(), user.getRole());
-        String refreshTokenString = jwTokenRefresh.encode(this.apiconfig.getIssuer(),
-                this.apiconfig.getRefreshPassphrase(),
-                this.apiconfig.getRefreshTokenDurationOfValidity());
-
-
-        Token token = new Token(refreshTokenString, jwTokenRefresh.getExpired_at(), jwTokenRefresh.getIssued_at(), user);
-        this.tokenRepository.Save(token);
-
-        Cookie cookie = new Cookie("refresh_token", refreshTokenString);
-        cookie.setMaxAge(36000);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-
-        System.out.println(jwTokenRefresh.getIssued_at() == token.getIssued_at());
-
-        return new RefreshToken(refreshTokenString, token.getIssued_at(), jwTokenRefresh.getIssued_at());
-    }
-
-
-    record RefreshResponse(String accesToken) {
-    }
-
     @PostMapping(value = "/refresh", produces = "application/json")
-    public ResponseEntity<String> refresh(@RequestBody String refreshTokenString) {
+    public ResponseEntity<String> refresh(@CookieValue("Refresh_token") String refreshTokenString) {
         // Decode the refreshToken with the string and passPhrase.
         JWToken refreshToken = JWToken.decode(refreshTokenString, apiconfig.getIssuer(),
                 apiconfig.getRefreshPassphrase());
-
+        System.out.println(refreshTokenString);
 
         User user = this.tokenRepository.
                 findByRefreshToken(refreshToken.getAccountId(),
                         refreshTokenString, refreshToken.getExpired_at());
-
 
         if (user == null) {
             throw new UnAuthorizedException("User could not be found or refresh_token is invalid");
@@ -150,12 +137,22 @@ public class AuthenticationController {
         return ResponseEntity.accepted()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accesTokenString)
                 .body(accesTokenString);
-//        return new RefreshResponse(accesTokenString);
+
     }
 
-    @PostMapping(value = "/{id}")
-    public String logout(@PathVariable int id) {
+    @PostMapping(value = "/logout/{id}")
+    public String logout(@PathVariable int id, HttpServletResponse response) {
         this.tokenRepository.deleteById(id);
+        // Delete the refresh token cookie
+        Cookie refreshTokenCookie = new Cookie("Refresh_token", "");
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
+
+        // Set the Access-Control-Allow-Credentials header to true
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
         return "Logged out and removed tokens";
     }
 }

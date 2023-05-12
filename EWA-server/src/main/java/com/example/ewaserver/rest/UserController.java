@@ -135,11 +135,6 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(path = "/count")
-    public int getAmountOfUsers() {
-        return userRepository.getAmounOfUsers();
-    }
-
     @GetMapping(path = "/get/{id}", produces = "application/json")
     public User getUserById(@PathVariable int id) {
 
@@ -150,5 +145,9 @@ public class UserController {
         return user;
     }
 
+    @GetMapping(path = "/count")
+    public int getAmountOfUsers() {
+        return userRepository.getAmounOfUsers();
+    }
 
 }

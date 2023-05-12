@@ -5,7 +5,27 @@
       <div class="container flex-column">
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
 
-        <h1>Active game {{this.lobbyCode}}</h1>
+        <h1>Active game {{ this.lobbyCode }}</h1>
+
+        <h4>host : {{ this.host.username }} </h4>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Points</th>
+            <th scope="col">SelectedColor</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr v-for="user in this.users" :key="user.userId">
+            <td>{{ user.username }}</td>
+            <td>{{ user.points }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-info" @click="startGame()">Start game</button>
       </div>
     </main>
   </div>
@@ -22,21 +42,31 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "DetailLobby",
   components: {NavBar},
-  inject: ['lobbyService'],
-  data(){
+  inject: ['lobbyService','userService'],
+  data() {
     return {
       lobbyCode: null,
       lobby: null,
       users: [],
+      host: null,
     }
   },
   async created() {
+    //get the lobby code from route param and finds associated lobby
     this.lobbyCode = this.$route.params.joincode;
-    this.lobby = this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+    this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+    let ownerid = this.lobby[0].userid_owner;
+    this.host = await this.userService.asyncFindId(ownerid);
+    this.users = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby)
+
   },
 
   methods: {
-
+    async startGame() {
+      this.lobby[0].lobby_status = 1;
+      await this.lobbyService.asyncUpdate(this.lobby[0]);
+      this.$router.push("/gamepage");
+    }
   }
 }
 </script>
@@ -63,6 +93,7 @@ export default {
   border-radius: 50%;
   text-align: center;
 }
+
 .play {
   padding-left: 10px;
 }

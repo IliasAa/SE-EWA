@@ -29,6 +29,7 @@ public class Lobby {
     private int isPrivateLobby;
     private int player_size;
     private int max_allowed_Players;
+    private int lobby_status;
 
     private int userid_owner;
 
@@ -41,12 +42,14 @@ public class Lobby {
     private Set<User> users;
 
 
-    public Lobby(String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players, int userid_owner, Set<User> users) {
+    public Lobby(String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players,
+                 int lobby_status, int userid_owner, Set<User> users) {
         this.join_code = join_code;
         this.selected_color = selected_color;
         this.isPrivateLobby = isPrivateLobby;
         this.player_size = player_size;
         this.max_allowed_Players = max_allowed_Players;
+        this.lobby_status = lobby_status;
         this.userid_owner = userid_owner;
         this.users = users;
     }

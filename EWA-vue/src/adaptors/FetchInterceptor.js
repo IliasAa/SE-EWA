@@ -64,8 +64,8 @@ export class FetchInterceptor {
     async handleErrorInResponse(response) {
         if (response.status === 401) {
             // TODO handle an UNAUTHORISED response
-            let refresh = await this.sessionService.refresh(this.getCookie("refresh_token"));
-            console.log(refresh + "Hey jij hier? Hallo Hallo")
+            let refresh = await this.sessionService.refresh();
+
             if (!refresh.ok){
                 await this.sessionService.signOut();
                 // unauthorised request, redirect to signIn page
