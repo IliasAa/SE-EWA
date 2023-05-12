@@ -149,12 +149,24 @@ nav ul li{
 }
 nav ul li a{
     color: white;
+    position: relative;
     text-decoration: none;
 }
 
 nav ul li a:hover{
-    color: yellow;
+    color: #ffffff;
 }
+
+nav ul li a:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+}
+
 .sub-menu-wrap{
     position: absolute;
     top: 100%;
