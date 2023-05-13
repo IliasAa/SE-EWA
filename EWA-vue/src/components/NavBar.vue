@@ -8,6 +8,8 @@
               <ul>
                   <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
                   <router-link to="Dashboard"><li><a href="#">Invite a friend</a></li></router-link>
+                  <router-link to="/adminPage" v-if="isAdmin"><li><a href="#">Admin</a></li></router-link>
+
               </ul>
               <img src="../assets/icon.png" class="user-pic" @click="toggleMenu()">
 
@@ -27,13 +29,6 @@
                           </a>
                       </router-link>
 
-                      <router-link to="/adminPage" v-if="isAdmin">
-                          <a href="#" class="sub-menu-link">
-                              <img src="../assets/profile.png">
-                              <p>Test</p>
-                              <span> > </span>
-                          </a>
-                      </router-link>
 
                       <router-link to="settings">
                           <a href="#" class="sub-menu-link">

@@ -11,6 +11,7 @@ import detailLobby from "@/components/lobby/DetailLobby.vue";
 
 import LeaderboardPage from "@/components/LeaderboardPage.vue";
 import AdminDashboard from "@/components/adminpage/AdminDashboard.vue";
+import AdminUserList from "@/components/adminpage/AdminUsersList.vue";
 import JoinGame from "@/components/lobby/JoinGame.vue";
 import HostGame from "@/components/lobby/HostGame.vue";
 
@@ -28,6 +29,7 @@ const routes = [
     {path: '/hostgame', component: HostGame},
     {path: '/LeaderboardPage', component: LeaderboardPage},
     {path: '/adminPage', component: AdminDashboard},
+    {path: '/AdminUserList', component: AdminUserList},
     {path:'/lobby/:joincode', component: detailLobby},
 
 ];

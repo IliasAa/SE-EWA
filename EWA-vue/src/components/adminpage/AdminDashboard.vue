@@ -3,6 +3,9 @@
 
   <div class="screen">
 
+  <div class="card-container">
+
+
     <div class="card">
       <div class="input">
         <v-banner>
@@ -27,10 +30,20 @@
 
     </div>
 
+      <div class="card2">
+          <router-link class="button-list" to="AdminUserList">
+          <v-btn color="indigo-darken-4" >User-Lists</v-btn>
+          </router-link>
+          <router-link class="button-list" to="/">
+          <v-btn color="indigo-darken-4" >Lobby-Lists</v-btn>
+          </router-link>
+      </div>
+
 
     <div class="background">
       <img src="../adminpage/Ludobackground.png">
     </div>
+   </div>
   </div>
 
 </template>
@@ -86,8 +99,17 @@ export default {
   margin-top: 50px;
   align-items: center;
   background: white;
-  width: 75%;
+  width: 50%;
+
 }
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-top: 50px;
+}
+
 
 .header-statistics {
   margin: 1pc 0pc 3pc 0pc;
@@ -117,6 +139,24 @@ export default {
 .new_users_span {
   color: white;
   text-align: center;
+}
+
+.card2 {
+    /* Add the following styles */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    width: 30%;
+    margin-top: 50px;
+    padding: 5px;
+}
+
+.button-list {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 </style>
