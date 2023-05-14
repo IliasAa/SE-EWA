@@ -5,7 +5,9 @@ import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
+import com.example.ewaserver.models.UserHasLobby;
 import com.example.ewaserver.repositories.LobbyRepository;
+import com.example.ewaserver.repositories.UserHasLobbyRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class LobbyController {
     private LobbyRepository lobbyRepository;
 
     @Autowired
+    private UserHasLobbyRepository userLobbyRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @GetMapping(path = "", produces = "application/json")
@@ -37,24 +42,26 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
-    public Set<User> getUsersConnectedToLobby(@PathVariable int LobbyId) {
+    public Set<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        Set<User> users = null;
+        Set<UserHasLobby> users = null;
         users = lobby.getUsers();
         return users;
     }
 
-    @PostMapping(path = "/{userid}/{LobbyId}", produces = "application/json")
+    @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
     public Lobby CombineLobbyWithUser(
             @PathVariable int userid,
-            @PathVariable int LobbyId) {
-        Set<User> usersInLobby = null;
+            @PathVariable int LobbyId,
+            @PathVariable String selectedcolor) {
         User user = userRepository.findById(userid);
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        usersInLobby = lobby.getUsers();
-        usersInLobby.add(user);
-        lobby.setUsers(usersInLobby);
-        lobby.setPlayer_size(lobby.getPlayer_size() + 1);
+        UserHasLobby userHasLobby = new UserHasLobby();
+        userHasLobby.setUser(user);
+        userHasLobby.setLobby(lobby);
+        userHasLobby.setSelected_color(selectedcolor);
+
+        lobby.getUsers().add(userHasLobby);
         return lobbyRepository.Save(lobby);
     }
 

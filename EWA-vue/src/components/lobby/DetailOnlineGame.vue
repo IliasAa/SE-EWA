@@ -67,10 +67,12 @@ export default {
         const newlobby = Lobby.createLobby(this.selectedColor, 0, this.players, this.players, this.userId);
         await this.lobbyService.asyncSave(newlobby);
         const createdLobby = await this.lobbyService.asyncFindByjoincode(newlobby.join_code);
-        await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby);
+        await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby,this.selectedColor);
 
 
-        this.$router.push("/lobby/" + createdLobby[0].join_code)
+
+
+        // this.$router.push("/lobby/" + createdLobby[0].join_code)
       } else {
         alert("je bent iets vergeten");
       }

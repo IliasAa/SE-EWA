@@ -45,8 +45,8 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
     }
 
-    async combineUserWithLobby(userid, LobbyId) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + userid + "/" + LobbyId, {
+    async combineUserWithLobby(userid, LobbyId, selectedcolor) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + userid + "/" + LobbyId + "/" + selectedcolor, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
         },)
