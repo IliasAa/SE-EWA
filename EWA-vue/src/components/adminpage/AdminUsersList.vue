@@ -25,7 +25,7 @@
                         <td>{{ user.email }}</td>
                         <td>
                             <v-btn>Edit</v-btn>
-                            <v-btn>Delete</v-btn>
+                            <v-btn @click="deleteUser(user.userId)">Delete</v-btn>
                         </td>
                     </tr>
                     </tbody>
@@ -46,6 +46,8 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import {toast} from "vue3-toastify";
+
 
 export default {
     name: "AdminUsersList",
@@ -58,7 +60,25 @@ export default {
     },
     async created() {
         this.users = await this.userService.asyncFindAll();
-    }
+    },
+
+    methods: {
+
+      async deleteUser(id) {
+        const confirmationMessage = confirm("Are you sure you want to delete this account?")
+
+        if (confirmationMessage === true) {
+          try {
+            await this.userService.asyncDeleteById(id);
+            location.reload();
+            toast.success("Account successfully deleted!");
+          } catch (e) {
+            console.log(e)
+            toast.error("Account couldn't be deleted, please check the console.");
+          }
+        }
+      }
+  }
 }
 
 
