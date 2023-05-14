@@ -3,8 +3,12 @@
   <div class="screen">
 
     <div class="card">
-
       <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
+
+      <div class="card-header">
+        <h1 class="title">Create a game</h1>
+        <p>Choose to host an offline or online game:</p>
+      </div>
 
 
       <div class="card-buttons">
@@ -62,23 +66,41 @@ export default {
 
 <style scoped>
 
-
 .back-button {
   height: 30px;
   width: 30px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 80vh;
 }
 
 .card {
-  margin-top: 50px;
-  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   width: 50%;
+  min-width: 350px;
   z-index: 1;
+}
+
+.card-header {
+  text-align: center;
+  border-color: black;
+  margin-bottom: 20px;
 }
 
 .lobbyContent {
@@ -135,8 +157,26 @@ input {
 }
 
 .btn {
+  /*margin-left: 7px;*/
+  /*margin-bottom: 30px;*/
   margin-left: 7px;
   margin-bottom: 30px;
+  font-size: 1.2rem;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0069d9;
+}
+
+.btn:active {
+  background-color: #005cbf;
 }
 
 .card-buttons {
@@ -144,5 +184,12 @@ input {
   flex-direction: column;
   align-items: center;
   margin-top: 3%;
+  gap: 20px;
 }
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
 </style>

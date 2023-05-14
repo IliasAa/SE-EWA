@@ -112,12 +112,12 @@ export default {
 
       if (confirmationMessage === true) {
         try {
-          alert("Account succesfully deleted!")
           await this.userService.asyncDeleteById(this.userId);
+          toast.success("Account successfully deleted!")
           this.SessionService.signOut();
         } catch (e) {
           console.log(e);
-          alert("Account couldn't be deleted, please check the console.")
+          toast.error("Account couldn't be deleted, please check the console.")
         }
       }
     },
