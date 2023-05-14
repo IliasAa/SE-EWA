@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <h1>online Game</h1>
+    <h1>Online Game</h1>
     <div class="players">
       <p>Aantal spelers</p>
       <p>{{ players }}</p>
@@ -84,14 +84,19 @@ export default {
 <style scoped>
 
 .body {
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
   border-radius: 20px;
   text-align: center;
   background: dodgerblue;
   border: solid blue;
   display: flex;
-  width: 100%;
   flex-direction: column;
   justify-content: center;
+  z-index: 9999; /* ensure the overlay is on top of other elements */
 }
 
 .players {
