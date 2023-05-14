@@ -25,7 +25,6 @@ public class Lobby {
     @GeneratedValue
     private int idLobby;
     private String join_code;
-    private String selected_color;
     private int isPrivateLobby;
     private int player_size;
     private int max_allowed_Players;
@@ -33,19 +32,13 @@ public class Lobby {
 
     private int userid_owner;
 
-    @ManyToMany
-    @JsonBackReference
-    @JsonIgnore
-    @JoinTable(name = "user_has_lobby",
-    joinColumns = @JoinColumn(name = "idLobby", referencedColumnName = "idLobby"),
-    inverseJoinColumns = @JoinColumn (name = "userId", referencedColumnName = "userId"))
-    private Set<User> users;
+    @OneToMany(mappedBy = "lobby")
+    private Set<UserHasLobby> users;
 
 
-    public Lobby(String join_code, String selected_color, int isPrivateLobby, int player_size, int max_allowed_Players,
-                 int lobby_status, int userid_owner, Set<User> users) {
+    public Lobby(String join_code, int isPrivateLobby, int player_size, int max_allowed_Players,
+                 int lobby_status, int userid_owner, Set<UserHasLobby> users) {
         this.join_code = join_code;
-        this.selected_color = selected_color;
         this.isPrivateLobby = isPrivateLobby;
         this.player_size = player_size;
         this.max_allowed_Players = max_allowed_Players;
@@ -55,5 +48,11 @@ public class Lobby {
     }
 
     protected Lobby (){}
+
+    public void addUser (User user,Lobby lobby) {
+        UserHasLobby userHasLobby = new UserHasLobby(user,lobby);
+        users.add(userHasLobby);
+        user.getLobbySet().add(userHasLobby);
+    }
 
 }

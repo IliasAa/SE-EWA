@@ -40,10 +40,8 @@ public class User {
     @JsonIgnore
     private Set<Token> tokens;
 
-    @ManyToMany(mappedBy = "users")
-    @JsonBackReference
-    @JsonIgnore
-    private Set<Lobby> lobbySet;
+    @OneToMany(mappedBy = "user")
+    private Set<UserHasLobby> lobbySet;
 
 
     public User(int userId, String username, String firstname, String lastname, String email, String password,

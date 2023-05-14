@@ -5,6 +5,7 @@ import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
+import com.example.ewaserver.models.UserHasLobby;
 import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
-    public Set<User> getUsersConnectedToLobby(@PathVariable int LobbyId) {
+    public Set<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        Set<User> users = null;
+        Set<UserHasLobby> users = null;
         users = lobby.getUsers();
         return users;
     }
@@ -48,13 +49,9 @@ public class LobbyController {
     public Lobby CombineLobbyWithUser(
             @PathVariable int userid,
             @PathVariable int LobbyId) {
-        Set<User> usersInLobby = null;
         User user = userRepository.findById(userid);
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        usersInLobby = lobby.getUsers();
-        usersInLobby.add(user);
-        lobby.setUsers(usersInLobby);
-        lobby.setPlayer_size(lobby.getPlayer_size() + 1);
+        lobby.addUser(user,lobby);
         return lobbyRepository.Save(lobby);
     }
 
