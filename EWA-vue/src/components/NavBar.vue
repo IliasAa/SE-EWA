@@ -118,14 +118,23 @@ nav{
     align-items: center;
     justify-content: space-between;
     position: relative;
+    background-color: #333;
 }
 
 .logo {
-    width: 300px;
-    color: white;
+    /*width: 300px;*/
+    /*color: white;*/
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
 }
 
-
+.logo img {
+  height: 70px;
+  margin-right: 10px;
+}
 
 .user-pic{
     width: 40px;
@@ -133,6 +142,11 @@ nav{
     cursor: pointer;
     margin-left: 30px;
 }
+
+.user-pic:hover {
+  background-color: #fff;
+}
+
 nav ul{
     width: 100%;
     text-align: right;
@@ -149,7 +163,9 @@ nav ul li a{
 }
 
 nav ul li a:hover{
-    color: #ffffff;
+    /*color: #ffffff;*/
+    color: #fff;
+    border-bottom: 2px solid #fff;
 }
 
 nav ul li a:hover::after {
@@ -169,10 +185,12 @@ nav ul li a:hover::after {
     width: 250px;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 0.5s;
+    transition: max-height 0.5s, opacity 0.5s;
+    opacity: 0;
 }
 .sub-menu-wrap.open-menu{
     max-height: 400px;
+    opacity: 1;
 }
 
 .sub-menu{
