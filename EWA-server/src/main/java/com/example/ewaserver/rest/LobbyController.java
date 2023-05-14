@@ -7,6 +7,7 @@ import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.models.UserHasLobby;
 import com.example.ewaserver.repositories.LobbyRepository;
+import com.example.ewaserver.repositories.UserHasLobbyRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class LobbyController {
 
     @Autowired
     private LobbyRepository lobbyRepository;
+
+    @Autowired
+    private UserHasLobbyRepository userLobbyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -45,13 +49,19 @@ public class LobbyController {
         return users;
     }
 
-    @PostMapping(path = "/{userid}/{LobbyId}", produces = "application/json")
+    @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
     public Lobby CombineLobbyWithUser(
             @PathVariable int userid,
-            @PathVariable int LobbyId) {
+            @PathVariable int LobbyId,
+            @PathVariable String selectedcolor) {
         User user = userRepository.findById(userid);
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        lobby.addUser(user,lobby);
+        UserHasLobby userHasLobby = new UserHasLobby();
+        userHasLobby.setUser(user);
+        userHasLobby.setLobby(lobby);
+        userHasLobby.setSelected_color(selectedcolor);
+
+        lobby.getUsers().add(userHasLobby);
         return lobbyRepository.Save(lobby);
     }
 
