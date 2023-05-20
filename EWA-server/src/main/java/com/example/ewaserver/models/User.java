@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -42,7 +44,7 @@ public class User {
     private Set<Token> tokens;
 
     @OneToMany(mappedBy = "user")
-    private Set<UserHasLobby> lobbySet = new HashSet<UserHasLobby>();
+    private List<UserHasLobby> lobbys = new ArrayList<>();
 
 
     public User(int userId, String username, String firstname, String lastname, String email, String password,
@@ -86,6 +88,13 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    public void addLobby(UserHasLobby userHasLobby) {
+        if (!getLobbys().contains(userHasLobby)) {
+            getLobbys().add(userHasLobby);
+            userHasLobby.setUser(this);
+        }
     }
 
     public void addToken(Token token) {

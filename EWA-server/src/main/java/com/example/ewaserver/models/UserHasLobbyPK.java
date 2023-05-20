@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 @Embeddable
+@Getter
+@Setter
 public class UserHasLobbyPK implements Serializable {
 
     private int lobbyId;
@@ -14,11 +18,15 @@ public class UserHasLobbyPK implements Serializable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(lobbyId, userId);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserHasLobbyPK that = (UserHasLobbyPK) o;
+        return lobbyId == that.lobbyId &&
+                userId == that.userId;
     }
 }

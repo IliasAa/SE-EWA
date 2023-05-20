@@ -11,17 +11,17 @@ import javax.lang.model.element.Name;
 @Entity
 @Getter
 @Setter
-@Table(name = "User_has_lobby")
+@Table(name = "user_has_lobby")
 public class UserHasLobby {
 
     @EmbeddedId
-    private UserHasLobbyPK id;
+    UserHasLobbyPK id;
 
     @JsonIgnore
     @ManyToOne
     @MapsId("lobbyId")
     private Lobby lobby;
-    @JsonIgnore
+
     @ManyToOne
     @MapsId("userId")
     private User user;

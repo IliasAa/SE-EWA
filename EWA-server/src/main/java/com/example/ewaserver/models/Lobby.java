@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.lang.model.element.Name;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class Lobby {
     private int userid_owner;
 
     @OneToMany(mappedBy = "lobby")
-    private Set<UserHasLobby> users = new HashSet<UserHasLobby>();
+    private List<UserHasLobby> users = new ArrayList<>();
 
 
     public Lobby(String join_code, int isPrivateLobby, int player_size, int max_allowed_Players,
@@ -55,4 +56,11 @@ public class Lobby {
 //        user.getLobbySet().add(userHasLobby);
 //    }
 
+
+    public void addUser(UserHasLobby userHasLobby) {
+        if (!getUsers().contains(userHasLobby)) {
+            getUsers().add(userHasLobby);
+            userHasLobby.setLobby(this);
+        }
+    }
 }

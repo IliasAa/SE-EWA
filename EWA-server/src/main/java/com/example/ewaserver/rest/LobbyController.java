@@ -42,9 +42,9 @@ public class LobbyController {
     }
 
     @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
-    public Set<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
+    public List<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         Lobby lobby = lobbyRepository.findById(LobbyId);
-        Set<UserHasLobby> users = null;
+        List<UserHasLobby> users = null;
         users = lobby.getUsers();
         return users;
     }
@@ -57,11 +57,12 @@ public class LobbyController {
         User user = userRepository.findById(userid);
         Lobby lobby = lobbyRepository.findById(LobbyId);
         UserHasLobby userHasLobby = new UserHasLobby();
-        userHasLobby.setUser(user);
-        userHasLobby.setLobby(lobby);
         userHasLobby.setSelected_color(selectedcolor);
 
-        lobby.getUsers().add(userHasLobby);
+        user.addLobby(userHasLobby);
+        lobby.addUser(userHasLobby);
+
+        userRepository.Save(user);
         return lobbyRepository.Save(lobby);
     }
 
