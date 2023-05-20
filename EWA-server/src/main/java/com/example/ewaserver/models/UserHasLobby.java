@@ -1,6 +1,7 @@
 package com.example.ewaserver.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,25 +17,18 @@ public class UserHasLobby {
     @EmbeddedId
     private UserHasLobbyPK id;
 
+    @JsonIgnore
     @ManyToOne
-    @MapsId("lobby_id")
-    @JoinColumn(name = "LOBBY_ID")
+    @MapsId("lobbyId")
     private Lobby lobby;
+    @JsonIgnore
     @ManyToOne
-    @MapsId("user_id")
-    @JoinColumn(name = "USER_ID")
+    @MapsId("userId")
     private User user;
 
-
-    @Column(name = "selected_color")
     private String selected_color;
 
-    public UserHasLobby(Lobby lobby, User user, String selectedcolor) {
-        this.lobby = lobby;
-        this.user = user;
-        this.selected_color = selectedcolor;
-    }
-
     public UserHasLobby() {
+        this.id = new UserHasLobbyPK();
     }
 }
