@@ -72,7 +72,7 @@ export default {
 
 
 
-        // this.$router.push("/lobby/" + createdLobby[0].join_code)
+        this.$router.push("/lobby/" + createdLobby[0].join_code)
       } else {
         alert("je bent iets vergeten");
       }

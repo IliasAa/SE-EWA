@@ -50,7 +50,7 @@ public class LobbyController {
     }
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
-    public Lobby CombineLobbyWithUser(
+    public UserHasLobby CombineLobbyWithUser(
             @PathVariable int userid,
             @PathVariable int LobbyId,
             @PathVariable String selectedcolor) {
@@ -62,8 +62,8 @@ public class LobbyController {
         user.addLobby(userHasLobby);
         lobby.addUser(userHasLobby);
 
-        userRepository.Save(user);
-        return lobbyRepository.Save(lobby);
+        userLobbyRepository.Save(userHasLobby);
+        return userLobbyRepository.Save(userHasLobby);
     }
 
     @PostMapping(path = "", produces = "application/json")

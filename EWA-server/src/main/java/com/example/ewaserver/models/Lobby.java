@@ -48,7 +48,8 @@ public class Lobby {
         this.userid_owner = userid_owner;
     }
 
-    protected Lobby (){}
+    protected Lobby() {
+    }
 //
 //    public void addUser (User user,Lobby lobby, String selectedcolor) {
 //        UserHasLobby userHasLobby = new UserHasLobby(user,lobby,selectedcolor);

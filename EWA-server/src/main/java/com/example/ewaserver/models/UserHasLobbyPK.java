@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-@Getter
-@Setter
 public class UserHasLobbyPK implements Serializable {
 
     private int lobbyId;

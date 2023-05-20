@@ -15,13 +15,14 @@ import javax.lang.model.element.Name;
 public class UserHasLobby {
 
     @EmbeddedId
-    UserHasLobbyPK id;
+    private UserHasLobbyPK id = new UserHasLobbyPK();
 
     @JsonIgnore
     @ManyToOne
     @MapsId("lobbyId")
     private Lobby lobby;
 
+    @JsonIgnore
     @ManyToOne
     @MapsId("userId")
     private User user;
@@ -29,6 +30,5 @@ public class UserHasLobby {
     private String selected_color;
 
     public UserHasLobby() {
-        this.id = new UserHasLobbyPK();
     }
 }
