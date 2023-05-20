@@ -43,10 +43,11 @@ public class LobbyController {
 
     @GetMapping(path = "/lobby/{LobbyId}", produces = "application/json")
     public List<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
-        Lobby lobby = lobbyRepository.findById(LobbyId);
-        List<UserHasLobby> users = null;
-        users = lobby.getUsers();
-        return users;
+        return userLobbyRepository.findByQuery("find_users_by_lobbyid", LobbyId);
+    }
+    @GetMapping(path = "/lobby/{LobbyId}/{userId}", produces = "application/json")
+    public List<UserHasLobby> getColorForConnectedUsers(@PathVariable int LobbyId, @PathVariable int userId) {
+        return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
     }
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")

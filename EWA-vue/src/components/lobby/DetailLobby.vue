@@ -47,6 +47,7 @@ export default {
     return {
       lobbyCode: null,
       lobby: null,
+      userids: [],
       users: [],
       host: null,
     }
@@ -57,7 +58,13 @@ export default {
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
     let ownerid = this.lobby[0].userid_owner;
     this.host = await this.userService.asyncFindId(ownerid);
-    this.users = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby)
+    this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
+    console.log(this.userids);
+
+    for (let i = 0; i < this.userids.length; i++) {
+      this.users.push(await this.userService.asyncFindId(this.userids[i]));
+      // this.users[i].selectedcolor = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.userids[i]);
+    }
 
   },
 

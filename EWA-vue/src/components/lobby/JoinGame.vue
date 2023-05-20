@@ -46,25 +46,28 @@ export default {
 
   data() {
     return {
-      games: [],
+      allgames: [],
       creatorNames: [],
       lobbyCreators: [],
       user: null,
       userId: null,
+      mygames: [],
+      games: [],
 
     }
   },
   async created() {
-    this.games = await this.lobbyService.asyncFindAll();
+    this.allgames = await this.lobbyService.asyncFindAll();
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;
 
 
     //this is to avoid seeing games that you made yourself.
-    for (let i = 0; i < this.games.length; i++) {
-      console.log(this.games[i].userid_owner);
-      if (this.games[i].userid_owner === this.userId) {
-        this.games.splice(i, 1);
+    for (let i = 0; i < this.allgames.length; i++) {
+      if (this.allgames[i].userid_owner === this.userId) {
+        this.mygames.push(this.allgames[i]);
+      } else {
+        this.games.push(this.allgames[i]);
       }
     }
 
@@ -81,7 +84,12 @@ export default {
     async Joingame(join_code) {
       //saves the response and send it to the User_has_lobby.
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
-      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby);
+
+
+      //dummy data to test combination between user and lobby
+      const selectedcolor = "green";
+
+      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby,selectedcolor);
       //Push router to lobby with join code so it will see it in the params
       this.$router.push("/lobby/" + createdLobby[0].join_code)
     }
