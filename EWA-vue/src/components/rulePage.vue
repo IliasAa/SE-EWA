@@ -1,6 +1,6 @@
 <template>
   <NavBar></NavBar>
- <body>
+ <body class="custom-body">
  <router-link to="/Dashboard"><img src="../assets/back.png" class="back-button"></router-link>
   <div class="container">
     <div class="row">
@@ -49,7 +49,7 @@
         <div>
           <img src="../assets/ludo-board.jpg" class="img-fluid" alt="Responsive image">
         </div>
-        <h1>Pionen slaan</h1>
+        <h1>Pionnen slaan</h1>
         <div>
           <button class="btn btn-dark" @click="showText4 = !showText4">{{ buttonText1 }}</button>
           <p v-if="showText4">{{ textToShow4 }}</p>
@@ -73,7 +73,7 @@
         <div>
           <img src="../assets/ludo-board.jpg" class="img-fluid" alt="Responsive image">
         </div>
-        <h1>Plaaten van pionen</h1>
+        <h1>Plaatsen van pionnen</h1>
         <div>
           <button class="btn btn-dark"  @click="showText6 = !showText6">{{ buttonText1 }}</button>
           <p v-if="showText6">{{ textToShow6 }}</p>
@@ -126,19 +126,20 @@ export default {
       textToShow2: 'Het spel speel je met minimaal 2 tot maximaal 4 spelers',
 
       showText3: false,
-      textToShow3: '1. Elke speler krijt zijn eigen pionnen kleur toe gewezen \n 2. de pionnen moeten ook in hun eigen kleurfinish eindigen',
+      textToShow3: '1. Elke speler krijgt zijn eigen pion kleur toegewezen \n 2. De pionnen moeten ook in hun eigen kleurfinish eindigen',
 
       showText4: false,
       textToShow4: '1. Wanneer je met je dobbelsteen genoeg oogjes gooit om te landen op een veld punt waar al een andere speler staat, mag je die speler slaan \n 2. Eigen pionnen kan je niet slaan',
 
       showText5: false,
-      textToShow5: 'wordt je geslagen gaat je pion weer terug naar zijn startveld',
+      textToShow5: 'Wordt je geslagen, gaat je pion weer terug naar zijn startveld',
 
       showText6: false,
-      textToShow6: '1. je kan je eigen pion plaatsen op lege velden \n 2. je kan niet een pion plaatsen waar al 1 van je eigen pionen staan',
+      textToShow6: '1. Je kan je eigen pion plaatsen op lege velden \n 2. Je kan niet een pion plaatsen waar al 1 van je eigen pionnen staan',
 
+      //Check punt 3 (verbeteren).
       showText7: false,
-      textToShow7: '1. je moet alle pionnen op je eindveld plaatsen \n 2. staan er al pionnen in kan je over je pionnen heen sprinngen \n 3. je mag aan het einde al je bijvoorbeeld een oneven getal nodig (3 bijvoorbeeld) hebt het eind veld ook in gaan met een ander oneven getal (1 of 5). (zelfde telt voor even getallen)',
+      textToShow7: '1. je moet alle pionnen op je eindveld plaatsen \n 2. Staan er al pionnen in, kan je over je pionnen heen springen \n 3. Je mag aan het einde al je bijvoorbeeld een oneven getal nodig (bijvoorbeeld 3) hebt het eind veld ook in gaan met een ander oneven getal (1 of 5). (zelfde telt voor even getallen)',
 
       showText8: false,
       textToShow8: 'plaats 1: Dit zijn je start plaatsen \n plaats 2: Dit is je start veld \n plaats 3: Dit Zijn je eind velden \n (plaats matchen met je pionnen kleur)',
@@ -151,8 +152,11 @@ export default {
 <style scoped>
 
 .back-button {
-  height: 30px;
-  width: 30px;
+  height: 50px;
+  width: 50px;
+  color: white;
+  background-color: white;
+  border-radius: 20px;
 }
 
 .img-fluid {
@@ -181,10 +185,12 @@ export default {
   text-align: center;
 }
 
-body {
+.custom-body {
   background-color: rgba(5, 11, 98, 1);
-  /*background-image: url("../assets/Ludo background.png")*/
+  background-image: url("../assets/Ludo background.png");
+  filter: brightness(0.5);
 }
+
 p {
   text-align: start;
   color: white;

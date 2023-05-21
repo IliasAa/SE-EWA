@@ -122,6 +122,7 @@ export default {
   background-color: white;
   padding: 3%;
   margin-top: 7%;
+  border-radius: 10px;
 }
 
 .delete, .play {
