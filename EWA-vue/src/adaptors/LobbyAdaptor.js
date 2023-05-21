@@ -73,7 +73,7 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/lobby/" + LobbyId);
     }
     async asyncFindColorConnectedToUser(LobbyId,userId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/lobby/" + LobbyId + "/" + userId);
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + LobbyId + "/" + userId);
     }
 
 }

@@ -11,7 +11,7 @@ import javax.lang.model.element.Name;
         @NamedQuery(name = "find_users_by_lobbyid",
                 query = "select l.user.userId from UserHasLobby l where l.lobby.idLobby = ?1 "),
         @NamedQuery(name = "find_color_withLobbyAndUser",
-                query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1 and l.user.userId = ?1"),
+                query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1 and l.user.userId = ?2"),
 })
 @Entity
 @Getter

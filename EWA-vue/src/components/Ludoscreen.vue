@@ -237,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService'],
+  inject: ['SessionService', 'lobbyService', 'userService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -254,12 +254,13 @@ export default {
 
 
       //information for multiplayer
+      lobby: null,
       currentuser: null,
 
     };
   },
 
-  created() {
+  async created() {
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
     this.lobbyCode = this.$route.params.joincode;
@@ -268,9 +269,17 @@ export default {
     }
 
 
+    //Will change the way how selectedColor is saved based on whether it is a multiplayer game or a singleplayer game.
     if (this.isSingleplayer === true) {
       this.selectedcolor = this.$route.query.selectedColor;
-    } 
+    } else {
+      this.currentuser = await this.userService.asyncGetInfo();
+      this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+      const returnStatement =
+          await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
+      this.selectedcolor = returnStatement[0];
+    }
+    console.log(this.selectedcolor);
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {
