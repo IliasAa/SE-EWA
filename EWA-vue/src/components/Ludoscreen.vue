@@ -7,7 +7,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <p>{{dummyName()}}</p>
+          <p>{{ dummyName() }}</p>
         </div>
         <div class="action-bar">
           <button class="chat">CHAT</button>
@@ -231,7 +231,6 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
-// import DetailOfflineGame from "@/components/details/DetailOfflineGame.vue";
 import {toast} from "vue3-toastify";
 
 export default {
@@ -241,6 +240,10 @@ export default {
   inject: ['SessionService'],
   data() {
     return {
+      //save the lobbycode and saves if the game is singleplayer or not.
+      lobbyCode: null,
+      isSingleplayer: null,
+
       pawns: [],
       output: null,
       movePawnText: null,
@@ -253,7 +256,13 @@ export default {
 
   created() {
 
-      this.selectedcolor = this.$route.query.selectedColor;
+    //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
+    this.lobbyCode = this.$route.params.joincode;
+    if (this.lobbyCode === null) {
+      this.isSingleplayer = true;
+    }
+
+    this.selectedcolor = this.$route.query.selectedColor;
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {
@@ -320,7 +329,7 @@ export default {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
         if (this.playablePawns[i].onField === 1) {
-          if (i === 0){
+          if (i === 0) {
             toast.success('Achievement unlocked:\nFirst Move!')
           }
           pawnId = this.playablePawns[i].id;
@@ -453,9 +462,9 @@ export default {
       }
     },
 
-    dummyName(){
+    dummyName() {
       // let username = this.SessionService.currentAccount.username.toString();
-      if (this.SessionService !== null){
+      if (this.SessionService !== null) {
         return this.SessionService.currentAccount.username.toString();
       }
       return "Cyber_samurai"

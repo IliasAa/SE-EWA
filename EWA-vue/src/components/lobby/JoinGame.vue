@@ -68,12 +68,14 @@ export default {
     this.userId = this.user.userId;
 
 
-    //this is to avoid seeing games that you made yourself.
+    // This is to avoid seeing games that you made yourself and it will only show the games that did not start yet.
     for (let i = 0; i < this.allgames.length; i++) {
-      if (this.allgames[i].userid_owner === this.userId) {
-        this.mygames.push(this.allgames[i]);
-      } else {
-        this.games.push(this.allgames[i]);
+      if (this.allgames[i].lobby_status === 0){
+        if (this.allgames[i].userid_owner === this.userId) {
+          this.mygames.push(this.allgames[i]);
+        } else {
+          this.games.push(this.allgames[i]);
+        }
       }
     }
 
@@ -96,6 +98,7 @@ export default {
       const selectedcolor = "green";
 
       await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby,selectedcolor);
+
       //Push router to lobby with join code so it will see it in the params
       this.$router.push("/lobby/" + createdLobby[0].join_code)
     }
