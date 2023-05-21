@@ -273,13 +273,15 @@ export default {
     if (this.isSingleplayer === true) {
       this.selectedcolor = this.$route.query.selectedColor;
     } else {
+      //get the selectedColor from manyToMany table in DB
       this.currentuser = await this.userService.asyncGetInfo();
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
       this.selectedcolor = returnStatement[0];
     }
-    console.log(this.selectedcolor);
+
+
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {

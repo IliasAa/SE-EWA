@@ -22,6 +22,7 @@
           <tr v-for="user in this.users" :key="user.userId">
             <td>{{ user.username }}</td>
             <td>{{ user.points }}</td>
+            <td>{{ user.selectedColor }}</td>
           </tr>
           </tbody>
         </table>
@@ -63,17 +64,18 @@ export default {
     this.myId = this.user.userId;
 
     //get the lobby code from route param and finds associated lobby
-
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
-    let ownerid = this.lobby[0].userid_owner;
+    const ownerid = this.lobby[0].userid_owner;
     this.host = await this.userService.asyncFindId(ownerid);
     this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
     console.log(this.userids);
 
     for (let i = 0; i < this.userids.length; i++) {
+      //saves users in users variable and searches connected color in the many to many table
       this.users.push(await this.userService.asyncFindId(this.userids[i]));
-      // this.users[i].selectedcolor = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.userids[i]);
+      const returnStatement = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.userids[i]);
+      this.users[i].selectedColor = returnStatement[0];
     }
 
     if (this.myId === ownerid) {
@@ -83,8 +85,11 @@ export default {
 
   methods: {
     async startGame(lobbycode) {
+      //changes status to 1 which is the status for active game.
       this.lobby[0].lobby_status = 1;
       await this.lobbyService.asyncUpdate(this.lobby[0]);
+
+      //redirect to game with lobbycode.
       this.$router.push("/gamepage/"+ lobbycode);
     }
   },
