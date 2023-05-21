@@ -71,8 +71,6 @@ export default {
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;
 
-
-    console.log(this.user)
     if (this.user !== null) {
       this.username = this.user.username;
       this.email = this.user.email;

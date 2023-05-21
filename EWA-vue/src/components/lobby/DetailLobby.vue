@@ -25,7 +25,7 @@
           </tr>
           </tbody>
         </table>
-        <button class="btn btn-info" @click="startGame()">Start game</button>
+        <button class="btn btn-primary" :disabled="!hasChanged" @click="startGame(this.lobbyCode)">Start game</button>
       </div>
     </main>
   </div>
@@ -50,10 +50,20 @@ export default {
       userids: [],
       users: [],
       host: null,
+      isOwner: false,
+
+      //for ownership to start the game.
+      user: null,
+      myId: null,
     }
   },
   async created() {
+    //get current user to decide if he gets ownership of the lobby
+    this.user = await this.userService.asyncGetInfo();
+    this.myId = this.user.userId;
+
     //get the lobby code from route param and finds associated lobby
+
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
     let ownerid = this.lobby[0].userid_owner;
@@ -66,14 +76,23 @@ export default {
       // this.users[i].selectedcolor = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.userids[i]);
     }
 
+    if (this.myId === ownerid) {
+      this.isOwner = true;
+    }
   },
 
   methods: {
     async startGame() {
       this.lobby[0].lobby_status = 1;
       await this.lobbyService.asyncUpdate(this.lobby[0]);
-      this.$router.push("/gamepage");
+      this.$router.push("/gamepage/"+ this.lobby[0].lobbyCode);
     }
+  },
+
+  computed: {
+    hasChanged() {
+      return this.isOwner;
+    },
   }
 }
 </script>
