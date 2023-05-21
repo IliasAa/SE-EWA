@@ -242,7 +242,7 @@ export default {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
       lobbyCode: null,
-      isSingleplayer: null,
+      isSingleplayer: false,
 
       pawns: [],
       output: null,
@@ -251,6 +251,11 @@ export default {
       selectedcolor: null,
       playablePawns: [],
       allowedToMove: true,
+
+
+      //information for multiplayer
+      currentuser: null,
+
     };
   },
 
@@ -258,11 +263,14 @@ export default {
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
     this.lobbyCode = this.$route.params.joincode;
-    if (this.lobbyCode === null) {
+    if (this.lobbyCode === ":joincode") {
       this.isSingleplayer = true;
     }
 
-    this.selectedcolor = this.$route.query.selectedColor;
+
+    if (this.isSingleplayer === true) {
+      this.selectedcolor = this.$route.query.selectedColor;
+    } 
 
     //for statements to create pawns for each color with unique ids
     for (let i = 100; i < 104; i++) {
@@ -329,9 +337,6 @@ export default {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
         if (this.playablePawns[i].onField === 1) {
-          if (i === 0) {
-            toast.success('Achievement unlocked:\nFirst Move!')
-          }
           pawnId = this.playablePawns[i].id;
           arrayPos = i;
           break;

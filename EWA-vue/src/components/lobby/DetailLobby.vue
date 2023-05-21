@@ -82,10 +82,10 @@ export default {
   },
 
   methods: {
-    async startGame() {
+    async startGame(lobbycode) {
       this.lobby[0].lobby_status = 1;
       await this.lobbyService.asyncUpdate(this.lobby[0]);
-      this.$router.push("/gamepage/"+ this.lobby[0].lobbyCode);
+      this.$router.push("/gamepage/"+ lobbycode);
     }
   },
 

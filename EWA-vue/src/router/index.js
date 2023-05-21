@@ -19,6 +19,7 @@ const routes = [
     {path: '/homePage', component: homePage},
     {path: '/Loginpage', component: LoginPage},
     {path: '/gamepage/:joincode', component: Ludoscreen},
+    {path: '/gamepage/', redirect: '/gamepage/:joincode'},
     {path: '/Dashboard', component: Dashboard},
     {path: '/', redirect: '/homePage'},
     {path: '/UserPage', component: UserPage},
