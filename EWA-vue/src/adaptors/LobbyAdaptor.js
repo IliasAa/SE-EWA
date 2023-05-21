@@ -52,6 +52,7 @@ export class LobbyAdaptor {
         },)
     }
 
+
     async asyncSave(lobby) {
         await this.fetchJSon(this.RESOURCE_URL, {
             headers: {'Content-Type': 'application/json'},
@@ -62,6 +63,10 @@ export class LobbyAdaptor {
 
     async asyncFindId(id) {
         return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
+    }
+
+    async asyncFindLobbyOwner(id) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/owner/" + id)
     }
 
     async asyncFindAllConnectedToLobby(LobbyId) {

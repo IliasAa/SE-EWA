@@ -4,6 +4,12 @@
     <main class="page-main">
       <div class="container flex-column">
         <router-link to="/Dashboard"><img src="../../assets/back.png" class="back-button"></router-link>
+        <v-text-field
+            label="Lobby code"
+            type="text"
+            v-model="join_code"
+        ></v-text-field>
+        <button class="btn btn-info" @click="Joingame(this.join_code)">Join a lobby using a code</button>
         <table class="table">
           <thead>
           <tr>
@@ -15,9 +21,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="game in games" :key="game.id">
+          <tr v-for="(game) in allgames" :key="game">
             <td>{{ game.idLobby }}</td>
-            <td>{{ this.lobbyCreators.username }}</td>
+            <td>{{ this.lobbyCreators }}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
               <button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button>
@@ -25,7 +31,6 @@
           </tr>
           </tbody>
         </table>
-        <button class="btn btn-info" @click="newGame">Join a lobby using a code</button>
       </div>
     </main>
   </div>
@@ -53,10 +58,11 @@ export default {
       userId: null,
       mygames: [],
       games: [],
-
+      join_code: ""
     }
   },
   async created() {
+    this.lobbyCreators = await this.lobbyService.asyncFindLobbyOwner();
     this.allgames = await this.lobbyService.asyncFindAll();
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;

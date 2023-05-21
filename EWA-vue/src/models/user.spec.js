@@ -1,26 +1,21 @@
-import {User} from '@/models/user'
+import {Lobby} from '@/models/lobby'
+import userpage from "@/components/userpage/Userpage.vue";
 
-const username = 1;
-const voornaam = "jan";
-const achternaam = "jan";
-const email = "jan";
-const wachtwoord = "jan";
-const points = 7;
-const admin = true;
-const role = "player";
+const id = 1;
+const collor = "2";
+const prive = 7;
+const player = 7;
+const max = 7;
 
-let user1, user2;
+let lobby1, lobby2;
 
 beforeEach( function () {
-    user1 = new User(username,voornaam,achternaam,email,wachtwoord,points,admin,role);
-    user2 = User.createUser(username + 1);
+    lobby1 = new Lobby(id,collor,prive,player,max);
+    lobby2 = Lobby.createLobby("2");
 })
 
 it('creates a proper sample user', function () {
-    expect(user2.userName,
+    expect(lobby1.userName,
         'user2 username was not set properly')
-        .toBe(username+1);
-    expect(user2.lastName,
-        'user2 lastName was not set properly')
-        .toBeTruthy();
+        .toBe("2");
 });

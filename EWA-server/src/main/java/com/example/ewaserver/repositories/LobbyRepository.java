@@ -8,6 +8,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -22,6 +23,13 @@ public class LobbyRepository implements EntityRepository<Lobby> {
         TypedQuery<Lobby> query = this.em.createQuery("select l from Lobby l", Lobby.class);
 
         return query.getResultList();
+    }
+
+    public User findLobbyOwner (long id){
+        return this.em.createQuery("select u.username from User u inner join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1",
+                        User.class)
+                .setParameter(1, id)
+                .getSingleResult();
     }
 
     @Override
