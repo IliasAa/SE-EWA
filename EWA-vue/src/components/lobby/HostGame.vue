@@ -104,11 +104,11 @@ export default {
 }
 
 .lobbyContent {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  display: flex;
+  justify-content: center;
+  margin-top: 36%;
   padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  /*width: 20%; !* Could be more or less, depending on screen size *!*/
 }
 
 .lobbyDetail {
@@ -119,14 +119,14 @@ export default {
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  width: 800px;
+  width: 100%;
   border-radius: 20px;
 }
 
 .close {
-  color: #aaa;
+  color: red;
   float: right;
-  font-size: 28px;
+  font-size: 50px;
   font-weight: bold;
 }
 

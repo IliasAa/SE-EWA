@@ -24,7 +24,7 @@
     </div>
 
 
-    <router-link :to="{ path: '/gamepage', query: { selectedColor: selectedColor } }"
+    <router-link :to="{ path: '/gamepage/', query: { selectedColor: selectedColor } }"
                  v-if="players >= 1 && selectedColor !== null">
       <p></p>
       <button class="start">Start game</button>

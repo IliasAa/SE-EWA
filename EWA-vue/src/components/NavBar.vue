@@ -21,7 +21,7 @@
                       </div>
                       <hr>
 
-                      <router-link to="UserPage">
+                      <router-link to="UserPage" style="text-decoration: none">
                           <a href="#" class="sub-menu-link">
                               <img src="../assets/profile.png">
                               <p>Edit Profile</p>
@@ -30,7 +30,7 @@
                       </router-link>
 
 
-                      <router-link to="settings">
+                      <router-link to="settings" style="text-decoration: none">
                           <a href="#" class="sub-menu-link">
                               <img src="../assets/setting.png">
                               <p>Settings</p>
@@ -38,7 +38,7 @@
                           </a>
                       </router-link>
 
-                      <router-link to="/rulePage" target="_blank">
+                      <router-link to="/rulePage" style="text-decoration: none">
                           <a href="#" class="sub-menu-link">
                               <img src="../assets/help.png">
                               <p>Rules</p>
@@ -46,7 +46,7 @@
                           </a>
                       </router-link>
 
-                      <router-link to="/LoginPage">
+                      <router-link to="/LoginPage" style="text-decoration: none">
                           <a  v-on:click="handleLogout()" href="#" class="sub-menu-link">
                               <img src="../assets/logout.png">
                               <p>Logout</p>
@@ -64,7 +64,6 @@
 </template>
 
 <script>
-
 export default {
   name: "NavBar.vue",
   props: ["isLoggedIn"],
@@ -182,7 +181,7 @@ nav ul li a:hover::after {
     position: absolute;
     top: 100%;
     right: 5%;
-    width: 250px;
+    width: 275px;
     max-height: 0px;
     overflow: hidden;
     transition: max-height 0.5s, opacity 0.5s;
@@ -197,6 +196,7 @@ nav ul li a:hover::after {
     background: white;
     padding: 20px;
     margin: 10px;
+    border-radius: 10px;
 }
 .user-info{
     display: flex;
