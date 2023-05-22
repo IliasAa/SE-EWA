@@ -47,6 +47,10 @@ export class UserAdaptor {
             })
     }
 
+    async asyncFindLobbyOwner(id) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/owner/" + id)
+    }
+
     async asyncFindId(id) {
         return this.fetchJSon(this.RESOURCE_URL + "/get/" + id,
             {

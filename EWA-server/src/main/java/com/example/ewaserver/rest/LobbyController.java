@@ -36,7 +36,7 @@ public class LobbyController {
         return lobbyRepository.findAll();
     }
 
-    @GetMapping(path = "/owner/{id}", produces = "application/json")
+    @GetMapping(path = "owner/{id}", produces = "application/json")
     public User getLobbyOwner(@PathVariable int id) {
         return lobbyRepository.findLobbyOwner(id);
     }

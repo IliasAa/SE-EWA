@@ -88,6 +88,8 @@ public class UserController {
         return new LogoutResponse("Succes");
     }
 
+
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable int id) {
         User saveUser = userRepository.findById(id);

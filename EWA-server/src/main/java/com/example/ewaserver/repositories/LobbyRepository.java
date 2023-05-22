@@ -32,6 +32,7 @@ public class LobbyRepository implements EntityRepository<Lobby> {
                 .getSingleResult();
     }
 
+
     @Override
     public Lobby findById(int id) {
         return this.em.find(Lobby.class, id);
