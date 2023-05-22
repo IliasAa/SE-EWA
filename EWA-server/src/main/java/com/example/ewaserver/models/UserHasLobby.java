@@ -12,6 +12,8 @@ import javax.lang.model.element.Name;
                 query = "select l.user.userId from UserHasLobby l where l.lobby.idLobby = ?1 "),
         @NamedQuery(name = "find_color_withLobbyAndUser",
                 query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1 and l.user.userId = ?2"),
+        @NamedQuery(name = "find_lobby_owner_name",
+                query = "select u.username from User u inner join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1")
 })
 @Entity
 @Getter

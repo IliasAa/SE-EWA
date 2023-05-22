@@ -23,7 +23,7 @@
           <tbody>
           <tr v-for="(game) in allgames" :key="game">
             <td>{{ game.idLobby }}</td>
-            <td>{{ this.lobbyCreators }}</td>
+            <td>{{ this.creatorNames }}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
               <button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button>
@@ -62,10 +62,10 @@ export default {
     }
   },
   async created() {
-    this.lobbyCreators = await this.lobbyService.asyncFindLobbyOwner();
     this.allgames = await this.lobbyService.asyncFindAll();
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;
+    console.log(this.allgames)
 
 
     // This is to avoid seeing games that you made yourself and it will only show the games that did not start yet.
@@ -85,6 +85,10 @@ export default {
       this.lobbyCreators[i] = await this.lobbyService.asyncFindId(lobbyOwnerId)
     }
 
+    for (let i = 0; i < this.allgames.length; i++) {
+      let name = this.userService.asyncFindLobbyOwner(this.allgames[i].userid_owner)
+      this.creatorNames.push(name)
+    }
   },
 
   methods: {

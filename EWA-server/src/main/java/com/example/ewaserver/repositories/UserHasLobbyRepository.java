@@ -24,6 +24,7 @@ public class UserHasLobbyRepository implements EntityRepository<UserHasLobby>{
         return query.getResultList();
     }
 
+
     @Override
     public UserHasLobby findById(int id) {
         return this.em.find(UserHasLobby.class, id);

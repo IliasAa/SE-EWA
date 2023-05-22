@@ -73,4 +73,6 @@ export class LobbyAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + LobbyId + "/" + userId);
     }
 
+
+
 }

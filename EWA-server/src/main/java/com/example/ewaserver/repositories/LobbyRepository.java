@@ -25,13 +25,6 @@ public class LobbyRepository implements EntityRepository<Lobby> {
         return query.getResultList();
     }
 
-    public User findLobbyOwner (long id){
-        return this.em.createQuery("select u.username from User u inner join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1",
-                        User.class)
-                .setParameter(1, id)
-                .getSingleResult();
-    }
-
 
     @Override
     public Lobby findById(int id) {
