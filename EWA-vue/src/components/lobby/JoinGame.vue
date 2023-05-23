@@ -115,14 +115,15 @@ export default {
 </script>
 
 <style scoped>
+
 .back-button {
   height: 30px;
   width: 30px;
+  margin-bottom: 10px;
 }
 
 .page-main {
   flex-grow: 1;
-  backdrop-filter: blur(10px);
 }
 
 .container {
