@@ -21,9 +21,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(game) in allgames" :key="game">
+          <tr v-for="(game) in games" :key="game">
             <td>{{ game.idLobby }}</td>
-            <td>{{ this.creatorNames }}</td>
+            <td>{{game.creatorNames}}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
               <button class="btn btn-primary btn-sm play" @click="Joingame(game.join_code)">&#9658;</button>
@@ -70,7 +70,7 @@ export default {
 
     // This is to avoid seeing games that you made yourself and it will only show the games that did not start yet.
     for (let i = 0; i < this.allgames.length; i++) {
-      if (this.allgames[i].lobby_status === 0){
+      if (this.allgames[i].lobby_status === 0) {
         if (this.allgames[i].userid_owner === this.userId) {
           this.mygames.push(this.allgames[i]);
         } else {
@@ -81,13 +81,16 @@ export default {
 
     //this is to find the username of all the lobby owners so it will show in the lobby browser.
     for (let i = 0; i < this.games.length; i++) {
-      let lobbyOwnerId = this.games[i].userid_owner;
-      this.lobbyCreators[i] = await this.lobbyService.asyncFindId(lobbyOwnerId)
+      if (this.games[i].userid_owner !== 0 && this.games[i].userid_owner !== null) {
+        this.lobbyCreators.push(await this.userService.asyncFindId(this.games[i].userid_owner))
+      } else {
+        this.lobbyCreators.push("Bugged user")
+      }
     }
 
+    //saves the creatorname in games variable.
     for (let i = 0; i < this.allgames.length; i++) {
-      let name = this.userService.asyncFindLobbyOwner(this.allgames[i].userid_owner)
-      this.creatorNames.push(name)
+      this.games[i].creatorNames = this.lobbyCreators[i].username
     }
   },
 
@@ -99,9 +102,10 @@ export default {
 
 
       //dummy data to test combination between user and lobby
+      //this has to be removed if the selectColor pop-up is implemented
       const selectedcolor = "green";
 
-      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby,selectedcolor);
+      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedcolor);
 
       //Push router to lobby with join code so it will see it in the params
       this.$router.push("/lobby/" + createdLobby[0].join_code)
