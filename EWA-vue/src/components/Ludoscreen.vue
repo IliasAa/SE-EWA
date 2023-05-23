@@ -269,6 +269,7 @@ export default {
   },
 
   async created() {
+    this.currentuser = await this.userService.asyncGetInfo();
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
     this.lobbyCode = this.$route.params.joincode;
@@ -311,6 +312,7 @@ export default {
     console.log(this.selectedcolor);
     //Saves all the pawns that is allowed to move to playablePawns.
     //Make it so only can move pawns that have the same color as you selected.
+    console.log(this.currentuser.username);
     switch (this.selectedcolor) {
       case 'green':
         for (let i = 0; i < 4; i++) {
@@ -356,7 +358,6 @@ export default {
 
     async multiplayerInitialLaunch() {
       //get the selectedColor from manyToMany table in DB
-      this.currentuser = await this.userService.asyncGetInfo();
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
