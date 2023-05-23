@@ -9,9 +9,6 @@
           </div>
           <p>{{ dummyName() }}</p>
         </div>
-        <div class="action-bar">
-          <button class="chat">CHAT</button>
-        </div>
       </div>
       <div class="left-red">
         <div id="red_username" class="username">
@@ -254,8 +251,12 @@ export default {
 
 
       //information for multiplayer
+      userids: [],
       lobby: null,
       currentuser: null,
+      connectedUsers: [],
+      users: [],
+      selectedColorsMP: [],
 
     };
   },
@@ -273,14 +274,8 @@ export default {
     if (this.isSingleplayer === true) {
       this.selectedcolor = this.$route.query.selectedColor;
     } else {
-      //get the selectedColor from manyToMany table in DB
-      this.currentuser = await this.userService.asyncGetInfo();
-      this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
-      const returnStatement =
-          await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
-      this.selectedcolor = returnStatement[0];
+      await this.multiplayerInitialLaunch();
     }
-
 
 
     //for statements to create pawns for each color with unique ids
@@ -340,6 +335,32 @@ export default {
   },
 
   methods: {
+
+    async multiplayerInitialLaunch() {
+      //get the selectedColor from manyToMany table in DB
+      this.currentuser = await this.userService.asyncGetInfo();
+      this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+      const returnStatement =
+          await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
+      this.selectedcolor = returnStatement[0];
+
+
+      //get info from other players
+      this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
+      console.log(this.userids)
+      for (let i = 0; i < this.userids.length; i++) {
+        //prevents saving the current user in the user variable
+        console.log(this.currentuser.userId)
+        if (this.currentuser.userId !== this.userids[i]) {
+          //saves users in users variable and searches connected color in the many to many table
+          this.users.push(await this.userService.asyncFindId(this.userids[i]));
+          const returns = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.userids[i]);
+          this.selectedColorsMP.push(returns[0]);
+        }
+      }
+
+    },
+
     newPawn() {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
@@ -677,20 +698,6 @@ export default {
 #blue_username {
   margin-left: 10px;
   margin-right: 0;
-}
-
-.action-bar {
-  width: 100%;
-  border-top: 2px solid black;
-}
-
-.chat {
-  color: white;
-  padding: 5px;
-  background-color: #002B7F;
-  border-radius: 10px;
-
-  margin: 5px;
 }
 
 .username p {
