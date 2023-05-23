@@ -301,30 +301,32 @@ export default {
     }
 
 
+    console.log(this.selectedcolor);
+    //Saves all the pawns that is allowed to move to playablePawns.
     //Make it so only can move pawns that have the same color as you selected.
-    //Will make it more effecient if the start-up game will give a selectedColor attribute to the
-    //Component
-    if (this.selectedcolor === null || this.selectedcolor === 'green') {
-      this.selectedcolor = 'green'
-      for (let i = 0; i < 4; i++) {
-        this.playablePawns.push(this.pawns[i]);
-      }
+    switch (this.selectedcolor) {
+      case 'green':
+        for (let i = 0; i < 4; i++) {
+          this.playablePawns.push(this.pawns[i]);
+        }
+        break;
+      case 'yellow':
+        for (let i = 4; i < 8; i++) {
+          this.playablePawns.push(this.pawns[i]);
+        }
+        break;
+      case 'red':
+        for (let i = 8; i < 12; i++) {
+          this.playablePawns.push(this.pawns[i]);
+        }
+        break;
+      case  'blue':
+        for (let i = 12; i < 16; i++) {
+          this.playablePawns.push(this.pawns[i]);
+        }
     }
-    if (this.selectedcolor === 'yellow') {
-      for (let i = 4; i < 8; i++) {
-        this.playablePawns.push(this.pawns[i]);
-      }
-    }
-    if (this.selectedcolor === 'red') {
-      for (let i = 8; i < 12; i++) {
-        this.playablePawns.push(this.pawns[i]);
-      }
-    }
-    if (this.selectedcolor === 'blue') {
-      for (let i = 12; i < 16; i++) {
-        this.playablePawns.push(this.pawns[i]);
-      }
-    }
+
+    this.assignPlayersToCards();
   },
 
   computed: {
@@ -352,7 +354,7 @@ export default {
         //prevents saving the current user in the user variable
         console.log(this.currentuser.userId)
         if (this.currentuser.userId !== this.userids[i]) {
-          //saves users in users variable and searches connected color in the many to many table
+          //saves users in users variable and searches connected color in the ManyToMany table
           this.users.push(await this.userService.asyncFindId(this.userids[i]));
           const returns = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.userids[i]);
           this.selectedColorsMP.push(returns[0]);
