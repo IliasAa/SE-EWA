@@ -52,6 +52,7 @@ export default {
       users: [],
       host: null,
       isOwner: false,
+      availableColors: [],
 
       //for ownership to start the game.
       user: null,
@@ -70,6 +71,10 @@ export default {
     this.host = await this.userService.asyncFindId(ownerid);
     this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
     console.log(this.userids);
+
+    //Gets information for available player colors
+    this.availableColors = await this.lobbyService.asyncFindAvailableColors(this.user)
+
 
     for (let i = 0; i < this.userids.length; i++) {
       //saves users in users variable and searches connected color in the many to many table
@@ -92,6 +97,8 @@ export default {
       //redirect to game with lobbycode.
       this.$router.push("/gamepage/"+ lobbycode);
     }
+  },
+  async notSelectedColors(){
   },
 
   computed: {

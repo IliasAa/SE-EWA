@@ -9,16 +9,16 @@
     </div>
     <div class="playerColor">
       <p>Choose a starting color:</p>
-      <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
+      <button class="playerColorButton" itemid="1" :disabled="isDisabled" :class="{ active: selectedColor === 'red'}"
               id="playerRed" @click="colorChoosing('red')">Red
       </button>
-      <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
+      <button class="playerColorButton" itemid="2" :disabled="isDisabled" :class="{ active: selectedColor === 'blue'}"
               id="playerBlue" @click="colorChoosing('blue')">Blue
       </button>
-      <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
+      <button class="playerColorButton" itemid="3" :disabled="isDisabled" :class="{ active: selectedColor === 'yellow'}"
               id="playerYellow" @click="colorChoosing('yellow')">Yellow
       </button>
-      <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
+      <button class="playerColorButton" itemid="4" :disabled="isDisabled" :class="{ active: selectedColor === 'green'}"
               id="playerGreen" @click="colorChoosing('green')">Green
       </button>
     </div>
@@ -33,10 +33,12 @@
 
 
 import {Lobby} from "@/models/Lobby";
+import {isDisabled} from "bootstrap/js/src/util";
 
 export default {
   name: "DetailOnlineGame",
   inject: ['userService', 'lobbyService'],
+  props: ['availableColors'],
   data() {
     return {
       players: 1,
@@ -46,6 +48,7 @@ export default {
     }
   },
   methods: {
+    isDisabled,
     maxPlayer() {
       if (this.players < 1) {
         return this.players = 2;
@@ -57,7 +60,23 @@ export default {
 
     colorChoosing(color) {
       this.selectedColor = color;
+      for (let i = 0; i < this.availableColors.length; i++) {
+        if (this.availableColors[i] === 'red') {
+          this.selectedColor.style.cssText = 'background-color: black;'
+          isDisabled(true);
+        } else if (this.availableColors[i] === 'blue') {
+          this.selectedColor.style.cssText = 'background-color: black;'
+          isDisabled(true);
+        } else if (this.availableColors[i] === 'yellow') {
+          this.selectedColor.style.cssText = 'background-color: black;'
+          isDisabled(true);
+        } else if (this.availableColors[i] === 'green') {
+          this.selectedColor.style.cssText = 'background-color: black;'
+          isDisabled(true);
+        }
+      }
     },
+
 
 
     async createLobby() {

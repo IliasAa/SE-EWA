@@ -41,6 +41,10 @@ export class LobbyAdaptor {
         );
     }
 
+    async asyncFindAvailableColors(id) {
+        return await this.fetchJSon(this.RESOURCE_URL + id)
+    }
+
     async asyncFindByjoincode(join_code) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
     }
