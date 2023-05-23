@@ -7,7 +7,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <p>{{ dummyName() }}</p>
+          <p>{{ this.greenName }}</p>
         </div>
       </div>
       <div class="left-red">
@@ -15,7 +15,7 @@
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
-          <p>TheDoomedChicken</p>
+          <p>{{ this.redName }}</p>
         </div>
       </div>
     </div>
@@ -200,7 +200,7 @@
     <div class="right-part">
       <div class="right-yellow">
         <div class="username">
-          <p id="yellow_username">John Doe</p>
+          <p id="yellow_username">{{ this.yellowName }}</p>
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
@@ -208,7 +208,7 @@
       </div>
       <div class="right-blue">
         <div class="username">
-          <p id="blue_username">BigBoy1234567</p>
+          <p id="blue_username">{{ this.blueName }}</p>
           <div class="logo">
             <a href="#"><img src="../assets/icon.png" alt="Hva logo"></a>
           </div>
@@ -257,6 +257,13 @@ export default {
       connectedUsers: [],
       users: [],
       selectedColorsMP: [],
+
+
+      //PlayerCardinfo
+      greenName: null,
+      yellowName: null,
+      blueName: null,
+      redName: null,
 
     };
   },
@@ -309,24 +316,33 @@ export default {
         for (let i = 0; i < 4; i++) {
           this.playablePawns.push(this.pawns[i]);
         }
+        this.greenName = this.currentuser.username;
         break;
       case 'yellow':
         for (let i = 4; i < 8; i++) {
           this.playablePawns.push(this.pawns[i]);
         }
+        this.yellowName = this.currentuser.username;
         break;
       case 'red':
         for (let i = 8; i < 12; i++) {
           this.playablePawns.push(this.pawns[i]);
         }
+        this.redName = this.currentuser.username;
         break;
       case  'blue':
         for (let i = 12; i < 16; i++) {
           this.playablePawns.push(this.pawns[i]);
         }
+        this.blueName = this.currentuser.username;
     }
 
-    this.assignPlayersToCards();
+    //Multiplayer usernames on cards and removes unused pawns from board.
+    if (!this.isSingleplayer) {
+      this.assignPlayerCardMP();
+      this.removePawns();
+    }
+
   },
 
   computed: {
@@ -476,8 +492,8 @@ export default {
 
 
     selectPawn() {
-      //possible to make it more efficient if i could toggle or add a listener for the
-      // button press but it will take to long to figure out
+      //possible to make it more efficient if I could toggle or add a listener for the
+      // button press, but it will take too long to figure out
       this.allowedToMove = false;
       this.movePawnText = "Selecteer welke pion je wilt bewegen";
     },
@@ -501,13 +517,55 @@ export default {
       }
     },
 
-    dummyName() {
-      // let username = this.SessionService.currentAccount.username.toString();
-      if (this.SessionService !== null) {
-        return this.SessionService.currentAccount.username.toString();
-      }
-      return "Cyber_samurai"
+    removePawns() {
 
+      //Could be better
+      if (this.greenName === null) {
+        for (let i = 0; i < 4; i++) {
+          const element = document.getElementById('100' + i);
+          console.log(element)
+          element.remove();
+        }
+      }
+      if (this.yellowName === null) {
+        for (let i = 0; i < 4; i++) {
+          let element =  document.getElementById('200' + i)
+          console.log(element)
+          element.remove();
+        }
+      }
+      if (this.redName === null) {
+        for (let i = 0; i < 4; i++) {
+          const element = document.getElementById('300' + i);
+          console.log(element)
+          element.remove();
+        }
+      }
+      if (this.blueName === null) {
+        for (let i = 0; i < 4; i++) {
+          const element = document.getElementById('400' + i);
+          console.log(element)
+          element.remove();
+        }
+      }
+    },
+
+    assignPlayerCardMP(){
+      for (let i = 0; i < this.selectedColorsMP.length; i++) {
+        switch (this.selectedColorsMP[i]) {
+          case 'green':
+            this.greenName = this.users[i].username;
+            break;
+          case 'yellow':
+            this.yellowName = this.users[i].username;
+            break;
+          case 'red':
+            this.redName = this.users[i].username;
+            break;
+          case  'blue':
+            this.blueName = this.users[i].username;
+        }
+      }
     }
   },
 
