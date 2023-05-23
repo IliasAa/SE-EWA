@@ -25,9 +25,7 @@
           </router-link>
         </div>
       </div>
-      <div class="background">
-        <img src="../assets/Ludobackground.png" alt="Ludo Board">
-      </div>
+      <div class="background"></div>
     </div>
   </div>
 </template>

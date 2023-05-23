@@ -92,6 +92,7 @@ export default {
     async startGame(lobbycode) {
       //changes status to 1 which is the status for active game.
       this.lobby[0].lobby_status = 1;
+      console.log(this.lobby[0]);
       await this.lobbyService.asyncUpdate(this.lobby[0]);
 
       //redirect to game with lobbycode.
@@ -117,7 +118,6 @@ export default {
 
 .page-main {
   flex-grow: 1;
-  backdrop-filter: blur(10px);
 }
 
 .container {

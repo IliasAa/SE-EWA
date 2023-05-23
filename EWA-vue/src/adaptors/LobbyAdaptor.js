@@ -36,7 +36,7 @@ export class LobbyAdaptor {
         await this.fetchJSon(this.RESOURCE_URL + "/" + lobby.idLobby, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
-                body: JSON.stringify({lobby})
+                body: JSON.stringify(lobby)
             },
         );
     }
