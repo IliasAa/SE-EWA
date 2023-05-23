@@ -13,9 +13,9 @@ import javax.lang.model.element.Name;
         @NamedQuery(name = "find_color_withLobbyAndUser",
                 query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1 and l.user.userId = ?2"),
         @NamedQuery(name = "find_lobby_owner_name",
-                query = "select u.username from User u inner join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1"),
-        @NamedQuery(name = "find_available_colors",
-                query = "select l.selected_color from UserHasLobby l where l.lobby_id_lobby = ?1")
+                query = "select u.username from User u left join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1"),
+//        @NamedQuery(name = "find_available_colors",
+//                query = "select l.selected_color from UserHasLobby l where l.lobbyIdLobby = ?1")
 })
 
 @Entity
@@ -39,7 +39,6 @@ public class UserHasLobby {
 
     private int userid_owner;
     private String selected_color;
-    private int lobby_id_lobby;
 
     public UserHasLobby() {
     }
