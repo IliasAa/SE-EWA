@@ -69,7 +69,7 @@ public class Config implements WebMvcConfigurer , WebSocketConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").
                 allowedOriginPatterns("http://localhost:*", getHostIPAddressPattern(), allowedCorsClients)
-                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN )
+                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .allowCredentials(true);
 

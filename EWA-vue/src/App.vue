@@ -11,6 +11,7 @@ import {FetchInterceptor} from "@/adaptors/FetchInterceptor";
 import {toast} from "vue3-toastify";
 import {LeaderboardAdaptor} from "@/adaptors/LeaderboardAdaptor";
 import {LobbyAdaptor} from "@/adaptors/LobbyAdaptor";
+import {NotificationAdaptor} from "@/adaptors/NotificationAdapter";
 
 export default {
   name: 'App',
@@ -24,6 +25,8 @@ export default {
     this.theFetchInterceptor =
         new FetchInterceptor(this.theSessionService, this.$router, toast);
 
+    this.NotificationService = new NotificationAdaptor(URL +"/notifications");
+
 
     return {
       userService: new UserAdaptor(URL + "/users"),
@@ -31,10 +34,14 @@ export default {
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
       lobbyService: new LobbyAdaptor(URL + "/Lobby"),
       SessionService: this.theSessionService,
+      // service for notification framework
+      notificationService: this.NotificationService,
+
     }
   },
   beforeUnmount() {
     this.theFetchInterceptor.unregister();
+    this.NotificationService.disconnect();
   }
 }
 
