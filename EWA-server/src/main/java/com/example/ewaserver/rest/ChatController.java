@@ -7,10 +7,10 @@ import com.example.ewaserver.repositories.ChatRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
@@ -26,12 +26,17 @@ public class ChatController {
     private NotificationDistributor notificationDistributor;
 
     @PostMapping(path = "", produces = "application/json")
-    public String sendMessage(@RequestBody ObjectNode chatInfo){
+    public String sendMessage(@RequestBody ObjectNode chatInfo) {
         Chat chat = new Chat(LocalDateTime.now(), chatInfo.get("message").asText());
         User user = this.userRepository.findById(chatInfo.get("id").asInt());
         chat.addUser(user);
         this.Repository.Save(chat);
         this.notificationDistributor.notify("chat");
-        return chatInfo + "is send";
+        return "Message is successfully send!";
+    }
+
+    @GetMapping(path = "/getAll", produces = "application/json")
+    public List<Chat> getAllMessages() {
+        return this.Repository.findAll();
     }
 }

@@ -55,6 +55,7 @@ public class User {
     Set<User> friends = new HashSet<>();
 
     @ManyToMany(mappedBy = "users")
+    @JsonIgnore
     private Set<Chat> chats;
 
 

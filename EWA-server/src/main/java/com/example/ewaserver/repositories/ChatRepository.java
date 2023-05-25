@@ -1,8 +1,10 @@
 package com.example.ewaserver.repositories;
 
 import com.example.ewaserver.models.Chat;
+import com.example.ewaserver.models.UserHasLobby;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +19,8 @@ public class ChatRepository implements EntityRepository<Chat>{
 
     @Override
     public List<Chat> findAll() {
-        return null;
+        TypedQuery<Chat> query = this.em.createQuery("select l from Chat l", Chat.class);
+        return query.getResultList();
     }
 
     @Override

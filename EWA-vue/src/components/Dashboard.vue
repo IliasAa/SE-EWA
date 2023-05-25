@@ -32,7 +32,7 @@
       <div class="background"></div>
     </div>
     <div class="chatDetail" v-if="showPopup">
-      <div class="close" @click="togglePopup">&times;</div>
+      <div class="close-button" @click="togglePopup">&times;</div>
       <chatBox></chatBox>
     </div>
   </div>
@@ -77,16 +77,18 @@ export default {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.close {
-  /* ... existing styles ... */
+.close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 30px;
-  font-weight: bold;
+  top: 5px;
+  right: 5px;
+  padding: 8px;
+  background-color: #3772ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  z-index: 2; /* Set a higher z-index value to ensure the close button is displayed above the chatbox */
 }
-
 button {
   padding: 8px 16px;
   background-color: #3772ff;

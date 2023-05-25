@@ -148,12 +148,21 @@ export class SessionService {
         return response;
     }
 
+    async asyncFindAll(){
+        let response =  await fetch ("http://localhost:8081/chat/getAll", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return await response.json();
+        }
+    }
     async sendMessage(message){
-        await this.fetchJSon("http://localhost:8081/chat", {
+        await fetch("http://localhost:8081/chat", {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify({
-                "userId": this.currentAccount.userId,
+                "id": this.currentAccount.userId,
                 "message": message,
             })
         })

@@ -2,6 +2,7 @@ package com.example.ewaserver.models;
 
 import com.example.ewaserver.models.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,9 +36,10 @@ public class Chat {
     public Chat(LocalDateTime date, String message) {
         this.date = date;
         this.message = message;
+        this.users = new ArrayList<>();
     }
 
     public void addUser(User user){
-        users.add(user);
+        this.users.add(user);
     }
 }

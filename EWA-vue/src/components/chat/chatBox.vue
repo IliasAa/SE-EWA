@@ -2,7 +2,8 @@
   <div class="chatbox">
     <div class="chat-messages" ref="messageContainer">
       <div v-for="message in messages" :key="message.id" class="message">
-        <span>{{ message }}</span>
+        <span style="color: #3772ff">{{ message.users.length > 0 ? message.users[0].username : 'Unknown User' }}: </span>
+        <span>{{ message.message }}</span>
       </div>
     </div>
     <div class="chat-input">
@@ -13,7 +14,6 @@
 </template>
 
 <script>
-import {AnnouncementAdaptor} from "@/adaptors/AnnouncementAdapter.js";
 
 export default {
   name: "chatBox",
@@ -24,16 +24,18 @@ export default {
       userInput: ""
     };
   },
+  mounted() {
+    this.scrollToBottom();
+  },
+  updated() {
+    this.scrollToBottom();
+  },
   created() {
     // setup a new service with a web socket
-    this.announcementsService = new AnnouncementAdaptor("http://localhost:8081/announcements", this.onReceiveMessage)
-
+    // this.announcementsService = new AnnouncementAdaptor("http://localhost:8081/announcements", this.onReceiveMessage)
+    this.notificationService.subscribe("chat", this.reInitialize)
+    this.reInitialize();
   },
-  beforeUnmount() {
-    // close down the service with the web socket
-    this.announcementsService.close();
-  },
-
 
   methods: {
     onReceiveMessage(message) {
@@ -47,7 +49,8 @@ export default {
 
       // this method is called when enter is pressed within the input text field
       // for demo purpose of a simple web socket
-      this.announcementsService.sendMessage(this.userInput);
+      this.SessionService.sendMessage(this.userInput);
+
       this.userInput = "";
       // a persistent announcement system would save the announcement here via the REST api
       // and let the rest controller issue the websocket notification to inform all clients about the update
@@ -55,20 +58,20 @@ export default {
 
     async reInitialize() {
     // reload all books from the back-end
-      this.messages = await this.SessionService.asyncFindAll();
+      this.messages = (await this.SessionService.asyncFindAll());
     },
 
     scrollToBottom() {
       const container = this.$refs.messageContainer;
       container.scrollTop = container.scrollHeight;
-    },
+    }
   },
 }
 </script>
 
 <style scoped>
-
 .chatbox {
+  position: relative;
   width: 400px;
   height: 300px;
   margin: 0 auto;
@@ -79,7 +82,7 @@ export default {
 }
 
 .chat-messages {
-  max-height: 100%;
+  max-height: calc(100% - 70px); /* Adjusted to account for the chat input and close button heights */
   overflow-y: auto;
 }
 
@@ -89,21 +92,18 @@ export default {
   border-radius: 4px;
 }
 
-.user-message {
-  background-color: #3772ff;
-  color: #fff;
-}
-
-.bot-message {
-  background-color: #e8e8e8;
-}
-
 .chat-input {
-  margin-top: 10px;
+  position: absolute;
+  bottom: 50px; /* Adjusted to leave space for the close button */
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
-  width: 80%;
+  flex: 1;
   padding: 8px;
   border: none;
   border-radius: 4px;
@@ -117,4 +117,6 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+
+
 </style>
