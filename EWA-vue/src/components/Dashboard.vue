@@ -14,12 +14,16 @@
           <router-link to="/joingame">
             <button class="btn btn-primary btn-lg">Join a game</button>
           </router-link>
+
         </div>
         <hr>
         <div class="card-footer">
           <router-link to="/rulepage">
             <button class="btn btn-secondary btn-sm">How to Play</button>
           </router-link>
+          <a>
+            <button class="btn btn-primary btn-lg" @click="togglePopup">Random Chat</button>
+          </a>
           <router-link to="/settings">
             <button class="btn btn-secondary btn-sm">Settings</button>
           </router-link>
@@ -27,20 +31,31 @@
       </div>
       <div class="background"></div>
     </div>
+    <div class="chatDetail" v-if="showPopup">
+      <div class="close" @click="togglePopup">&times;</div>
+      <chatBox></chatBox>
+    </div>
   </div>
+
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import chatBox from "@/components/chat/chatBox.vue";
 
 
 export default {
   name: "DashboardScreen",
-  components: {NavBar},
+  components: {NavBar, chatBox},
   data() {
     return {
-
+      showPopup: false,
     }
+  },
+  methods: {
+    togglePopup() {
+      this.showPopup = !this.showPopup;
+    },
   },
 
 }
@@ -48,6 +63,38 @@ export default {
 
 
 <style scoped>
+
+
+.chatDetail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  /* ... existing styles ... */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #3772ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 .screen {
   display: flex;
   flex-direction: column;
@@ -76,6 +123,7 @@ export default {
   border-color: black;
   margin-bottom: 20px;
 }
+
 
 .card-footer {
   display: flex;
