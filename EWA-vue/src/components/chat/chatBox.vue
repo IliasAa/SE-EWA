@@ -1,10 +1,8 @@
 <template>
-  <div class="chat-screen">
-    <div class="chat-messages">
+  <div class="chatbox">
+    <div class="chat-messages" ref="messageContainer">
       <div v-for="message in messages" :key="message.id" class="message">
-        <span>
-          {{ message }}
-        </span>
+        <span>{{ message }}</span>
       </div>
     </div>
     <div class="chat-input">
@@ -19,6 +17,7 @@ import {AnnouncementAdaptor} from "@/adaptors/AnnouncementAdapter.js";
 
 export default {
   name: "chatBox",
+  inject: ['notificationService','SessionService'],
   data() {
     return {
       messages: [],
@@ -28,6 +27,7 @@ export default {
   created() {
     // setup a new service with a web socket
     this.announcementsService = new AnnouncementAdaptor("http://localhost:8081/announcements", this.onReceiveMessage)
+
   },
   beforeUnmount() {
     // close down the service with the web socket
@@ -40,29 +40,47 @@ export default {
       this.messages.push(message)
     },
     onNewMessage() {
+
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+
       // this method is called when enter is pressed within the input text field
       // for demo purpose of a simple web socket
       this.announcementsService.sendMessage(this.userInput);
+      this.userInput = "";
       // a persistent announcement system would save the announcement here via the REST api
       // and let the rest controller issue the websocket notification to inform all clients about the update
-      this.userInput = '';
-    }
-  }
-};
+    },
+
+    async reInitialize() {
+    // reload all books from the back-end
+      this.messages = await this.SessionService.asyncFindAll();
+    },
+
+    scrollToBottom() {
+      const container = this.$refs.messageContainer;
+      container.scrollTop = container.scrollHeight;
+    },
+  },
+}
 </script>
 
 <style scoped>
-.chat-screen {
+
+.chatbox {
   width: 400px;
+  height: 300px;
   margin: 0 auto;
   background-color: #f1f1f1;
   padding: 20px;
   border-radius: 4px;
+  overflow: hidden;
 }
 
 .chat-messages {
-  max-height: 300px;
-  overflow-y: scroll;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .message {

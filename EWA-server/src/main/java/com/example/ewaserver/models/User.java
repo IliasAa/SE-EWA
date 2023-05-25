@@ -46,6 +46,17 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserHasLobby> lobbys = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_has_friend",
+            joinColumns =
+            @JoinColumn(name = "FRIEND1", referencedColumnName = "userId"),
+            inverseJoinColumns =
+            @JoinColumn(name = "FRIEND2", referencedColumnName = "userId"))
+    Set<User> friends = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Chat> chats;
+
 
     public User(int userId, String username, String firstname, String lastname, String email, String password,
                 int points, String role) {

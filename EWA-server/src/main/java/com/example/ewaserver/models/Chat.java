@@ -2,6 +2,8 @@ package com.example.ewaserver.models;
 
 import com.example.ewaserver.models.User;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,21 +16,28 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String message;
     private LocalDateTime date;
+    private String message;
 
+
+
+    @ManyToMany
+    private List<User> users;
 
     public Chat() {
     }
 
-    public Chat(int id, String message, LocalDateTime date) {
+    public Chat(int id, LocalDateTime date) {
         this.id = id;
-        this.message = message;
         this.date = date;
     }
 
-    public Chat(String message, LocalDateTime date) {
-        this.message = message;
+    public Chat(LocalDateTime date, String message) {
         this.date = date;
+        this.message = message;
+    }
+
+    public void addUser(User user){
+        users.add(user);
     }
 }

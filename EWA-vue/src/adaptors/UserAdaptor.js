@@ -74,7 +74,6 @@ export class UserAdaptor {
     }
 
 
-
     async asyncUpdate(user) {
         await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
                 headers: {'Content-Type': 'application/json'},

@@ -148,6 +148,17 @@ export class SessionService {
         return response;
     }
 
+    async sendMessage(message){
+        await this.fetchJSon("http://localhost:8081/chat", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({
+                "userId": this.currentAccount.userId,
+                "message": message,
+            })
+        })
+    }
+
 
 
 
