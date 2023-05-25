@@ -42,19 +42,22 @@ export default {
       this.messages.push(message)
     },
     onNewMessage() {
+      if (this.userInput !== "") {
 
-      this.$nextTick(() => {
-        this.scrollToBottom();
-      });
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
 
-      // this method is called when enter is pressed within the input text field
-      // for demo purpose of a simple web socket
-      this.SessionService.sendMessage(this.userInput);
+        // this method is called when enter is pressed within the input text field
+        // for demo purpose of a simple web socket
 
-      this.userInput = "";
-      // a persistent announcement system would save the announcement here via the REST api
-      // and let the rest controller issue the websocket notification to inform all clients about the update
-    },
+        this.SessionService.sendMessage(this.userInput);
+
+        this.userInput = "";
+        // a persistent announcement system would save the announcement here via the REST api
+        // and let the rest controller issue the websocket notification to inform all clients about the update
+      }
+      },
 
     async reInitialize() {
     // reload all books from the back-end
