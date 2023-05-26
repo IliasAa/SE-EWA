@@ -265,6 +265,10 @@ export default {
       blueName: null,
       redName: null,
 
+
+      //Websockets playermove
+      playerMoves: [],
+
     };
   },
 
@@ -530,7 +534,7 @@ export default {
       }
       if (this.yellowName === null) {
         for (let i = 0; i < 4; i++) {
-          let element =  document.getElementById('200' + i)
+          let element = document.getElementById('200' + i)
           console.log(element)
           element.remove();
         }
@@ -551,7 +555,7 @@ export default {
       }
     },
 
-    assignPlayerCardMP(){
+    assignPlayerCardMP() {
       for (let i = 0; i < this.selectedColorsMP.length; i++) {
         switch (this.selectedColorsMP[i]) {
           case 'green':
@@ -567,7 +571,13 @@ export default {
             this.blueName = this.users[i].username;
         }
       }
-    }
+    },
+
+    async reInitialize() {
+      // reload all playerMoves from the back-end
+
+      // this.playerMoves = (await this.Ludoservice.asyncFindAll());
+    },
   },
 
 }
