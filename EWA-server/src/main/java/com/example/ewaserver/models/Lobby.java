@@ -37,6 +37,9 @@ public class Lobby {
     @OneToMany(mappedBy = "lobby")
     private List<UserHasLobby> users = new ArrayList<>();
 
+    @OneToMany(mappedBy = "lobby")
+    private Set<Playerposition> playerpositions;
+
 
     public Lobby(String join_code, int isPrivateLobby, int player_size, int max_allowed_Players,
                  int lobby_status, int userid_owner) {
@@ -50,12 +53,6 @@ public class Lobby {
 
     protected Lobby() {
     }
-//
-//    public void addUser (User user,Lobby lobby, String selectedcolor) {
-//        UserHasLobby userHasLobby = new UserHasLobby(user,lobby,selectedcolor);
-//        users.add(userHasLobby);
-//        user.getLobbySet().add(userHasLobby);
-//    }
 
 
     public void addUser(UserHasLobby userHasLobby) {
