@@ -101,6 +101,7 @@ export default {
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
 
 
+
       //dummy data to test combination between user and lobby
       //this has to be removed if the selectColor pop-up is implemented
       const selectedcolor = "green";

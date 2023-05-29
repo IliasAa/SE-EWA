@@ -52,7 +52,6 @@ export default {
       users: [],
       host: null,
       isOwner: false,
-      availableColors: [],
 
       //for ownership to start the game.
       user: null,
@@ -72,8 +71,6 @@ export default {
     this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
     console.log(this.userids);
 
-    //Gets information for available player colors
-    this.availableColors = await this.lobbyService.asyncFindAvailableColors(this.user)
 
 
     for (let i = 0; i < this.userids.length; i++) {

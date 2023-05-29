@@ -55,10 +55,6 @@ public class LobbyController {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
     }
 
-   @GetMapping(path = "/{LobbyId}", produces = "application/json")
-    public List<UserHasLobby> getAvailableColors(@PathVariable int LobbyId) {
-        return userLobbyRepository.findByQuery("find_available_colors", LobbyId);
-    }
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
     public UserHasLobby CombineLobbyWithUser(
