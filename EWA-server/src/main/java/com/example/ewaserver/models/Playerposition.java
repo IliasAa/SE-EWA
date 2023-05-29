@@ -7,6 +7,11 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@NamedQueries({
+        @NamedQuery(name = "Find_Playermoves_based_of_lobbyId",
+                query = "select p from Playerposition p where p.lobby = ?1 "),
+})
 @Entity
 @Getter
 @Setter

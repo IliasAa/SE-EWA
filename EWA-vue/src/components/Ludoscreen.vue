@@ -234,7 +234,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService', 'lobbyService', 'userService'],
+  inject: ['SessionService', 'lobbyService', 'userService','ludoService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -347,6 +347,8 @@ export default {
     if (!this.isSingleplayer) {
       this.assignPlayerCardMP();
       this.removePawns();
+      this.notificationService.subscribe("playermoves", this.reInitialize)
+      this.reInitialize();
     }
 
   },
@@ -363,6 +365,7 @@ export default {
     async multiplayerInitialLaunch() {
       //get the selectedColor from manyToMany table in DB
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
       this.selectedcolor = returnStatement[0];
@@ -576,7 +579,8 @@ export default {
     async reInitialize() {
       // reload all playerMoves from the back-end
 
-      // this.playerMoves = (await this.Ludoservice.asyncFindAll());
+      //saves all the moves made
+      this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
     },
   },
 

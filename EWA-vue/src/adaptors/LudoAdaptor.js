@@ -20,6 +20,10 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
+    async asyncFindAllWithLobbyid(id){
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
+    }
+
     async asyncSaveUsermove(pawn) {
         await this.fetchJSon(this.RESOURCE_URL, {
             headers: {'Content-Type': 'application/json'},

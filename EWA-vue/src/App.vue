@@ -12,6 +12,7 @@ import {toast} from "vue3-toastify";
 import {LeaderboardAdaptor} from "@/adaptors/LeaderboardAdaptor";
 import {LobbyAdaptor} from "@/adaptors/LobbyAdaptor";
 import {NotificationAdaptor} from "@/adaptors/NotificationAdapter";
+import {LudoAdaptor} from "@/adaptors/LudoAdaptor";
 
 export default {
   name: 'App',
@@ -33,6 +34,7 @@ export default {
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
       lobbyService: new LobbyAdaptor(URL + "/Lobby"),
+      ludoService: new LudoAdaptor(URL + "/ludo"),
       SessionService: this.theSessionService,
       // service for notification framework
       notificationService: this.NotificationService,
