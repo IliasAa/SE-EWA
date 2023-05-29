@@ -7,7 +7,7 @@
             <h3 class="logo">Hva Ludo King</h3>
               <ul>
                   <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
-                  <router-link to="Dashboard"><li><a href="#">friends</a></li></router-link>
+                  <router-link to="/friends"><li><a href="#">friends</a></li></router-link>
                   <router-link to="/adminPage" v-if="isAdmin"><li><a href="#">Admin</a></li></router-link>
 
               </ul>

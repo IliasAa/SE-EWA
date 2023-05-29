@@ -1,9 +1,15 @@
 <template>
   <div class="chatbox">
     <div class="chat-messages" ref="messageContainer">
-      <div v-for="message in messages" :key="message.id" class="message">
-        <span style="color: #3772ff">{{ message.users.length > 0 ? message.users[0].username : 'Unknown User' }}: </span>
-        <span>{{ message.message }}</span>
+      <div v-for="message in messages" :key="message.id" class="message"
+           :class="{ 'float-right': message.fromUser.userId === userId }">
+        <div v-if="message.fromUser.userId !== userId" class="message-left">
+          <span class="message-sender">{{ message.fromUser.username }}: </span>
+          <span class="message-text">{{ message.message }}</span>
+        </div>
+        <div v-else class="message-right">
+          <span class="message-text">{{ message.message }}</span>
+        </div>
       </div>
     </div>
     <div class="chat-input">
@@ -17,11 +23,15 @@
 
 export default {
   name: "chatBox",
-  inject: ['notificationService','SessionService'],
+  props: ["friend"],
+  inject: ['notificationService', 'SessionService'],
   data() {
     return {
       messages: [],
-      userInput: ""
+      userInput: "",
+      userId: null,
+      friendId: null,
+      chatLink: null,
     };
   },
   mounted() {
@@ -31,15 +41,23 @@ export default {
     this.scrollToBottom();
   },
   created() {
-    // setup a new service with a web socket
-    // this.announcementsService = new AnnouncementAdaptor("http://localhost:8081/announcements", this.onReceiveMessage)
-    this.notificationService.subscribe("chat", this.reInitialize)
-    this.reInitialize();
+    this.userId = this.SessionService.currentAccount.userId;
+
+    this.createChatLink();
+
+
   },
 
   methods: {
-    onReceiveMessage(message) {
-      this.messages.push(message)
+    createChatLink() {
+      this.friendId = this.$route.params.id;
+      if (this.userId > this.friendId) {
+        this.chatLink = this.friendId + "&" + this.userId;
+      } else {
+        this.chatLink = this.userId + "&" + this.friendId;
+      }
+      this.notificationService.subscribe("chat" + this.chatLink, this.reInitialize)
+      this.reInitialize();
     },
     onNewMessage() {
       if (this.userInput !== "") {
@@ -51,17 +69,17 @@ export default {
         // this method is called when enter is pressed within the input text field
         // for demo purpose of a simple web socket
 
-        this.SessionService.sendMessage(this.userInput);
+        this.SessionService.sendMessage(this.userInput, this.friendId);
 
         this.userInput = "";
         // a persistent announcement system would save the announcement here via the REST api
         // and let the rest controller issue the websocket notification to inform all clients about the update
       }
-      },
+    },
 
     async reInitialize() {
-    // reload all books from the back-end
-      this.messages = (await this.SessionService.asyncFindAll());
+      // reload all books from the back-end
+      this.messages = (await this.SessionService.asyncFindChatWithFriend(this.friendId));
     },
 
     scrollToBottom() {
@@ -69,10 +87,27 @@ export default {
       container.scrollTop = container.scrollHeight;
     }
   },
+  watch: {
+    $route(to, from) {
+      // Perform actions when the route changes
+      console.log('Route changed:', to, from);
+
+      // Call any methods or perform any logic based on the route change
+      // For example, you can update the selectedFriend based on the route params
+      this.createChatLink();
+    }
+  }
 }
 </script>
 
 <style scoped>
+.friend-bar {
+  width: 200px;
+  height: 10px;
+  background-color: #3772ff;
+  padding-bottom: 20px;
+}
+
 .chatbox {
   position: relative;
   width: 400px;
@@ -91,8 +126,33 @@ export default {
 
 .message {
   margin-bottom: 10px;
-  padding: 5px;
-  border-radius: 4px;
+  clear: both;
+}
+
+.float-right {
+  float: right;
+}
+
+.message-left {
+  background-color: #3772ff;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  float: left;
+}
+
+.message-right {
+  background-color: #66bb6a;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
 .chat-input {

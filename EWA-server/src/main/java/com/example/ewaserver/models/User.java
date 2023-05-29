@@ -2,6 +2,7 @@ package com.example.ewaserver.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Getter
@@ -47,8 +47,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserHasLobby> lobbys = new ArrayList<>();
 
-    @ManyToMany
     @JsonIgnore
+    @ManyToMany
     @JoinTable(name = "user_has_friend",
             joinColumns =
             @JoinColumn(name = "FRIEND1", referencedColumnName = "userId"),
@@ -56,9 +56,13 @@ public class User {
             @JoinColumn(name = "FRIEND2", referencedColumnName = "userId"))
     Set<User> friends = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users")
     @JsonIgnore
-    private Set<Chat> chats;
+    @OneToMany(mappedBy = "fromUser")
+    private List<Chat> sentChats;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "toUser")
+    private List<Chat> receivedChats;
 
 
     public User(int userId, String username, String firstname, String lastname, String email, String password,
@@ -109,6 +113,12 @@ public class User {
             getLobbys().add(userHasLobby);
             userHasLobby.setUser(this);
         }
+    }
+
+    public boolean addFriend(User friend) {
+        this.friends.add(friend);
+        friend.getFriends().add(this);
+        return true;
     }
 
     public void addToken(Token token) {
