@@ -268,7 +268,7 @@ export default {
 
       //Websockets playermove
       playerMoves: [],
-
+      activeThrow: "green",
     };
   },
 
@@ -290,27 +290,7 @@ export default {
     }
 
 
-    //for statements to create pawns for each color with unique ids
-    for (let i = 100; i < 104; i++) {
-      let count = i - 100;
-      let homepos = 1000 + count;
-      this.pawns.push(pawn.createGreenpawn(i, homepos))
-    }
-    for (let i = 200; i < 204; i++) {
-      let count = i - 200;
-      let homepos = 2000 + count;
-      this.pawns.push(pawn.createYellowpawn(i, homepos))
-    }
-    for (let i = 300; i < 304; i++) {
-      let count = i - 300;
-      let homepos = 3000 + count;
-      this.pawns.push(pawn.createRedpawn(i, homepos))
-    }
-    for (let i = 400; i < 404; i++) {
-      let count = i - 400;
-      let homepos = 4000 + count;
-      this.pawns.push(pawn.createbluePawn(i, homepos))
-    }
+    this.createPawns();
 
 
     console.log(this.selectedcolor);
@@ -361,10 +341,36 @@ export default {
   },
 
   methods: {
-
+    createPawns(){
+      //for statements to create pawns for each color with unique ids
+      for (let i = 100; i < 104; i++) {
+        let count = i - 100;
+        let homepos = 1000 + count;
+        this.pawns.push(pawn.createGreenpawn(i, homepos))
+      }
+      for (let i = 200; i < 204; i++) {
+        let count = i - 200;
+        let homepos = 2000 + count;
+        this.pawns.push(pawn.createYellowpawn(i, homepos))
+      }
+      for (let i = 300; i < 304; i++) {
+        let count = i - 300;
+        let homepos = 3000 + count;
+        this.pawns.push(pawn.createRedpawn(i, homepos))
+      }
+      for (let i = 400; i < 404; i++) {
+        let count = i - 400;
+        let homepos = 4000 + count;
+        this.pawns.push(pawn.createbluePawn(i, homepos))
+      }
+    },
     async multiplayerInitialLaunch() {
       //get the selectedColor from manyToMany table in DB
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+
+      console.log(this.lobby);
+      console.log(this.lobby.idLobby);
+      console.log(this.lobby[0].idLobby);
 
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
@@ -387,7 +393,7 @@ export default {
 
     },
 
-    newPawn() {
+    async newPawn() {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -413,6 +419,11 @@ export default {
           prevPosBox.removeChild(pawnMove);
           nextPosBox.appendChild(pawnMove);
           this.playablePawns[arrayPos].onField = 2;
+
+          //if it is a mutliplayer game it will post the playermove to the database
+          if (!this.isSingleplayer){
+            await this.ludoService.asyncSaveUsermove(pawnId,this.playablePawns[arrayPos].position, this.lobby[0].idLobby)
+          }
         } else {
           this.selectPawn()
         }
