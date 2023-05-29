@@ -69,16 +69,17 @@ export default {
     const ownerid = this.lobby[0].userid_owner;
     this.host = await this.userService.asyncFindId(ownerid);
     this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
-    console.log(this.userids);
 
 
 
     for (let i = 0; i < this.userids.length; i++) {
       //saves users in users variable and searches connected color in the many to many table
       this.users.push(await this.userService.asyncFindId(this.userids[i]));
-      const returnStatement = await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.userids[i]);
+      const returnStatement =
+          await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.users[i].userId);
       this.users[i].selectedColor = returnStatement[0];
     }
+
 
     if (this.myId === ownerid) {
       this.isOwner = true;
@@ -95,8 +96,6 @@ export default {
       //redirect to game with lobbycode.
       this.$router.push("/gamepage/"+ lobbycode);
     }
-  },
-  async notSelectedColors(){
   },
 
   computed: {

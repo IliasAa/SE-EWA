@@ -34,9 +34,11 @@ public class Lobby {
 
     private int userid_owner;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lobby")
     private List<UserHasLobby> users = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lobby")
     private Set<Playerposition> playerpositions;
 

@@ -43,10 +43,12 @@ public class User {
     @JsonIgnore
     private Set<Token> tokens;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<UserHasLobby> lobbys = new ArrayList<>();
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "user_has_friend",
             joinColumns =
             @JoinColumn(name = "FRIEND1", referencedColumnName = "userId"),
