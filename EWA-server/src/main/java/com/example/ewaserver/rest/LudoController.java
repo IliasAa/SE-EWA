@@ -44,6 +44,7 @@ public class LudoController {
                 buildAndExpand(savePmove.getIdPlayerposition()).toUri();
 
         return ResponseEntity.created(location).body(savePmove);
+
     }
 
     @PutMapping(path = "")

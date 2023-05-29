@@ -58,7 +58,11 @@ export default {
       userId: null,
       mygames: [],
       games: [],
-      join_code: ""
+      join_code: "",
+
+      users: [],
+      selectedColorsinLobby: [],
+      joiningWithColor: "",
     }
   },
   async created() {
@@ -95,27 +99,37 @@ export default {
   },
 
   methods: {
+
     //Async method to join a game using a join code of that lobby
     async Joingame(join_code) {
       //saves the response and send it to the User_has_lobby.
-      const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
-
-
 
       //dummy data to test combination between user and lobby
       //this has to be removed if the selectColor pop-up is implemented
       const selectedcolor = "green";
 
-
-      console.log(this.userId);
-      console.log(createdLobby);
-      console.log(createdLobby[0].idLobby);
+      const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
 
       await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedcolor);
 
       //Push router to lobby with join code so it will see it in the params
       this.$router.push("/lobby/" + createdLobby[0].join_code)
+    },
+
+
+    //async method to show all the colors that are already selected in the selected lobby.
+    //this method will be used on the detail
+    async SelectedColors(join_code) {
+      const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
+      this.users = await this.lobbyService.asyncFindAllConnectedToLobby(createdLobby[0].idLobby);
+
+      for (let i = 0; i < this.users.length; i++) {
+        const returnStatement =
+            await this.lobbyService.asyncFindColorConnectedToUser(createdLobby, this.users[i].userId);
+        this.selectedColorsinLobby.push(returnStatement[0]);
+      }
     }
+
   }
 }
 </script>
