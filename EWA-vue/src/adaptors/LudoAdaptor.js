@@ -32,6 +32,14 @@ export class LudoAdaptor {
         },)
     }
 
+    async asyncUpdatePlayerPos(move) {
+        await this.fetchJSon(this.RESOURCE_URL, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'PUT',
+            body: JSON.stringify(move)
+        },)
+    }
+
 
 
 

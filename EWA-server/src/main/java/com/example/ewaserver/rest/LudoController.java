@@ -1,15 +1,16 @@
 package com.example.ewaserver.rest;
 
 import com.example.ewaserver.Config;
+import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
 import com.example.ewaserver.repositories.LudoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,4 +32,23 @@ public class LudoController {
     public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int id) {
         return repository.findByQuery("Find_Playermoves_based_of_lobbyId", id);
     }
+
+    @PostMapping(path = "", produces = "application/json")
+    public ResponseEntity<Object> CreateNewPlayermove(@RequestBody Playerposition pPos) {
+
+        Playerposition savePmove = repository.Save(pPos);
+
+        URI location = ServletUriComponentsBuilder.
+                fromCurrentRequest()
+                .path("/{id}").
+                buildAndExpand(savePmove.getIdPlayerposition()).toUri();
+
+        return ResponseEntity.created(location).body(savePmove);
+    }
+
+    @PutMapping(path = "")
+    public ResponseEntity<Lobby> updateLobby(@RequestBody Playerposition playerposition, @PathVariable int id) {
+        return null;
+    }
+
 }

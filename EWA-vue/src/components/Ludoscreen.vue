@@ -282,7 +282,6 @@ export default {
       this.isSingleplayer = true;
     }
 
-
     //Will change the way how selectedColor is saved based on whether it is a multiplayer game or a singleplayer game.
     if (this.isSingleplayer === true) {
       this.selectedcolor = this.$route.query.selectedColor;
@@ -294,11 +293,8 @@ export default {
     //creates all pawns
     this.createPawns();
 
-
-    console.log(this.selectedcolor);
     //Saves all the pawns that is allowed to move to playablePawns.
     //Make it so only can move pawns that have the same color as you selected.
-    console.log(this.currentuser.username);
     switch (this.selectedcolor) {
       case 'green':
         for (let i = 0; i < 4; i++) {
@@ -436,7 +432,7 @@ export default {
     },
 
 
-    movePawn(pawnId, arrayPos) {
+    async movePawn(pawnId, arrayPos) {
       const result = this.output;
 
       //checks if pawnId exist before it will call the connected div.
@@ -483,6 +479,14 @@ export default {
         let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
         prevPosBox.removeChild(pawnMove);
         nextPosBox.appendChild(pawnMove);
+
+
+        //if it is a mutliplayer game it will post the playermove to the database
+        if (!this.isSingleplayer) {
+          const move =
+              playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
+          await this.ludoService.asyncUpdatePlayerPos(move);
+        }
       }
     },
 
