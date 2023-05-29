@@ -229,12 +229,13 @@
 import NavBar from "@/components/NavBar.vue";
 import {pawn} from "@/models/pawn"
 import {toast} from "vue3-toastify";
+import {playermove} from "@/models/playermove";
 
 export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService', 'lobbyService', 'userService','ludoService'],
+  inject: ['SessionService', 'lobbyService', 'userService', 'ludoService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -268,7 +269,7 @@ export default {
 
       //Websockets playermove
       playerMoves: [],
-      activeThrow: "green",
+      activeThrow: null,
     };
   },
 
@@ -290,6 +291,7 @@ export default {
     }
 
 
+    //creates all pawns
     this.createPawns();
 
 
@@ -341,7 +343,7 @@ export default {
   },
 
   methods: {
-    createPawns(){
+    createPawns() {
       //for statements to create pawns for each color with unique ids
       for (let i = 100; i < 104; i++) {
         let count = i - 100;
@@ -421,8 +423,9 @@ export default {
           this.playablePawns[arrayPos].onField = 2;
 
           //if it is a mutliplayer game it will post the playermove to the database
-          if (!this.isSingleplayer){
-            await this.ludoService.asyncSaveUsermove(pawnId,this.playablePawns[arrayPos].position, this.lobby[0].idLobby)
+          if (!this.isSingleplayer) {
+            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
+            await this.ludoService.asyncSaveUsermove(move)
           }
         } else {
           this.selectPawn()
