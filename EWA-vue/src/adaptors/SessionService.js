@@ -157,8 +157,18 @@ export class SessionService {
             return await response.json();
         }
     }
-    async sendMessage(message){
-        await fetch("http://localhost:8081/chat", {
+
+    async asyncFindChatWithFriend(friendId){
+        let response =  await fetch ("http://localhost:8081/chat/" + this.currentAccount.userId +"&"+friendId, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return await response.json();
+        }
+    }
+    async sendMessage(message, friendId){
+        await fetch("http://localhost:8081/chat/friend/" + friendId, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify({
@@ -168,7 +178,38 @@ export class SessionService {
         })
     }
 
+    async searchUser(keyword){
+        let response = await fetch("http://localhost:8081/chat/searchUser/" + keyword, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return response.json();
+        }
+    }
 
+    async getAllFriends(){
+        let response = await fetch("http://localhost:8081/chat/friends/getAll/" +
+            this.currentAccount.userId,
+            {
+                headers: {'Content-Type': 'application/json'},
+                method: 'GET',
+            })
+        if (response.ok){
+            return await response.json();
+        }
+    }
+
+    async addFriend(friendId){
+        await fetch("http://localhost:8081/chat/addFriend", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({
+                "userId": this.currentAccount.userId,
+                "friendId": friendId,
+            })
+        })
+    }
 
 
     async signOut() {

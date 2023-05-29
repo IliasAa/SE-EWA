@@ -20,10 +20,14 @@ public class Chat {
     private LocalDateTime date;
     private String message;
 
+    @ManyToOne
+    @JoinColumn(name = "fromUser", referencedColumnName = "userId")
+    private User fromUser;
 
+    @ManyToOne
+    @JoinColumn(name = "toUser", referencedColumnName = "userId")
+    private User toUser;
 
-    @ManyToMany
-    private List<User> users;
 
     public Chat() {
     }
@@ -36,10 +40,13 @@ public class Chat {
     public Chat(LocalDateTime date, String message) {
         this.date = date;
         this.message = message;
-        this.users = new ArrayList<>();
     }
 
-    public void addUser(User user){
-        this.users.add(user);
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
     }
 }

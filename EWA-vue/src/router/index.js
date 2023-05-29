@@ -8,12 +8,13 @@ import homePage from "@/components/homePage.vue";
 import UserPage from "@/components/userpage/Userpage.vue";
 import settingsPage from "@/components/settingsPage.vue";
 import detailLobby from "@/components/lobby/DetailLobby.vue";
-
+import chatBox from "@/components/chat/chatBox.vue";
 import LeaderboardPage from "@/components/LeaderboardPage.vue";
 import AdminDashboard from "@/components/adminpage/AdminDashboard.vue";
 import AdminUserList from "@/components/adminpage/AdminUsersList.vue";
 import JoinGame from "@/components/lobby/JoinGame.vue";
 import HostGame from "@/components/lobby/HostGame.vue";
+import friendsPage from "@/components/friendsPage.vue";
 
 const routes = [
     {path: '/homePage', component: homePage},
@@ -32,6 +33,10 @@ const routes = [
     {path: '/adminPage', component: AdminDashboard},
     {path: '/AdminUserList', component: AdminUserList},
     {path:'/lobby/:joincode', component: detailLobby},
+    {path:'/chatBox',component: chatBox},
+    {path:'/friends', component: friendsPage,
+        children: [{path: ':id', component: chatBox}]}
+
 
 ];
 
