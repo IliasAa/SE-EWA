@@ -347,8 +347,8 @@ export default {
     if (!this.isSingleplayer) {
       this.assignPlayerCardMP();
       this.removePawns();
-      this.notificationService.subscribe("playermoves", this.reInitialize)
-      this.reInitialize();
+      // this.notificationService.subscribe("playermoves", this.reInitialize)
+      await this.reInitialize();
     }
 
   },

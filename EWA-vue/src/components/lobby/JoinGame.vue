@@ -105,6 +105,11 @@ export default {
       //this has to be removed if the selectColor pop-up is implemented
       const selectedcolor = "green";
 
+
+      console.log(this.userId);
+      console.log(createdLobby);
+      console.log(createdLobby[0].idLobby);
+
       await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedcolor);
 
       //Push router to lobby with join code so it will see it in the params
