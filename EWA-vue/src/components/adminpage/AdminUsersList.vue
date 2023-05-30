@@ -13,37 +13,21 @@
                                 <table class="table user-list">
                                     <thead>
                                     <tr>
-                                        <th><span>Username</span></th>
-                                        <th><span>Firstname</span></th>
-                                        <th><span>Lastname</span></th>
-                                        <th><span>Email</span></th>
-                                        <th>&nbsp;</th>
+                                        <!-- loop through each value of the fields to get the table header -->
+                                        <th v-for="tableField in tableFields" :key='tableField' >
+                                            {{ tableField }} <i class="fa-solid fa-arrow-down-a-z" aria-label='Sort Icon'></i>
+                                        </th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="user in users" :key="user">
+                                    <!-- Loop through the list get the each student data -->
+                                    <tr v-for="user in users" :key='user'>
+                                        <td v-for="tableField in tableFields" :key='tableField'>{{ user[tableField] }}</td>
                                         <td>
-                                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt=""/>
-                                            <a href="#/" class="user-link">{{user.username}}</a>
-                                            <span class="user-subhead">{{user.role}}</span>
+                                            <button  class="btn btn-danger">Delete</button>
                                         </td>
-                                        <td>{{user.firstname}}</td>
-                                        <td>{{user.lastname}}</td>
-                                        <td>{{user.email}}</td>
-                                        <td>
-                                            <a href="#/" class="table-link text-info">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                            <a class="table-link danger" @click="deleteUser(user.id)">
-                                                <span class="fa-stack" >
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        </td>
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -122,6 +106,7 @@ export default {
     data() {
         return {
             users: [],
+            tableFields: null,
             showModal: false,
             username: '',
             email: '',
@@ -132,6 +117,11 @@ export default {
     },
     async created() {
         this.users = await this.userService.asyncFindAll();
+        this.users.sort()
+
+        this.tableFields = [
+            'userId', 'username', 'firstname', 'lastname', "email", "role"
+        ]
     },
 
     methods: {
