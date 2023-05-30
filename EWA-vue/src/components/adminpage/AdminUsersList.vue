@@ -37,8 +37,8 @@
                                                     <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </a>
-                                            <a href="#/" class="table-link danger">
-                                                <span class="fa-stack">
+                                            <a class="table-link danger" @click="deleteUser(user.id)">
+                                                <span class="fa-stack" >
                                                     <i class="fa fa-square fa-stack-2x"></i>
                                                     <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                                 </span>
@@ -55,12 +55,52 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">New User</h5>
-                            <button class="btn btn-success">Add User</button>
+                            <button class="btn btn-success" @click="modalUser()">Add User</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <form v-if="showModal" id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header border-none mb-0">
+                    <span class="close" @click="modalUser()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Add User</h2>
+                    <v-text-field
+                        label="Username"
+                        type="text"
+                        v-model="username"
+                    ></v-text-field>
+                    <v-text-field
+                        label="Email address"
+                        type="email"
+                        v-model="email"
+                    ></v-text-field>
+                    <v-text-field
+                        label="firstname"
+                        type="text"
+                        v-model="firstname"
+                    ></v-text-field>
+                    <v-text-field
+                        label="lastname"
+                        type="text"
+                        v-model="lastname"
+                    ></v-text-field>
+                    <v-text-field
+                        label="Password"
+                        type="password"
+                        v-model="password"
+                    ></v-text-field>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </div>
+            </div>
+        </form>
+
     </div>
 
 
@@ -82,6 +122,12 @@ export default {
     data() {
         return {
             users: [],
+            showModal: false,
+            username: '',
+            email: '',
+            firstname: '',
+            lastname: '',
+            password: null,
         }
     },
     async created() {
@@ -89,21 +135,14 @@ export default {
     },
 
     methods: {
-
-      async deleteUser(id) {
-        const confirmationMessage = confirm("Are you sure you want to delete this account?")
-
-        if (confirmationMessage === true) {
-          try {
-            await this.userService.asyncDeleteById(id);
-            location.reload();
-            toast.success("Account successfully deleted!");
-          } catch (e) {
-            console.log(e)
-            toast.error("Account couldn't be deleted, please check the console.");
-          }
+        async deleteUser(id) {
+            await this.userService.asyncDeleteById(id)
+            this.users = await this.usersService.asyncDeleteById(id);
+        },
+        modalUser() {
+            this.showModal = !this.showModal;
+            return this.showModal;
         }
-      },
   }
 }
 
@@ -124,6 +163,27 @@ export default {
     z-index: -1000;
     filter: brightness(0.7);
     background-color: rgba(5, 11, 98, 1);
+}
+
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 13% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
 }
 
 body{
