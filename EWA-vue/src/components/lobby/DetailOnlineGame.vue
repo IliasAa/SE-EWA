@@ -53,7 +53,7 @@ export default {
       if (this.players < 1) {
         return this.players = 2;
       }
-      if (this.players > 2) {
+      if (this.players > 3) {
         return this.players = 2;
       }
     },

@@ -36,7 +36,7 @@ public class LobbyController {
         return lobbyRepository.findAll();
     }
 
-    @GetMapping(path = "owner/{id}", produces = "application/json")
+    @GetMapping(path = "/owner/{id}", produces = "application/json")
     public List<Lobby> getLobbyOwner(@PathVariable int id) {
         return lobbyRepository.findByQuery("find_lobby_owner_name", id);
     }
@@ -50,6 +50,12 @@ public class LobbyController {
     public List<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         return userLobbyRepository.findByQuery("find_users_by_lobbyid", LobbyId);
     }
+
+    @GetMapping(path = "/color/{LobbyId}", produces = "application/json")
+    public List<UserHasLobby> getColorToLobby(@PathVariable int LobbyId) {
+        return userLobbyRepository.findByQuery("find_available_color", LobbyId);
+    }
+
     @GetMapping(path = "/{LobbyId}/{userId}", produces = "application/json")
     public List<UserHasLobby> getColorForConnectedUsers(@PathVariable int LobbyId, @PathVariable int userId) {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
