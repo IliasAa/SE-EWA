@@ -50,6 +50,12 @@ public class LobbyController {
     public List<UserHasLobby> getUsersConnectedToLobby(@PathVariable int LobbyId) {
         return userLobbyRepository.findByQuery("find_users_by_lobbyid", LobbyId);
     }
+
+    @GetMapping(path = "/color/{LobbyId}", produces = "application/json")
+    public List<UserHasLobby> getColorToLobby(@PathVariable int LobbyId) {
+        return userLobbyRepository.findByQuery("find_available_color", LobbyId);
+    }
+
     @GetMapping(path = "/{LobbyId}/{userId}", produces = "application/json")
     public List<UserHasLobby> getColorForConnectedUsers(@PathVariable int LobbyId, @PathVariable int userId) {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
