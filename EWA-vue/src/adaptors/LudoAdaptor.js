@@ -20,8 +20,8 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncFindAllWithLobbyid(id){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
+    async asyncFindAllWithLobbyid(lobbyId){
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
     }
 
 

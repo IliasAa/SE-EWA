@@ -41,9 +41,14 @@ public class LudoController {
         return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId,lobby);
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int id) {
-        return repository.findByQuery("Find_Playermoves_based_of_lobbyId", id);
+    @GetMapping(path = "/{lobbyId}", produces = "application/json")
+    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int lobbyId) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        if (lobby == null){
+            throw new PreConditionFailed("Need a valid lobby");
+        }
+
+        return repository.findByQuery("Find_Playermoves_based_of_lobbyId", lobby);
     }
 
     @PostMapping(path = "/save/{lobbyId}", produces = "application/json")
@@ -66,8 +71,15 @@ public class LudoController {
     }
 
     @PutMapping(path = "")
-    public ResponseEntity<Lobby> updateLobby(@RequestBody Playerposition playerposition, @PathVariable int id) {
-        return null;
+    public ResponseEntity<Playerposition> updateLobby(@RequestBody Playerposition pos) {
+        Playerposition getPos = repository.findById(pos.getIdPlayerposition());
+        if (getPos == null) {
+            throw new PreConditionFailed("Need a valid playerPos");
+        }
+        getPos.setTokenPos(pos.getTokenPos());
+        repository.Save(getPos);
+
+        return ResponseEntity.ok().body(pos);
     }
 
 }
