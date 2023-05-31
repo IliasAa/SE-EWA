@@ -270,6 +270,7 @@ export default {
       //Websockets playermove
       playerMoves: [],
       activeThrow: null,
+      getPawn: null,
     };
   },
 
@@ -486,9 +487,10 @@ export default {
 
         //if it is a mutliplayer game it will post the playermove to the database
         if (!this.isSingleplayer) {
-          const move =
-              playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
-          await this.ludoService.asyncUpdatePlayerPos(move);
+          this.getPawn = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position);
+          this.getPawn[0].tokenPos = this.playablePawns[arrayPos].position;
+
+          await this.ludoService.asyncUpdatePlayerPos(this.getPawn[0])
         }
       }
     },

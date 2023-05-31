@@ -32,6 +32,15 @@ public class LudoController {
         return repository.findAll();
     }
 
+    @GetMapping(path = "/{tokenId}/{lobbyId}", produces = "application/json")
+    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int tokenId,
+                                                        @PathVariable int lobbyId) {
+
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+
+        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId,lobby);
+    }
+
     @GetMapping(path = "/{id}", produces = "application/json")
     public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int id) {
         return repository.findByQuery("Find_Playermoves_based_of_lobbyId", id);
