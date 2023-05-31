@@ -1,16 +1,13 @@
 export class playermove {
-   pawnId;
-   pawnPos;
+    tokenId;
+    tokenPos;
 
-   lobbyId;
-
-    constructor(pawnId, pawnPos, lobbyId) {
-        this.pawnId = pawnId;
-        this.pawnPos = pawnPos;
-        this.lobbyId = lobbyId;
+    constructor(tokenId, tokenPos) {
+        this.tokenId = tokenId;
+        this.tokenPos = tokenPos;
     }
 
-    static createPlayermove (pawnId,pawnPos,lobbyId){
-        return new playermove(pawnId,pawnPos,lobbyId)
+    static createPlayermove (tokenId,tokenPos){
+        return new playermove(tokenId,tokenPos)
     }
 }

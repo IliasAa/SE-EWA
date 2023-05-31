@@ -270,6 +270,7 @@ export default {
       //Websockets playermove
       playerMoves: [],
       activeThrow: null,
+      getPawn: null,
     };
   },
 
@@ -326,7 +327,9 @@ export default {
       this.assignPlayerCardMP();
       this.removePawns();
       // this.notificationService.subscribe("playermoves", this.reInitialize)
-      await this.reInitialize();
+      // await this.reInitialize();
+      this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
+      console.log(this.playerMoves)
     }
 
   },
@@ -420,8 +423,9 @@ export default {
 
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
-            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
-            await this.ludoService.asyncSaveUsermove(move)
+            console.log(this.lobby[0].idLobby);
+            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position);
+            await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
           }
         } else {
           this.selectPawn()
@@ -483,9 +487,13 @@ export default {
 
         //if it is a mutliplayer game it will post the playermove to the database
         if (!this.isSingleplayer) {
-          const move =
-              playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
-          await this.ludoService.asyncUpdatePlayerPos(move);
+          const returnPawn =
+              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.playablePawns[arrayPos].position);
+          console.log(returnPawn);
+          console.log(returnPawn[0]);
+          returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
+
+          await this.ludoService.asyncUpdatePlayerPos(this.getPawn[0])
         }
       }
     },

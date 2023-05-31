@@ -50,25 +50,25 @@
             <td>{{game.creatorNames}}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
-              <button class="btn btn-primary btn-lg" @click="showPopup2 = !showPopup2">&#9658;</button>
+              <button class="btn btn-primary btn-lg" @click="game.showPopup2 = !game.showPopup2">&#9658;</button>
             </td>
-            <popup class="popup" v-if="showPopup2">
-              <div class="lobbyDetail" :style="{display: showPopup2 ? 'block' : 'none'}">
+            <popup class="popup" v-if="game.showPopup2">
+              <div class="lobbyDetail" :style="{display: game.showPopup2 ? 'block' : 'none'}">
                 <div class="lobbyContent">
-                  <span @click="showPopup2 = !showPopup2" class="close">&times;</span>
+                  <span @click="game.showPopup2 = !game.showPopup2" class="close">&times;</span>
                   <div class="playerColor">
                     <p>Choose a starting color:</p>
                     <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
-                            id="playerRed" @click="colorChoosing('red')">Red
+                            id="red" @click="colorChoosing('red')">Red
                     </button>
                     <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
-                            id="playerBlue" @click="colorChoosing('blue')">Blue
+                            id="blue" @click="colorChoosing('blue')">Blue
                     </button>
                     <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
-                            id="playerYellow" @click="colorChoosing('yellow')">Yellow
+                            id="yellow" @click="colorChoosing('yellow')">Yellow
                     </button>
                     <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
-                            id="playerGreen" @click="colorChoosing('green')">Green
+                            id="green" @click="colorChoosing('green')">Green
                     </button>
                   </div>
                 </div>
@@ -89,6 +89,7 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import {isDisabled} from "bootstrap/js/src/util";
 
 export default {
 
@@ -150,6 +151,7 @@ export default {
 
   methods: {
 
+    isDisabled,
     colorChoosing(color) {
       this.selectedColor = color;
     },
@@ -159,24 +161,22 @@ export default {
 
       //dummy data to test combination between user and lobby
       //this has to be removed if the selectColor pop-up is implemented
-      const selectedcolor = this.selectedColor;
+      const selectedColor = this.selectedColor;
 
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
       for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
-        if (this.selectedColorsinLobby[i] === selectedcolor){
+        if (this.selectedColorsinLobby[i] === selectedColor){
+          document.getElementById(this.selectedColor).disabled;
           alert("color has already been selected")
           break;
         } else {
-          await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedcolor);
+          await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
           //Push router to lobby with join code so it will see it in the params
           this.$router.push("/lobby/" + createdLobby[0].join_code)
         }
 
       }
-
-
-
     },
 
   }
@@ -231,4 +231,34 @@ export default {
   border: solid blue;
   border-radius: 12px;
 }
+
+.playerColorButton {
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 5px;
+}
+
+#red:hover {
+  background-color: red;
+}
+
+#blue:hover {
+  background-color: blue;
+}
+
+#yellow:hover {
+  background-color: yellow;
+}
+
+#green:hover {
+  background-color: green;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
 </style>

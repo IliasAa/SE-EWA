@@ -11,6 +11,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Find_Playermoves_based_of_lobbyId",
                 query = "select p from Playerposition p where p.lobby = ?1 "),
+        @NamedQuery(name = "Find_Playermoves_based_of_tokenAndLobby",
+                query = "select p from Playerposition p where p.tokenId = ?1 and p.lobby =?2"),
 })
 @Entity
 @Getter
@@ -28,7 +30,7 @@ public class Playerposition {
     @ManyToOne
     private Lobby lobby;
 
-    protected Playerposition() {
+    public Playerposition() {
 
     }
 }

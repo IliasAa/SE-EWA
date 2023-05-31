@@ -4,6 +4,7 @@ import com.example.ewaserver.Config;
 import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
+import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.LudoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/ludo")
+@RequestMapping(path = "/Ludo")
 public class LudoController {
 
     @Autowired
@@ -23,18 +24,40 @@ public class LudoController {
     @Autowired
     private LudoRepository repository;
 
+    @Autowired
+    private LobbyRepository lobbyRepository;
+
     @GetMapping(path = "", produces = "application/json")
     public List<Playerposition> getAllPlayermoves() {
         return repository.findAll();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int id) {
-        return repository.findByQuery("Find_Playermoves_based_of_lobbyId", id);
+    @GetMapping(path = "/{tokenId}/{lobbyId}", produces = "application/json")
+    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int tokenId,
+                                                        @PathVariable int lobbyId) {
+
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+
+        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId,lobby);
     }
 
-    @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<Object> CreateNewPlayermove(@RequestBody Playerposition pPos) {
+    @GetMapping(path = "/{lobbyId}", produces = "application/json")
+    public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int lobbyId) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        if (lobby == null){
+            throw new PreConditionFailed("Need a valid lobby");
+        }
+
+        return repository.findByQuery("Find_Playermoves_based_of_lobbyId", lobby);
+    }
+
+    @PostMapping(path = "/save/{lobbyId}", produces = "application/json")
+    public ResponseEntity<Object> CreateNewPlayermove(@PathVariable int lobbyId,
+            @RequestBody Playerposition pPos) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        pPos.setLobby(lobby);
+
+
 
         Playerposition savePmove = repository.Save(pPos);
 
@@ -48,8 +71,15 @@ public class LudoController {
     }
 
     @PutMapping(path = "")
-    public ResponseEntity<Lobby> updateLobby(@RequestBody Playerposition playerposition, @PathVariable int id) {
-        return null;
+    public ResponseEntity<Playerposition> updateLobby(@RequestBody Playerposition pos) {
+        Playerposition getPos = repository.findById(pos.getIdPlayerposition());
+        if (getPos == null) {
+            throw new PreConditionFailed("Need a valid playerPos");
+        }
+        getPos.setTokenPos(pos.getTokenPos());
+        repository.Save(getPos);
+
+        return ResponseEntity.ok().body(pos);
     }
 
 }

@@ -20,12 +20,17 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncFindAllWithLobbyid(id){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
+    async asyncFindAllWithLobbyid(lobbyId){
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
     }
 
-    async asyncSaveUsermove(playermove) {
-        await this.fetchJSon(this.RESOURCE_URL, {
+
+    async asyncFindOnTokedIdAndLobby(tokenId,Lobby){
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + tokenId + "/" + Lobby);
+    }
+
+    async asyncSaveUsermove(playermove,lobbyId) {
+        await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(playermove)

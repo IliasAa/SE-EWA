@@ -34,7 +34,7 @@ export default {
       loginService: new AuthenticationAdaptor(URL + "/authentication"),
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
       lobbyService: new LobbyAdaptor(URL + "/Lobby"),
-      ludoService: new LudoAdaptor(URL + "/ludo"),
+      ludoService: new LudoAdaptor(URL + "/Ludo"),
       SessionService: this.theSessionService,
       // service for notification framework
       notificationService: this.NotificationService,
