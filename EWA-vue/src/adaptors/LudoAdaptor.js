@@ -24,8 +24,8 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + id);
     }
 
-    async asyncSaveUsermove(playermove) {
-        await this.fetchJSon(this.RESOURCE_URL, {
+    async asyncSaveUsermove(playermove,lobbyId) {
+        await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(playermove)

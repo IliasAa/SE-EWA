@@ -28,7 +28,7 @@ public class Playerposition {
     @ManyToOne
     private Lobby lobby;
 
-    protected Playerposition() {
+    public Playerposition() {
 
     }
 }

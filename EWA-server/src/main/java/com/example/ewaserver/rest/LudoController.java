@@ -4,6 +4,7 @@ import com.example.ewaserver.Config;
 import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
+import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.LudoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class LudoController {
     @Autowired
     private LudoRepository repository;
 
+    @Autowired
+    private LobbyRepository lobbyRepository;
+
     @GetMapping(path = "", produces = "application/json")
     public List<Playerposition> getAllPlayermoves() {
         return repository.findAll();
@@ -33,8 +37,13 @@ public class LudoController {
         return repository.findByQuery("Find_Playermoves_based_of_lobbyId", id);
     }
 
-    @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<Object> CreateNewPlayermove(@RequestBody Playerposition pPos) {
+    @PostMapping(path = "/save/{lobbyId}", produces = "application/json")
+    public ResponseEntity<Object> CreateNewPlayermove(@PathVariable int lobbyId,
+            @RequestBody Playerposition pPos) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        pPos.setLobby(lobby);
+
+
 
         Playerposition savePmove = repository.Save(pPos);
 
