@@ -231,4 +231,34 @@ export default {
   border: solid blue;
   border-radius: 12px;
 }
+
+.playerColorButton {
+  border-radius: 5px;
+  border: 2px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 5px;
+}
+
+#playerRed:hover {
+  background-color: red;
+}
+
+#playerBlue:hover {
+  background-color: blue;
+}
+
+#playerYellow:hover {
+  background-color: yellow;
+}
+
+#playerGreen:hover {
+  background-color: green;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
 </style>
