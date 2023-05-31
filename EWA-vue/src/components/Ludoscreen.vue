@@ -326,7 +326,9 @@ export default {
       this.assignPlayerCardMP();
       this.removePawns();
       // this.notificationService.subscribe("playermoves", this.reInitialize)
-      await this.reInitialize();
+      // await this.reInitialize();
+      this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
+      console.log(this.playerMoves)
     }
 
   },
@@ -420,7 +422,8 @@ export default {
 
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
-            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0].idLobby);
+            console.log(this.lobby[0]);
+            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position, this.lobby[0]);
             await this.ludoService.asyncSaveUsermove(move)
           }
         } else {

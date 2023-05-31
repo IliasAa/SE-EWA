@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/ludo")
+@RequestMapping(path = "/Ludo")
 public class LudoController {
 
     @Autowired
