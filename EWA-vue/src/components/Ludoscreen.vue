@@ -325,17 +325,17 @@ export default {
     if (!this.isSingleplayer) {
       this.assignPlayerCardMP();
       this.removePawns();
-      this.notificationService.subscribe("playermoves", this.reInitialize)
-      await this.reInitialize();
+      // this.notificationService.subscribe("playermoves", this.reInitialize)
+      // await this.reInitialize();
+      //
+      // if (this.playerMoves.length > 0) {
+      //   for (let i = 0; i < this.playerMoves.length; i++) {
+      //     this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
+      //   }
+      // }
 
-      if (this.playerMoves.length > 0) {
-        for (let i = 0; i < this.playerMoves.length; i++) {
-          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
-        }
-      }
-
-      // this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
-      // console.log(this.playerMoves)
+      this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
+      console.log(this.playerMoves)
     }
 
   },
@@ -618,27 +618,26 @@ export default {
     },
 
 
-    async setupPawns(pawnId, newPos) {
-      console.log("Hallo!")
-      console.log("Hallo!")
-      console.log("Hallo!")
-      console.log("Hallo!")
-
-      const pawnMove = document.getElementById(pawnId);
-        let prevPosBox = document.getElementById(pawnMove.homePosition);
-        let nextPosBox = document.getElementById(newPos);
-        prevPosBox.removeChild(pawnMove);
-        nextPosBox.appendChild(pawnMove);
-
-        for (let i = 0; i < this.playablePawns.length; i++) {
-          if (this.playablePawns[i].id === pawnId){
-            this.playablePawns[i].onField = 1;
-            this.playablePawns[i].position = newPos;
-            this.playablePawns[i].previousPosition = this.playablePawns[i].homePosition;
-          }
-
-      }
-    }
+    // async setupPawns(pawnId, newPos) {
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //
+    //   const pawnMove = document.getElementById(pawnId);
+    //     let prevPosBox = document.getElementById(pawnMove.homePosition);
+    //     let nextPosBox = document.getElementById(newPos);
+    //     prevPosBox.removeChild(pawnMove);
+    //     nextPosBox.appendChild(pawnMove);
+    //
+    //     for (let i = 0; i < this.playablePawns.length; i++) {
+    //       if (this.playablePawns[i].id === pawnId){
+    //         this.playablePawns[i].onField = 1;
+    //         this.playablePawns[i].position = newPos;
+    //         this.playablePawns[i].previousPosition = this.playablePawns[i].homePosition;
+    //       }
+    //   }
+    // }
   },
 
 }
