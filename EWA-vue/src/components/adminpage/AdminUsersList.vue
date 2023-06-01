@@ -25,7 +25,7 @@
                                     <tr v-for="user in users" :key='user' @click="sortTable(tableField)">
                                         <td v-for="tableField in tableFields" :key='tableField' >{{ user[tableField] }}</td>
                                         <td>
-                                            <button class="btn btn-primary">Edit</button>
+                                            <button class="btn btn-primary" @click="showPopUpEdit(user)">Edit</button>
                                             <button class="btn btn-danger" @click="showPopUp(user)">Delete</button>
                                         </td>
                                     </tr>
@@ -46,44 +46,30 @@
             </div>
         </div>
 
-        <form v-if="showAdduser" id="myModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header border-none mb-0">
-                    <span class="close" @click="modalUser()">&times;</span>
+        <div v-if="showEditUser === true" id="myModal" class="modal">
+            <div class="modal-content flex justify-content-center align-items-center">
+                <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Edit User" }}</h2>
+                <div>
+                    <input v-model="selectedUser.username" class="modal-input">
+                    <input v-model="selectedUser.firstname" class="modal-input">
+                    <input v-model="selectedUser.lastname" class="modal-input">
+                    <input v-model="selectedUser.email" class="modal-input">
                 </div>
-                <div class="modal-body">
-                    <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Add User</h2>
-                    <v-text-field
-                        label="Username"
-                        type="text"
-                        v-model="username"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Email address"
-                        type="email"
-                        v-model="email"
-                    ></v-text-field>
-                    <v-text-field
-                        label="firstname"
-                        type="text"
-                        v-model="firstname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="lastname"
-                        type="text"
-                        v-model="lastname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Password"
-                        type="password"
-                        v-model="password"
-                    ></v-text-field>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add User</button>
+                <div class="modal-footer mt-3 flex justify-content-center mt-10">
+                    <div>
+                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
+                            <span class="front" style="background: #ec1629">Nee, ga terug!</span>
+                        </button>
+                        <button class="btn pushable" style="background: #323232;" @click="onUpdate()">
+                    <span class="front" style="background: mediumseagreen" >
+                    Ja! Ik kies deze!
+                    </span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
+
 
         <div v-if="showModal === true" id="myModal" class="modal ">
             <div class="modal-content flex justify-content-center align-items-center">
@@ -131,12 +117,13 @@ export default {
             users: [],
             tableFields: null,
             showModal: false,
+            showEditUser: false,
             showAdduser: false,
             selectedUser: {},
             username: '',
             email: '',
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             password: null,
         }
     },
@@ -165,6 +152,7 @@ export default {
 
         goBack() {
             this.showModal = false;
+            this.showEditUser = false;
         },
 
         async deleteUser(id) {
@@ -177,8 +165,12 @@ export default {
         async showPopUp(user) {
             this.selectedUser = user;
             this.showModal = true;
-
         },
+        async showPopUpEdit(user) {
+            this.selectedUser = user;
+            this.showEditUser = true;
+        },
+
         sortTable(tableField) {
             if (tableField === "email") {
                 for (let i = 0; i < this.users.length - 1; i++) {
@@ -191,6 +183,15 @@ export default {
                     }
                 }
             }
+        },
+        async onUpdate() {
+            // this.selectedUser.firstName = this.firstname;
+            // this.selectedUser.lastName = this.firstname;
+            // this.selectedUser.username = this.username;
+            // this.selectedUser.email = this.email;
+
+            await this.userService.asyncAdminUpdate(this.selectedUser)
+            toast.success("Account succesfully edited!");
         }
     },
 
@@ -202,6 +203,7 @@ export default {
         this.tableFields = [
             'userId', 'username', 'firstname', 'lastname', "email", "role"
         ]
+
 
     },
 }

@@ -91,5 +91,14 @@ export class UserAdaptor {
         );
     }
 
+    async asyncAdminUpdate(user) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
+                headers: {'Content-Type': 'application/json'},
+                method: 'PUT',
+                body: JSON.stringify(user)
+            },
+        );
+    }
+
 
 }
