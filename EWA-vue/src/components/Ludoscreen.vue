@@ -487,13 +487,14 @@ export default {
 
         //if it is a mutliplayer game it will post the playermove to the database
         if (!this.isSingleplayer) {
+          console.log(pawnId);
           const returnPawn =
-              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.playablePawns[arrayPos].position);
+              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
           console.log(returnPawn);
           console.log(returnPawn[0]);
           returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
 
-          await this.ludoService.asyncUpdatePlayerPos(this.getPawn[0])
+          await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
         }
       }
     },
