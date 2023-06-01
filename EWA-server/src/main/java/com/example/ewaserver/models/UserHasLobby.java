@@ -16,6 +16,8 @@ import javax.lang.model.element.Name;
                 query = "select u.username from User u left join Lobby l on u.userId = l.userid_owner where l.userid_owner = ?1"),
         @NamedQuery(name = "find_available_color",
                 query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1"),
+        @NamedQuery(name = "find_player_count_MAX_Compare",
+                query = "select COUNT(uhs.user.userId), l.max_allowed_Players from UserHasLobby uhs inner join Lobby l on l.idLobby = uhs.lobby.idLobby where uhs.lobby.idLobby = ?1"),
 
 })
 

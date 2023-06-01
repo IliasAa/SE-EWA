@@ -109,6 +109,7 @@ export default {
       join_code: "",
       selectedColor: null,
       lobby: null,
+      maxPlayer: [],
 
       users: [],
       selectedColorsinLobby: [],
@@ -165,20 +166,24 @@ export default {
 
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
-      for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
-        if (this.selectedColorsinLobby[i] === selectedColor){
-          document.getElementById(this.selectedColor).disabled;
-          alert("color has already been selected")
-          break;
-        } else {
-          await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
-          //Push router to lobby with join code so it will see it in the params
-          this.$router.push("/lobby/" + createdLobby[0].join_code)
+      this.maxPlayer = await this.lobbyService.asyncFindMaxPlayerCountCompare(createdLobby[0].idLobby)
+      console.log(this.maxPlayer)
+      if (this.maxPlayer[0] === this.maxPlayer[1]) {
+        alert("max aan spelers berijkt")
+      } else {
+        for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
+          if (this.selectedColorsinLobby[i] === selectedColor){
+            // document.getElementById(this.selectedColor).disabled;
+            alert("color has already been selected")
+            break;
+          } else {
+            await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
+            //Push router to lobby with join code so it will see it in the params
+            this.$router.push("/lobby/" + createdLobby[0].join_code)
+          }
         }
-
       }
     },
-
   }
 }
 </script>
