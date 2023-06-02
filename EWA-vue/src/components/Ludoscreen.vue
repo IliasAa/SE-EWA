@@ -235,7 +235,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService', 'lobbyService', 'userService', 'ludoService'],
+  inject: ['lobbyService', 'userService', 'ludoService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -270,7 +270,6 @@ export default {
       //Websockets playermove
       playerMoves: [],
       activeThrow: null,
-      getPawn: null,
     };
   },
 
@@ -328,6 +327,13 @@ export default {
       this.removePawns();
       // this.notificationService.subscribe("playermoves", this.reInitialize)
       // await this.reInitialize();
+      //
+      // if (this.playerMoves.length > 0) {
+      //   for (let i = 0; i < this.playerMoves.length; i++) {
+      //     this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
+      //   }
+      // }
+
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
       console.log(this.playerMoves)
     }
@@ -395,6 +401,7 @@ export default {
     },
 
     async newPawn() {
+
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -609,6 +616,28 @@ export default {
       //saves all the moves made
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
     },
+
+
+    // async setupPawns(pawnId, newPos) {
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //   console.log("Hallo!")
+    //
+    //   const pawnMove = document.getElementById(pawnId);
+    //     let prevPosBox = document.getElementById(pawnMove.homePosition);
+    //     let nextPosBox = document.getElementById(newPos);
+    //     prevPosBox.removeChild(pawnMove);
+    //     nextPosBox.appendChild(pawnMove);
+    //
+    //     for (let i = 0; i < this.playablePawns.length; i++) {
+    //       if (this.playablePawns[i].id === pawnId){
+    //         this.playablePawns[i].onField = 1;
+    //         this.playablePawns[i].position = newPos;
+    //         this.playablePawns[i].previousPosition = this.playablePawns[i].homePosition;
+    //       }
+    //   }
+    // }
   },
 
 }
