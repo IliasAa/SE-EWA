@@ -22,7 +22,7 @@ public class Token {
     private Date issued_at;
 
     @ManyToOne
-    @JsonManagedReference
+    @JoinColumn(name = "user_user_id")
     private User user;
 
     public Token() {

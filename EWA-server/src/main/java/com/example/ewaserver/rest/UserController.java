@@ -134,6 +134,7 @@ public class UserController {
             throw new ResourceNotFoundException(
                     "Cannot delete an user with id=" + id);
         }
+
         return user;
     }
 
