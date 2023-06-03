@@ -42,6 +42,10 @@ public class Lobby {
     @OneToMany(mappedBy = "lobby")
     private Set<Playerposition> playerpositions;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "lobby")
+    private Set<Turn> turns;
+
 
     public Lobby(String join_code, int isPrivateLobby, int player_size, int max_allowed_Players,
                  int lobby_status, int userid_owner) {

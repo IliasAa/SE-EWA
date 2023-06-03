@@ -1,6 +1,5 @@
 package com.example.ewaserver.repositories;
 
-import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

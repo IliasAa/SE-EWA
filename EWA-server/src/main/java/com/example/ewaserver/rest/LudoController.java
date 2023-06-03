@@ -6,6 +6,7 @@ import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
 import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.LudoRepository;
+import com.example.ewaserver.repositories.TurnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class LudoController {
 
     @Autowired
     private LobbyRepository lobbyRepository;
+
+    @Autowired
+    private TurnRepository turnRepository;
+
+    private static final int FIRST_THROW = 6;
 
     @GetMapping(path = "", produces = "application/json")
     public List<Playerposition> getAllPlayermoves() {
@@ -56,9 +62,6 @@ public class LudoController {
             @RequestBody Playerposition pPos) {
         Lobby lobby = lobbyRepository.findById(lobbyId);
         pPos.setLobby(lobby);
-
-
-
         Playerposition savePmove = repository.Save(pPos);
 
         URI location = ServletUriComponentsBuilder.
@@ -76,6 +79,8 @@ public class LudoController {
         if (getPos == null) {
             throw new PreConditionFailed("Need a valid playerPos");
         }
+
+        int lastThrow = pos.getTokenPos() - getPos.getTokenPos();
         getPos.setTokenPos(pos.getTokenPos());
         repository.Save(getPos);
 

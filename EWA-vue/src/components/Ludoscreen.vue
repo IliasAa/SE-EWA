@@ -431,8 +431,10 @@ export default {
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
             console.log(this.lobby[0].idLobby);
-            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position);
-            await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
+            let position = this.playablePawns[arrayPos].position;
+            let color = this.playablePawns[arrayPos].color;
+            const move = playermove.createPlayermove(pawnId, position, color);
+            await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby, color)
           }
         } else {
           this.selectPawn()
