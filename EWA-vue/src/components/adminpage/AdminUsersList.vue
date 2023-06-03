@@ -22,12 +22,12 @@
                                     </thead>
                                     <tbody>
                                     <!-- Loop through the list get the each student data -->
-                                    <tr v-for="user in users" :key='user'>
-                                        <td v-for="tableField in tableFields" :key='tableField'>{{ user[tableField] }}</td>
+                                    <tr v-for="user in users" :key='user' @click="sortTable(tableField)">
+                                        <td v-for="tableField in tableFields" :key='tableField' >{{ user[tableField] }}</td>
                                         <td>
-                                            <button  class="btn btn-danger">Delete</button>
+                                            <button class="btn btn-primary" @click="showPopUpEdit(user)">Edit</button>
+                                            <button class="btn btn-danger" @click="showPopUp(user)">Delete</button>
                                         </td>
-
                                     </tr>
                                     </tbody>
                                 </table>
@@ -46,44 +46,53 @@
             </div>
         </div>
 
-        <form v-if="showModal" id="myModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header border-none mb-0">
-                    <span class="close" @click="modalUser()">&times;</span>
+        <div v-if="showEditUser === true" id="myModal" class="modal">
+            <div class="modal-content flex justify-content-center align-items-center">
+                <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Edit User" }}</h2>
+                <div>
+                    <input v-model="selectedUser.username" class="modal-input">
+                    <input v-model="selectedUser.firstname" class="modal-input">
+                    <input v-model="selectedUser.lastname" class="modal-input">
+                    <input v-model="selectedUser.email" class="modal-input">
                 </div>
-                <div class="modal-body">
-                    <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Add User</h2>
-                    <v-text-field
-                        label="Username"
-                        type="text"
-                        v-model="username"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Email address"
-                        type="email"
-                        v-model="email"
-                    ></v-text-field>
-                    <v-text-field
-                        label="firstname"
-                        type="text"
-                        v-model="firstname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="lastname"
-                        type="text"
-                        v-model="lastname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Password"
-                        type="password"
-                        v-model="password"
-                    ></v-text-field>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add User</button>
+                <div class="modal-footer mt-3 flex justify-content-center mt-10">
+                    <div>
+                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
+                            <span class="front" style="background: #ec1629">Nee, ga terug!</span>
+                        </button>
+                        <button class="btn pushable" style="background: #323232;" @click="onUpdate()">
+                    <span class="front" style="background: mediumseagreen" >
+                    Ja! Ik kies deze!
+                    </span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
+
+
+        <div v-if="showModal === true" id="myModal" class="modal ">
+            <div class="modal-content flex justify-content-center align-items-center">
+                <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "VERWIJDEREN" }}</h2>
+                <p class="mt-2">Weet je zeker dat je {{ this.selectedUser.username }} wilt gaan verwijderen?<br>
+                    Dit account zal voor goed verwijderd worden, ook alle posts gekoppeld aan het account worden verwijderd
+                </p>
+                <div class="modal-footer mt-3 flex justify-content-center mt-10">
+                    <div>
+                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
+                <span class="front" style="background: #ec1629">
+                     Nee, ga terug!
+                </span>
+                        </button>
+                        <button class="btn pushable" style="background: #323232;">
+                <span class="front" style="background: mediumseagreen" @click="deleteUser(this.selectedUser.userId)">
+                     Ja! Ik kies deze!
+                </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -108,13 +117,85 @@ export default {
             users: [],
             tableFields: null,
             showModal: false,
+            showEditUser: false,
+            showAdduser: false,
+            selectedUser: {},
             username: '',
             email: '',
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             password: null,
         }
     },
+    mounted() {
+        this.mockArray = this.users;
+    },
+
+    watch: {
+        searchQuery(query, oldQuery) {
+            // if (oldQuery !== null) {
+            //
+            // }
+
+            this.filteredStudentData = this.users.filter(student => student.Name.includes(query));
+
+            if (oldQuery !== null && oldQuery.length >= query.length || (query.length === 0 && oldQuery.length === 1)) {
+                // this.studentData = this.mockArray;
+                this.users = this.mockArray.filter(student => student.Name.includes(query));
+            } else {
+                this.users = this.filteredStudentData
+            }
+        }
+    },
+
+    methods: {
+
+        goBack() {
+            this.showModal = false;
+            this.showEditUser = false;
+        },
+
+        async deleteUser(id) {
+            await this.userService.asyncDeleteById(id);
+            this.showModal = false
+            this.users = await this.userService.asyncFindAll();
+            this.users.sort()
+        },
+
+        async showPopUp(user) {
+            this.selectedUser = user;
+            this.showModal = true;
+        },
+        async showPopUpEdit(user) {
+            this.selectedUser = user;
+            this.showEditUser = true;
+        },
+
+        sortTable(tableField) {
+            if (tableField === "email") {
+                for (let i = 0; i < this.users.length - 1; i++) {
+                    for (let j = 0; j < this.users.length - i - 1; j++) {
+                        if (this.users[j].email > this.users[j + 1].email) {
+                            let temp = this.users[j];
+                            this.users[j] = this.users[j + 1];
+                            this.users[j + 1] = temp;
+                        }
+                    }
+                }
+            }
+        },
+        async onUpdate() {
+            // this.selectedUser.firstName = this.firstname;
+            // this.selectedUser.lastName = this.firstname;
+            // this.selectedUser.username = this.username;
+            // this.selectedUser.email = this.email;
+
+            await this.userService.asyncAdminUpdate(this.selectedUser)
+            toast.success("Account succesfully edited!");
+        }
+    },
+
+
     async created() {
         this.users = await this.userService.asyncFindAll();
         this.users.sort()
@@ -122,18 +203,9 @@ export default {
         this.tableFields = [
             'userId', 'username', 'firstname', 'lastname', "email", "role"
         ]
-    },
 
-    methods: {
-        async deleteUser(id) {
-            await this.userService.asyncDeleteById(id)
-            this.users = await this.usersService.asyncDeleteById(id);
-        },
-        modalUser() {
-            this.showModal = !this.showModal;
-            return this.showModal;
-        }
-  }
+
+    },
 }
 
 
@@ -245,5 +317,8 @@ a:hover{
     text-decoration:none;
 }
 
+.btn {
+    margin-right: 5px;
+    }
 
 </style>
