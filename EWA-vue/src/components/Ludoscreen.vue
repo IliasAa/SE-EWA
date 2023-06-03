@@ -503,7 +503,7 @@ export default {
           console.log(returnPawn[0]);
           returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
 
-          await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
+          await this.ludoService.asyncUpdatePlayerPos(returnPawn[0], this.selectedcolor);
         }
       }
     },

@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @NamedQueries({
         @NamedQuery(name = "Find_Turns_based_of_lobbyId",
                 query = "select p from Turn p where p.lobby = ?1 "),
         @NamedQuery(name = "Find_Turn_based_of_selectedColor_And_lobby",
-                query = "select p from Turn p where p.SelectedColor = ?1 and p.lobby =?2"),
+                query = "select p from Turn p where p.id.selectedColor = ?1 and p.lobby =?2"),
 })
 
 @Entity
@@ -16,13 +19,24 @@ import lombok.Setter;
 @Setter
 @Table(name = "Turn")
 public class Turn {
-    @Id
-    private String SelectedColor;
+    @EmbeddedId
+    private TurnPK id = new TurnPK();
 
-    @Id
     @ManyToOne
+    @MapsId("lobbyId")
     private Lobby lobby;
 
     private int lastThrow;
     private int throwCount;
+
+    public Turn(String selectedColor, Lobby lobby, int lastThrow, int throwCount) {
+        this.id.setSelectedColor(selectedColor);
+        this.lobby = lobby;
+        this.lastThrow = lastThrow;
+        this.throwCount = throwCount;
+    }
+
+    public Turn() {
+
+    }
 }

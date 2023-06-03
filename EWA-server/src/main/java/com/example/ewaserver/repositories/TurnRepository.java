@@ -1,5 +1,6 @@
 package com.example.ewaserver.repositories;
 
+import com.example.ewaserver.models.Playerposition;
 import com.example.ewaserver.models.Turn;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,9 +27,10 @@ public class TurnRepository implements EntityRepository<Turn>{
         return null;
     }
 
+    @Transactional
     @Override
     public Turn Save(Turn entity) {
-        return null;
+        return this.em.merge(entity);
     }
 
     @Override
@@ -39,6 +41,23 @@ public class TurnRepository implements EntityRepository<Turn>{
     @Override
     public Turn deleteById(int id) {
         return null;
+    }
+
+
+    public Turn findByQuerySingleResult(String jpqlName, Object... params) {
+        TypedQuery<Turn> query =
+                this.em.createNamedQuery(jpqlName, Turn.class);
+
+        for (int i = 0; i < params.length; i++) {
+            query.setParameter(i + 1, params[i]);
+        }
+
+        List<Turn> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return null; // or handle the case when no result is found
+        } else {
+            return resultList.get(0);
+        }
     }
 
     @Override
