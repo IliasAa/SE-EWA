@@ -37,8 +37,6 @@ public class UserHasLobby {
     @ManyToOne
     @MapsId("userId")
     private User user;
-
-    private int userid_owner;
     private String selected_color;
 
     public UserHasLobby() {
