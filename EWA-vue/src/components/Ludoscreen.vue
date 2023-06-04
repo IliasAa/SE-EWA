@@ -260,7 +260,7 @@ export default {
       connectedUsers: [],
       users: [],
       selectedColorsMP: [],
-      colorsActive:[],
+      colorsActive: [],
 
 
       //PlayerCardinfo
@@ -280,8 +280,6 @@ export default {
     for (let i = 0; i < 4; i++) {
       this.colorsActive.push(0);
     }
-    console.log(this.colorsActive)
-    console.log(this.colorsActive[2]);
     this.currentuser = await this.userService.asyncGetInfo();
 
 
@@ -364,24 +362,28 @@ export default {
             this.playablePawns.push(this.pawns[i]);
           }
           this.greenName = this.currentuser.username;
+          this.colorsActive[0] = 1;
           break;
         case 'yellow':
           for (let i = 4; i < 8; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.yellowName = this.currentuser.username;
+          this.colorsActive[1] = 1;
           break;
         case 'red':
           for (let i = 8; i < 12; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.redName = this.currentuser.username;
+          this.colorsActive[2] = 1;
           break;
         case  'blue':
           for (let i = 12; i < 16; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.blueName = this.currentuser.username;
+          this.colorsActive[3] = 1;
       }
     },
 
@@ -527,7 +529,6 @@ export default {
       let allowMove = false;
 
 
-
       if (result === 6) {
         this.newPawn(result)
       } else {
@@ -664,27 +665,12 @@ export default {
     },
 
     async dicePriority() {
-      console.log(this.selectedColorsMP)
-      let colorActive = [0, 0, 0, 0]
       let colors = ['green', 'yellow', 'red', 'blue']
       let throwsPerColor = [null, null, null, null];
       let throwWithColor = [];
 
-      if (this.greenName !== null) {
-        colorActive[0] = 1;
-      }
-      if (this.yellowName !== null) {
-        colorActive[1] = 1;
-      }
-      if (this.redName !== null) {
-        colorActive[2] = 1;
-      }
-      if (this.blueName !== null) {
-        colorActive[3] = 1;
-      }
-
-      for (let i = 0; i < colorActive.length; i++) {
-        if (colorActive[i] === 1) {
+      for (let i = 0; i < this.colorsActive.length; i++) {
+        if (this.colorsActive[i] === 1) {
           throwsPerColor[i] = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, colors[i]);
         } else {
           throwsPerColor[i] = "color not used"
@@ -692,12 +678,11 @@ export default {
       }
 
 
-
       //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
       //and saves it in a throw with color so the throws are combined with the color
       for (let i = 0; i < throwsPerColor.length; i++) {
         if (throwsPerColor[i] !== "color not used") {
-          if (typeof(throwsPerColor[i][0]) === "undefined"){
+          if (typeof (throwsPerColor[i][0]) === "undefined") {
             throwWithColor.push({Throws: 0, color: colors[i]});
           } else {
             throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
@@ -705,26 +690,20 @@ export default {
         }
       }
 
-
-
+      //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
       let lowestRoll = throwWithColor[0].Throws;
       let dicePrio = throwWithColor[0].color;
-
-      console.log(throwWithColor)
       for (let i = 0; i < throwWithColor.length; i++) {
-        if (throwWithColor[i].Throws < lowestRoll){
+        if (throwWithColor[i].Throws < lowestRoll) {
           lowestRoll = throwWithColor[i].Throws;
           dicePrio = throwWithColor[i].color;
         }
       }
 
-
       this.activeThrow = dicePrio;
-      console.log(this.activeThrow);
       if (this.activeThrow !== this.selectedcolor) {
         document.getElementById("buttonForDice").disabled = true;
       }
-
     }
   },
 
