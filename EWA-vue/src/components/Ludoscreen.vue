@@ -194,7 +194,9 @@
       </div>
       <h2 class="make-your-move-text">{{ movePawnText }}</h2>
 
-      <button class="btn btn-primary" :disabled="!hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+      <button class="btn btn-primary" id="buttonForDice" :disabled="!hasChanged"
+              @click="ThrowDice">Gooi je dobbelsteen
+      </button>
 
     </div>
     <div class="right-part">
@@ -235,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['lobbyService', 'userService', 'ludoService', 'notificationService'],
+  inject: ['lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -258,6 +260,7 @@ export default {
       connectedUsers: [],
       users: [],
       selectedColorsMP: [],
+      colorsActive: [],
 
 
       //PlayerCardinfo
@@ -274,6 +277,9 @@ export default {
   },
 
   async created() {
+    for (let i = 0; i < 4; i++) {
+      this.colorsActive.push(0);
+    }
     this.currentuser = await this.userService.asyncGetInfo();
 
 
@@ -301,6 +307,8 @@ export default {
       this.removePawns();
       this.notificationService.subscribe("playermoves", this.reInitialize)
       await this.reInitialize();
+
+      await this.dicePriority();
 
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
@@ -354,24 +362,28 @@ export default {
             this.playablePawns.push(this.pawns[i]);
           }
           this.greenName = this.currentuser.username;
+          this.colorsActive[0] = 1;
           break;
         case 'yellow':
           for (let i = 4; i < 8; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.yellowName = this.currentuser.username;
+          this.colorsActive[1] = 1;
           break;
         case 'red':
           for (let i = 8; i < 12; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.redName = this.currentuser.username;
+          this.colorsActive[2] = 1;
           break;
         case  'blue':
           for (let i = 12; i < 16; i++) {
             this.playablePawns.push(this.pawns[i]);
           }
           this.blueName = this.currentuser.username;
+          this.colorsActive[3] = 1;
       }
     },
 
@@ -519,7 +531,6 @@ export default {
 
       if (result === 6) {
         this.newPawn(result)
-
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
@@ -532,6 +543,8 @@ export default {
           this.selectPawn()
         }
       }
+
+
     },
 
 
@@ -594,15 +607,19 @@ export default {
         switch (this.selectedColorsMP[i]) {
           case 'green':
             this.greenName = this.users[i].username;
+            this.colorsActive[0] = 1;
             break;
           case 'yellow':
             this.yellowName = this.users[i].username;
+            this.colorsActive[1] = 1;
             break;
           case 'red':
             this.redName = this.users[i].username;
+            this.colorsActive[2] = 1;
             break;
           case  'blue':
             this.blueName = this.users[i].username;
+            this.colorsActive[3] = 1;
         }
       }
     },
@@ -645,6 +662,48 @@ export default {
       let nextPosBox = document.getElementById(newPos);
       prevPosBox.removeChild(pawnMove);
       nextPosBox.appendChild(pawnMove);
+    },
+
+    async dicePriority() {
+      let colors = ['green', 'yellow', 'red', 'blue']
+      let throwsPerColor = [null, null, null, null];
+      let throwWithColor = [];
+
+      for (let i = 0; i < this.colorsActive.length; i++) {
+        if (this.colorsActive[i] === 1) {
+          throwsPerColor[i] = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, colors[i]);
+        } else {
+          throwsPerColor[i] = "color not used"
+        }
+      }
+
+
+      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
+      //and saves it in a throw with color so the throws are combined with the color
+      for (let i = 0; i < throwsPerColor.length; i++) {
+        if (throwsPerColor[i] !== "color not used") {
+          if (typeof (throwsPerColor[i][0]) === "undefined") {
+            throwWithColor.push({Throws: 0, color: colors[i]});
+          } else {
+            throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
+          }
+        }
+      }
+
+      //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
+      let lowestRoll = throwWithColor[0].Throws;
+      let dicePrio = throwWithColor[0].color;
+      for (let i = 0; i < throwWithColor.length; i++) {
+        if (throwWithColor[i].Throws < lowestRoll) {
+          lowestRoll = throwWithColor[i].Throws;
+          dicePrio = throwWithColor[i].color;
+        }
+      }
+
+      this.activeThrow = dicePrio;
+      if (this.activeThrow !== this.selectedcolor) {
+        document.getElementById("buttonForDice").disabled = true;
+      }
     }
   },
 
