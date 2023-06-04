@@ -29,12 +29,6 @@ public class LudoController {
     @Autowired
     private LobbyRepository lobbyRepository;
 
-    @Autowired
-    private TurnRepository turnRepository;
-
-    private static final int FIRST_THROW = 6;
-    private static final int FIRST_COUNT = 1;
-
     @GetMapping(path = "", produces = "application/json")
     public List<Playerposition> getAllPlayermoves() {
         return repository.findAll();
@@ -46,13 +40,13 @@ public class LudoController {
 
         Lobby lobby = lobbyRepository.findById(lobbyId);
 
-        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId,lobby);
+        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId, lobby);
     }
 
     @GetMapping(path = "/{lobbyId}", produces = "application/json")
     public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int lobbyId) {
         Lobby lobby = lobbyRepository.findById(lobbyId);
-        if (lobby == null){
+        if (lobby == null) {
             throw new PreConditionFailed("Need a valid lobby");
         }
 
@@ -61,7 +55,7 @@ public class LudoController {
 
     @PostMapping(path = "/save/{lobbyId}", produces = "application/json")
     public ResponseEntity<Object> CreateNewPlayermove(@PathVariable int lobbyId,
-            @RequestBody Playerposition pPos) {
+                                                      @RequestBody Playerposition pPos) {
 
         Lobby lobby = lobbyRepository.findById(lobbyId);
         pPos.setLobby(lobby);

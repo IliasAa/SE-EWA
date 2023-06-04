@@ -20,4 +20,8 @@ export class diceAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
+    async asyncFindAllInLobby(lobbyId){
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
+    }
+
 }
