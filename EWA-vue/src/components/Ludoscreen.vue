@@ -194,7 +194,9 @@
       </div>
       <h2 class="make-your-move-text">{{ movePawnText }}</h2>
 
-      <button class="btn btn-primary" :disabled="!hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+      <button class="btn btn-primary" id="buttonForDice" :disabled="!hasChanged"
+              @click="ThrowDice">Gooi je dobbelsteen
+      </button>
 
     </div>
     <div class="right-part">
@@ -235,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['lobbyService', 'userService', 'ludoService','diceService', 'notificationService'],
+  inject: ['lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -258,6 +260,7 @@ export default {
       connectedUsers: [],
       users: [],
       selectedColorsMP: [],
+      colorsActive:[],
 
 
       //PlayerCardinfo
@@ -274,6 +277,11 @@ export default {
   },
 
   async created() {
+    for (let i = 0; i < 4; i++) {
+      this.colorsActive.push(0);
+    }
+    console.log(this.colorsActive)
+    console.log(this.colorsActive[2]);
     this.currentuser = await this.userService.asyncGetInfo();
 
 
@@ -300,8 +308,9 @@ export default {
       this.assignPlayerCardMP();
       this.removePawns();
       this.notificationService.subscribe("playermoves", this.reInitialize)
-      this.notificationService.subscribe("activeThrow", this.reInitialize)
       await this.reInitialize();
+
+      await this.dicePriority();
 
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
@@ -518,9 +527,9 @@ export default {
       let allowMove = false;
 
 
+
       if (result === 6) {
         this.newPawn(result)
-
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
@@ -533,6 +542,8 @@ export default {
           this.selectPawn()
         }
       }
+
+
     },
 
 
@@ -595,15 +606,19 @@ export default {
         switch (this.selectedColorsMP[i]) {
           case 'green':
             this.greenName = this.users[i].username;
+            this.colorsActive[0] = 1;
             break;
           case 'yellow':
             this.yellowName = this.users[i].username;
+            this.colorsActive[1] = 1;
             break;
           case 'red':
             this.redName = this.users[i].username;
+            this.colorsActive[2] = 1;
             break;
           case  'blue':
             this.blueName = this.users[i].username;
+            this.colorsActive[3] = 1;
         }
       }
     },
@@ -648,8 +663,68 @@ export default {
       nextPosBox.appendChild(pawnMove);
     },
 
-    async dicePriority(){
-      const totalThrows = await
+    async dicePriority() {
+      console.log(this.selectedColorsMP)
+      let colorActive = [0, 0, 0, 0]
+      let colors = ['green', 'yellow', 'red', 'blue']
+      let throwsPerColor = [null, null, null, null];
+      let throwWithColor = [];
+
+      if (this.greenName !== null) {
+        colorActive[0] = 1;
+      }
+      if (this.yellowName !== null) {
+        colorActive[1] = 1;
+      }
+      if (this.redName !== null) {
+        colorActive[2] = 1;
+      }
+      if (this.blueName !== null) {
+        colorActive[3] = 1;
+      }
+
+      for (let i = 0; i < colorActive.length; i++) {
+        if (colorActive[i] === 1) {
+          throwsPerColor[i] = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, colors[i]);
+        } else {
+          throwsPerColor[i] = "color not used"
+        }
+      }
+
+
+
+      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
+      //and saves it in a throw with color so the throws are combined with the color
+      for (let i = 0; i < throwsPerColor.length; i++) {
+        if (throwsPerColor[i] !== "color not used") {
+          if (typeof(throwsPerColor[i][0]) === "undefined"){
+            throwWithColor.push({Throws: 0, color: colors[i]});
+          } else {
+            throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
+          }
+        }
+      }
+
+
+
+      let lowestRoll = throwWithColor[0].Throws;
+      let dicePrio = throwWithColor[0].color;
+
+      console.log(throwWithColor)
+      for (let i = 0; i < throwWithColor.length; i++) {
+        if (throwWithColor[i].Throws < lowestRoll){
+          lowestRoll = throwWithColor[i].Throws;
+          dicePrio = throwWithColor[i].color;
+        }
+      }
+
+
+      this.activeThrow = dicePrio;
+      console.log(this.activeThrow);
+      if (this.activeThrow !== this.selectedcolor) {
+        document.getElementById("buttonForDice").disabled = true;
+      }
+
     }
   },
 
