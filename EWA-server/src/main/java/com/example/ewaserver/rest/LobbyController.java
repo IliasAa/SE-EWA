@@ -69,9 +69,9 @@ public class LobbyController {
             @PathVariable String selectedcolor) {
         User user = userRepository.findById(userid);
         Lobby lobby = lobbyRepository.findById(LobbyId);
-
         UserHasLobby userHasLobby = new UserHasLobby();
         userHasLobby.setSelected_color(selectedcolor);
+
         user.addLobby(userHasLobby);
         lobby.addUser(userHasLobby);
 
