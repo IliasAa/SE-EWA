@@ -235,7 +235,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['lobbyService', 'userService', 'ludoService', 'notificationService'],
+  inject: ['lobbyService', 'userService', 'ludoService','diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -300,6 +300,7 @@ export default {
       this.assignPlayerCardMP();
       this.removePawns();
       this.notificationService.subscribe("playermoves", this.reInitialize)
+      this.notificationService.subscribe("activeThrow", this.reInitialize)
       await this.reInitialize();
 
       if (this.playerMoves.length > 0) {
@@ -645,6 +646,10 @@ export default {
       let nextPosBox = document.getElementById(newPos);
       prevPosBox.removeChild(pawnMove);
       nextPosBox.appendChild(pawnMove);
+    },
+
+    async dicePriority(){
+      const totalThrows = await
     }
   },
 
