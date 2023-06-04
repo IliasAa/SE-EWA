@@ -314,12 +314,6 @@ export default {
       await this.dicePriority();
 
 
-
-      const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
-      console.log(this.lobby[0].idLobby)
-      console.log(this.selectedcolor)
-      console.log(turn);
-      console.log(turn[0]);
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
           this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
@@ -422,7 +416,7 @@ export default {
     },
 
     //Method for adding a new pawn to the field.
-    async newPawn() {
+    async newPawn(result,totalThrows) {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -454,6 +448,17 @@ export default {
             const position = this.playablePawns[arrayPos].position;
             const move = playermove.createPlayermove(pawnId, position);
             await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
+
+            //add steps to DB
+            if (totalThrows === 0) {
+              await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor)
+            } else {
+              const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+              turn[0].throwCount = turn[0].throwCount + 1;
+              turn[0].lastThrow = result
+              await this.diceService.addStepToRecord(turn[0]);
+            }
+
           }
         } else {
           this.selectPawn()
@@ -519,8 +524,14 @@ export default {
           const returnPawn =
               await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
           returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
-
           await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
+
+          //turn in DB
+          const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+          console.log(turn);
+          turn[0].throwCount = turn[0].throwCount + 1;
+          turn[0].lastThrow = result
+          await this.diceService.addStepToRecord(turn[0]);
         }
       }
     },
@@ -537,10 +548,11 @@ export default {
       this.output = result
       let allowMove = false;
 
+
       //mp specific
       let hasAPlayablePawn = false;
+      let totalThrows;
       if (!this.isSingleplayer) {
-        let totalThrows;
 
         for (let i = 0; i < this.throwWithColor; i++) {
           if (this.selectedcolor === this.throwWithColor[i].selectedcolor) {
@@ -557,7 +569,7 @@ export default {
           if (totalThrows === 0) {
             await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor)
           } else {
-            const turn = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, this.selectedColor);
+            const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);
@@ -567,7 +579,7 @@ export default {
 
 
       if (result === 6) {
-        this.newPawn(result)
+        this.newPawn(result,totalThrows)
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
