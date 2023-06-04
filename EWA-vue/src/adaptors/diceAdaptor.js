@@ -1,4 +1,4 @@
-export class LudoAdaptor {
+export class diceAdaptor {
     RESOURCE_URL;
 
     constructor(resourceUrl) {
@@ -20,33 +20,19 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncFindAllWithLobbyid(lobbyId){
+    async asyncFindAllInLobby(lobbyId) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
     }
 
-
-    async asyncFindOnTokedIdAndLobby(tokenId,Lobby){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + tokenId + "/" + Lobby);
+    async asyncFindOnColorAndID(lobbyId, selectedColor) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor);
     }
 
-    async asyncSaveUsermove(playermove,lobbyId) {
-        await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
+    async addExtrastep(lobbyId, selectedColor) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
-            body: JSON.stringify(playermove)
         },)
     }
-
-    async asyncUpdatePlayerPos(move) {
-        await this.fetchJSon(this.RESOURCE_URL , {
-            headers: {'Content-Type': 'application/json'},
-            method: 'PUT',
-            body: JSON.stringify(move)
-        },)
-    }
-
-
-
-
 
 }
