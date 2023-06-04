@@ -44,7 +44,7 @@ public class User {
     private Set<Token> tokens;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<UserHasLobby> lobbys = new ArrayList<>();
 
     @JsonIgnore
