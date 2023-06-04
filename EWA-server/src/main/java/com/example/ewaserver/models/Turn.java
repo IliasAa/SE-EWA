@@ -12,6 +12,8 @@ import java.util.Objects;
                 query = "select p from Turn p where p.lobby.idLobby = ?1 "),
         @NamedQuery(name = "Find_Turn_based_of_selectedColor_And_lobby",
                 query = "select p.lastThrow from Turn p where p.id.selectedColor = ?1 and p.lobby.idLobby =?2"),
+        @NamedQuery(name = "Find_Allofturn_based_of_selectedColor_And_lobby",
+                query = "select p from Turn p where p.id.selectedColor = ?1 and p.lobby.idLobby =?2"),
 })
 
 @Entity

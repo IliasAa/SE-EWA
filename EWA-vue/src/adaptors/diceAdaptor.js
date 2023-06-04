@@ -24,14 +24,26 @@ export class diceAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
     }
 
-    async asyncFindOnColorAndID(lobbyId, selectedColor) {
+    async asyncAllFindOnColorAndID(lobbyId, selectedColor) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor);
     }
 
-    async addExtrastep(lobbyId, selectedColor) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor, {
+    async asyncFindOnColorAndID(lobbyId, selectedColor) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/number/" + lobbyId + "/" + selectedColor);
+    }
+
+    async addExtrastep(lobbyId, selectedColor,result) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor + "/" + result, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
+        },)
+    }
+
+    async addStepToRecord(turn) {
+        await this.fetchJSon(this.RESOURCE_URL , {
+            headers: {'Content-Type': 'application/json'},
+            method: 'PUT',
+            body: JSON.stringify(turn)
         },)
     }
 

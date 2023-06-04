@@ -273,6 +273,7 @@ export default {
       //Websockets playermove
       playerMoves: [],
       activeThrow: null,
+      throwWithColor: [],
     };
   },
 
@@ -303,13 +304,22 @@ export default {
 
     //Multiplayer usernames on cards and removes unused pawns from board.
     if (!this.isSingleplayer) {
+
+
+
       this.assignPlayerCardMP();
       this.removePawns();
       this.notificationService.subscribe("playermoves", this.reInitialize)
       await this.reInitialize();
-
       await this.dicePriority();
 
+
+
+      const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+      console.log(this.lobby[0].idLobby)
+      console.log(this.selectedcolor)
+      console.log(turn);
+      console.log(turn[0]);
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
           this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
@@ -409,7 +419,6 @@ export default {
           this.selectedColorsMP.push(returns[0]);
         }
       }
-
     },
 
     //Method for adding a new pawn to the field.
@@ -523,10 +532,38 @@ export default {
     },
 
     //Method to throw the dice
-    ThrowDice() {
+    async ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
       this.output = result
       let allowMove = false;
+
+      //mp specific
+      let hasAPlayablePawn = false;
+      if (!this.isSingleplayer) {
+        let totalThrows;
+
+        for (let i = 0; i < this.throwWithColor; i++) {
+          if (this.selectedcolor === this.throwWithColor[i].selectedcolor) {
+            totalThrows = this.throwWithColor[i].Throws;
+          }
+        }
+        for (let i = 0; i < this.playablePawns.length; i++) {
+          if (this.playablePawns[i].onField === 2) {
+            hasAPlayablePawn = true;
+          }
+        }
+
+        if (hasAPlayablePawn === false && result < 6) {
+          if (totalThrows === 0) {
+            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor)
+          } else {
+            const turn = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, this.selectedColor);
+            turn[0].throwCount = turn[0].throwCount + 1;
+            turn[0].lastThrow = result
+            await this.diceService.addStepToRecord(turn[0]);
+          }
+        }
+      }
 
 
       if (result === 6) {
@@ -634,6 +671,8 @@ export default {
 
     async setupPawns(pawnId, newPos) {
       let getPawn = null;
+
+      //boolean to define wheather it is in the playable pawns or not.
       let notPlayable = true;
       for (let i = 0; i < this.playablePawns.length; i++) {
         if (pawnId === this.playablePawns[i].id) {
@@ -664,10 +703,10 @@ export default {
       nextPosBox.appendChild(pawnMove);
     },
 
+
     async dicePriority() {
       let colors = ['green', 'yellow', 'red', 'blue']
       let throwsPerColor = [null, null, null, null];
-      let throwWithColor = [];
 
       for (let i = 0; i < this.colorsActive.length; i++) {
         if (this.colorsActive[i] === 1) {
@@ -683,20 +722,20 @@ export default {
       for (let i = 0; i < throwsPerColor.length; i++) {
         if (throwsPerColor[i] !== "color not used") {
           if (typeof (throwsPerColor[i][0]) === "undefined") {
-            throwWithColor.push({Throws: 0, color: colors[i]});
+            this.throwWithColor.push({Throws: 0, color: colors[i]});
           } else {
-            throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
+            this.throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
           }
         }
       }
 
       //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
-      let lowestRoll = throwWithColor[0].Throws;
-      let dicePrio = throwWithColor[0].color;
-      for (let i = 0; i < throwWithColor.length; i++) {
-        if (throwWithColor[i].Throws < lowestRoll) {
-          lowestRoll = throwWithColor[i].Throws;
-          dicePrio = throwWithColor[i].color;
+      let lowestRoll = this.throwWithColor[0].Throws;
+      let dicePrio = this.throwWithColor[0].color;
+      for (let i = 0; i < this.throwWithColor.length; i++) {
+        if (this.throwWithColor[i].Throws < lowestRoll) {
+          lowestRoll = this.throwWithColor[i].Throws;
+          dicePrio = this.throwWithColor[i].color;
         }
       }
 

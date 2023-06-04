@@ -11,6 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
+public
 class TurnPK implements Serializable {
     private String selectedColor;
     private int lobbyId;

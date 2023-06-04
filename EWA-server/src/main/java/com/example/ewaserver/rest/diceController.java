@@ -43,7 +43,7 @@ public class diceController {
         return repository.findByQuery("Find_Turns_based_of_lobbyId", lobbyId);
     }
 
-    @GetMapping(path = "/{lobbyId}/{selectedColor}", produces = "application/json")
+    @GetMapping(path = "/number/{lobbyId}/{selectedColor}", produces = "application/json")
     public List<Turn> getPlayerMovesOnColorAndID(@PathVariable int lobbyId,
                                                  @PathVariable String selectedColor) {
         Lobby lobby = lobbyRepository.findById(lobbyId);
@@ -51,7 +51,42 @@ public class diceController {
             throw new PreConditionFailed("Need a valid lobby");
         }
 
-        return repository.findByQuery("Find_Turn_based_of_selectedColor_And_lobby",selectedColor,lobbyId);
+        return repository.findByQuery("Find_Turn_based_of_selectedColor_And_lobby", selectedColor, lobbyId);
+    }
+
+    @GetMapping(path = "/{lobbyId}/{selectedColor}", produces = "application/json")
+    public List<Turn> getAllOfSpecificTurn(@PathVariable int lobbyId,
+                                                 @PathVariable String selectedColor) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        if (lobby == null) {
+            throw new PreConditionFailed("Need a valid lobby");
+        }
+
+        return repository.findByQuery("Find_Allofturn_based_of_selectedColor_And_lobby", selectedColor, lobbyId);
+    }
+
+    @PostMapping(path = "/{lobbyId}/{selectedColor}/{result}", produces = "application/json")
+    public Turn AddNewRecord(@PathVariable int lobbyId,
+                                   @PathVariable String selectedColor,
+                                   @PathVariable int result) {
+        Lobby lobby = lobbyRepository.findById(lobbyId);
+        if (lobby == null) {
+            throw new PreConditionFailed("Need a valid lobby");
+        }
+        Turn turn = new Turn(selectedColor, lobby, result, 1);
+
+
+        return repository.Save(turn);
+    }
+
+    @PutMapping(path = "", produces = "application/json")
+    public Turn AddExtraStep(@RequestBody Turn turn) {
+        Turn saveTurn = repository.findbyTunrpk(turn.getId());
+
+        saveTurn.setThrowCount(turn.getThrowCount());
+        saveTurn.setLastThrow(turn.getLastThrow());
+
+        return repository.Save(turn);
     }
 
 

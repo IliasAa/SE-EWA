@@ -1,7 +1,9 @@
 package com.example.ewaserver.repositories;
 
+import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
 import com.example.ewaserver.models.Turn;
+import com.example.ewaserver.models.TurnPK;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -42,6 +44,12 @@ public class TurnRepository implements EntityRepository<Turn>{
     public Turn deleteById(int id) {
         return null;
     }
+
+
+    public Turn findbyTunrpk(TurnPK turnPK) {
+        return this.em.find(Turn.class, turnPK);
+    }
+
 
 
     public Turn findByQuerySingleResult(String jpqlName, Object... params) {
