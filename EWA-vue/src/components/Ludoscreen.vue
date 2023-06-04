@@ -335,7 +335,11 @@ export default {
       // }
 
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
-      console.log(this.playerMoves)
+      if (this.playerMoves.length > 0) {
+        for (let i = 0; i < this.playerMoves.length; i++) {
+          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos)
+        }
+      }
     }
 
   },
@@ -375,9 +379,6 @@ export default {
       //get the selectedColor from manyToMany table in DB
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
 
-      console.log(this.lobby);
-      console.log(this.lobby.idLobby);
-      console.log(this.lobby[0].idLobby);
 
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
@@ -386,10 +387,8 @@ export default {
 
       //get info from other players
       this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
-      console.log(this.userids)
       for (let i = 0; i < this.userids.length; i++) {
         //prevents saving the current user in the user variable
-        console.log(this.currentuser.userId)
         if (this.currentuser.userId !== this.userids[i]) {
           //saves users in users variable and searches connected color in the ManyToMany table
           this.users.push(await this.userService.asyncFindId(this.userids[i]));
@@ -430,7 +429,6 @@ export default {
 
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
-            console.log(this.lobby[0].idLobby);
             let position = this.playablePawns[arrayPos].position;
             let color = this.playablePawns[arrayPos].color;
             const move = playermove.createPlayermove(pawnId, position, color);
@@ -496,11 +494,8 @@ export default {
 
         //if it is a mutliplayer game it will post the playermove to the database
         if (!this.isSingleplayer) {
-          console.log(pawnId);
           const returnPawn =
               await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
-          console.log(returnPawn);
-          console.log(returnPawn[0]);
           returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
 
           await this.ludoService.asyncUpdatePlayerPos(returnPawn[0], this.selectedcolor);
@@ -567,28 +562,24 @@ export default {
       if (this.greenName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('100' + i);
-          console.log(element)
           element.remove();
         }
       }
       if (this.yellowName === null) {
         for (let i = 0; i < 4; i++) {
           let element = document.getElementById('200' + i)
-          console.log(element)
           element.remove();
         }
       }
       if (this.redName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('300' + i);
-          console.log(element)
           element.remove();
         }
       }
       if (this.blueName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('400' + i);
-          console.log(element)
           element.remove();
         }
       }
@@ -620,26 +611,35 @@ export default {
     },
 
 
-    // async setupPawns(pawnId, newPos) {
-    //   console.log("Hallo!")
-    //   console.log("Hallo!")
-    //   console.log("Hallo!")
-    //   console.log("Hallo!")
-    //
-    //   const pawnMove = document.getElementById(pawnId);
-    //     let prevPosBox = document.getElementById(pawnMove.homePosition);
-    //     let nextPosBox = document.getElementById(newPos);
-    //     prevPosBox.removeChild(pawnMove);
-    //     nextPosBox.appendChild(pawnMove);
-    //
-    //     for (let i = 0; i < this.playablePawns.length; i++) {
-    //       if (this.playablePawns[i].id === pawnId){
-    //         this.playablePawns[i].onField = 1;
-    //         this.playablePawns[i].position = newPos;
-    //         this.playablePawns[i].previousPosition = this.playablePawns[i].homePosition;
-    //       }
-    //   }
-    // }
+    async setupPawns(pawnId, newPos) {
+      console.log("Hallo!")
+      console.log("Hallo!")
+      console.log("Hallo!")
+      console.log("Hallo!")
+      let getPawn = null;
+      for (let i = 0; i < this.pawns.length; i++) {
+        if (pawnId === this.pawns[i].id) {
+          getPawn = this.pawns[i];
+        }
+      }
+      const pawnMove = document.getElementById(pawnId);
+      getPawn.previousPosition = getPawn.homePosition
+      getPawn.position = newPos
+      getPawn.onField = 1;
+      let prevPosBox = document.getElementById(getPawn.homePosition);
+      let nextPosBox = document.getElementById(newPos);
+      prevPosBox.removeChild(pawnMove);
+      nextPosBox.appendChild(pawnMove);
+
+      // //for playable pawns;
+      // for (let i = 0; i < this.playablePawns.length; i++) {
+      //   if (this.playablePawns[i].id === pawnId) {
+      //     this.playablePawns[i].onField = 1;
+      //     this.playablePawns[i].position = newPos;
+      //     this.playablePawns[i].previousPosition = this.playablePawns[i].homePosition;
+      //   }
+      // }
+    }
   },
 
 }
