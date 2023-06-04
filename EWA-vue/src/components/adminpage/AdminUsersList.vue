@@ -14,7 +14,7 @@
                                     <thead>
                                     <tr>
                                         <!-- loop through each value of the fields to get the table header -->
-                                        <th v-for="tableField in tableFields" :key='tableField' >
+                                        <th v-for="tableField in tableFields" :key='tableField' @click="sortTable(tableField)" >
                                             {{ tableField }} <i class="fa-solid fa-arrow-down-a-z" aria-label='Sort Icon'></i>
                                         </th>
                                         <th>Actions</th>
@@ -22,7 +22,7 @@
                                     </thead>
                                     <tbody>
                                     <!-- Loop through the list get the each student data -->
-                                    <tr v-for="user in users" :key='user' @click="sortTable(tableField)">
+                                    <tr v-for="user in users" :key='user'>
                                         <td v-for="tableField in tableFields" :key='tableField' >{{ user[tableField] }}</td>
                                         <td>
                                             <button class="btn btn-primary" @click="showPopUpEdit(user)">Edit</button>
@@ -47,23 +47,21 @@
         </div>
 
         <div v-if="showEditUser === true" id="myModal" class="modal">
-            <div class="modal-content flex justify-content-center align-items-center">
+            <div class="modal-content flex justify-content-center">
                 <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Edit User" }}</h2>
-                <div>
-                    <input v-model="selectedUser.username" class="modal-input">
-                    <input v-model="selectedUser.firstname" class="modal-input">
-                    <input v-model="selectedUser.lastname" class="modal-input">
-                    <input v-model="selectedUser.email" class="modal-input">
-                </div>
+              <v-form>
+                <v-text-field label="Username"  type="text" v-model="selectedUser.username" ></v-text-field>
+                <v-text-field label="firstname" type="text" v-model="selectedUser.firstname"></v-text-field>
+                <v-text-field label="lastname"  type="text" v-model="selectedUser.lastname"></v-text-field>
+                <v-text-field label="email"  type="email" v-model="selectedUser.email"></v-text-field>
+              </v-form>
                 <div class="modal-footer mt-3 flex justify-content-center mt-10">
                     <div>
-                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
-                            <span class="front" style="background: #ec1629">Nee, ga terug!</span>
+                        <button class="btn btn-danger" @click="goBack()">
+                          Cancel Edit
                         </button>
-                        <button class="btn pushable" style="background: #323232;" @click="onUpdate()">
-                    <span class="front" style="background: mediumseagreen" >
-                    Ja! Ik kies deze!
-                    </span>
+                        <button class="btn btn-success"  @click="onUpdate()">
+                          Update User
                         </button>
                     </div>
                 </div>
@@ -83,13 +81,11 @@
           </v-form>
           <div class="modal-footer mt-3 flex justify-content-center mt-10">
             <div>
-              <button class="btn pushable" style="background: #323232;" @click="goBack()">
-                <span class="front" style="background: #ec1629">Nee, ga terug!</span>
+              <button class="btn btn-danger" @click="goBack()">
+                Cancel
               </button>
-              <button class="btn pushable" style="background: #323232;" @click="createUser()" >
-                    <span class="front" style="background: mediumseagreen" >
-                    Maak nieuwe Gebruiker aan
-                    </span>
+              <button class="btn btn-success"  @click="createUser()">
+                Create User
               </button>
             </div>
           </div>
@@ -104,18 +100,14 @@
                     Dit account zal voor goed verwijderd worden, ook alle lobbys gekoppeld aan het account worden verwijderd
                 </p>
                 <div class="modal-footer mt-3 flex justify-content-center mt-10">
-                    <div>
-                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
-                <span class="front" style="background: #ec1629">
-                     Nee, ga terug!
-                </span>
-                        </button>
-                        <button class="btn pushable" style="background: #323232;">
-                <span class="front" style="background: mediumseagreen" @click="deleteUser(this.selectedUser.userId)">
-                     Ja! Ik kies deze!
-                </span>
-                        </button>
-                    </div>
+                  <div>
+                    <button class="btn btn-danger" @click="goBack()">
+                      Cancel
+                    </button>
+                    <button class="btn btn-success"  @click="deleteUser(this.selectedUser.userId)">
+                      Delete User
+                    </button>
+                  </div>
                 </div>
             </div>
         </div>
@@ -235,6 +227,7 @@ export default {
             const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
             await this.loginService.asyncSave(newuser);
             this.showAddUser = false
+
           } else {
             toast.error("Error encouterd check your input");
           }
