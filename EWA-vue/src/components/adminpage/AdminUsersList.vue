@@ -39,7 +39,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">New User</h5>
-                            <button class="btn btn-success" @click="modalUser()">Add User</button>
+                            <button class="btn btn-success" @click="showPopUpAdd()">Add User</button>
                         </div>
                     </div>
                 </div>
@@ -71,11 +71,37 @@
         </div>
 
 
+      <div v-if="showAddUser === true" id="myModal" class="modal">
+        <div class="modal-content flex justify-content-center">
+          <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Add User" }}</h2>
+          <v-form>
+            <v-text-field label="Username"  type="text" v-model="username" ></v-text-field>
+            <v-text-field label="firstname" type="text" v-model="firstname"></v-text-field>
+            <v-text-field label="lastname"  type="text" v-model="lastname"></v-text-field>
+            <v-text-field label="email"  type="email" v-model="email"></v-text-field>
+            <v-text-field label="password" type="password" v-model="password"></v-text-field>
+          </v-form>
+          <div class="modal-footer mt-3 flex justify-content-center mt-10">
+            <div>
+              <button class="btn pushable" style="background: #323232;" @click="goBack()">
+                <span class="front" style="background: #ec1629">Nee, ga terug!</span>
+              </button>
+              <button class="btn pushable" style="background: #323232;" @click="createUser()" >
+                    <span class="front" style="background: mediumseagreen" >
+                    Maak nieuwe Gebruiker aan
+                    </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
         <div v-if="showModal === true" id="myModal" class="modal ">
             <div class="modal-content flex justify-content-center align-items-center">
                 <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "VERWIJDEREN" }}</h2>
                 <p class="mt-2">Weet je zeker dat je {{ this.selectedUser.username }} wilt gaan verwijderen?<br>
-                    Dit account zal voor goed verwijderd worden, ook alle posts gekoppeld aan het account worden verwijderd
+                    Dit account zal voor goed verwijderd worden, ook alle lobbys gekoppeld aan het account worden verwijderd
                 </p>
                 <div class="modal-footer mt-3 flex justify-content-center mt-10">
                     <div>
@@ -106,24 +132,26 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {toast} from "vue3-toastify";
+import User from "@/models/user";
+import user from "@/models/user";
 
 
 export default {
     name: "AdminUsersList",
     components: {NavBar},
-    inject: ['userService'],
+    inject: ['userService', 'loginService'],
     data() {
         return {
             users: [],
             tableFields: null,
             showModal: false,
             showEditUser: false,
-            showAdduser: false,
+            showAddUser: false,
             selectedUser: {},
             username: '',
             email: '',
-            firstName: '',
-            lastName: '',
+            firstname: '',
+            lastname: '',
             password: null,
         }
     },
@@ -153,6 +181,7 @@ export default {
         goBack() {
             this.showModal = false;
             this.showEditUser = false;
+            this.showAddUser = false;
         },
 
         async deleteUser(id) {
@@ -169,6 +198,11 @@ export default {
         async showPopUpEdit(user) {
             this.selectedUser = user;
             this.showEditUser = true;
+
+        },
+
+        async showPopUpAdd(){
+          this.showAddUser = true;
         },
 
         sortTable(tableField) {
@@ -192,8 +226,26 @@ export default {
 
             await this.userService.asyncAdminUpdate(this.selectedUser)
             toast.success("Account succesfully edited!");
+            this.showEditUser = false
+        },
+
+      async createUser() {
+        try {
+          if (!this.usernameValidated ) {
+            const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
+            await this.loginService.asyncSave(newuser);
+            this.showAddUser = false
+          } else {
+            toast.error("Error encouterd check your input");
+          }
+        } catch (e) {
+          console.log(e);
+          toast.error("User not Created");
         }
+      },
     },
+
+
 
 
     async created() {
