@@ -50,7 +50,7 @@
             <td>{{game.creatorNames}}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
-              <button class="btn btn-primary btn-lg" @click="game.showPopup2 = !game.showPopup2">&#9658;</button>
+              <button class="btn btn-primary btn-lg" @click="disableColors(game, game.join_code)">&#9658;</button>
             </td>
             <popup class="popup" v-if="game.showPopup2">
               <div class="lobbyDetail" :style="{display: game.showPopup2 ? 'block' : 'none'}">
@@ -58,17 +58,17 @@
                   <span @click="game.showPopup2 = !game.showPopup2" class="close">&times;</span>
                   <div class="playerColor">
                     <p>Choose a starting color:</p>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'red'}"
-                            id="red" @click="colorChoosing('red')">Red
+                    <button class="playerColorButton" :class="{ active: selectedColor === 'red', inactive: redColorSelectionDisabled}"
+                            id="red" @click="colorChoosing('red')" :disabled="redColorSelectionDisabled">Red
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'blue'}"
-                            id="blue" @click="colorChoosing('blue')">Blue
+                    <button class="playerColorButton" :class="{ active: selectedColor === 'blue', inactive: blueColorSelectionDisabled}"
+                            id="blue" @click="colorChoosing('blue')" :disabled="blueColorSelectionDisabled">Blue
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'yellow'}"
-                            id="yellow" @click="colorChoosing('yellow')">Yellow
+                    <button class="playerColorButton" :class="{ active: selectedColor === 'yellow', inactive: yellowColorSelectionDisabled}"
+                            id="yellow" @click="colorChoosing('yellow')" :disabled="yellowColorSelectionDisabled">Yellow
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'green'}"
-                            id="green" @click="colorChoosing('green')">Green
+                    <button class="playerColorButton" :class="{ active: selectedColor === 'green', inactive: greenColorSelectionDisabled}"
+                            id="green" @click="colorChoosing('green')" :disabled="greenColorSelectionDisabled">Green
                     </button>
                   </div>
                 </div>
@@ -90,6 +90,8 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {isDisabled} from "bootstrap/js/src/util";
+// import DetailJoinGame from "@/components/lobby/DetailJoinGame.vue";
+
 
 export default {
 
@@ -109,10 +111,13 @@ export default {
       join_code: "",
       selectedColor: null,
       lobby: null,
-      maxPlayer: [],
 
       users: [],
       selectedColorsinLobby: [],
+      redColorSelectionDisabled: false,
+      blueColorSelectionDisabled: false,
+      greenColorSelectionDisabled: false,
+      yellowColorSelectionDisabled: false,
       showPopup1: false,
       showPopup2: false,
     }
@@ -122,9 +127,10 @@ export default {
     this.user = await this.userService.asyncGetInfo();
     this.userId = this.user.userId;
     console.log(this.allgames)
+    console.log(this.selectedColorsinLobby)
 
 
-    // This is to avoid seeing games that you made yourself and it will only show the games that did not start yet.
+    // This is to avoid seeing games that you made yourself, and it will only show the games that did not start yet.
     for (let i = 0; i < this.allgames.length; i++) {
       if (this.allgames[i].lobby_status === 0) {
         if (this.allgames[i].userid_owner === this.userId) {
@@ -135,7 +141,7 @@ export default {
       }
     }
 
-    //this is to find the username of all the lobby owners so it will show in the lobby browser.
+    //this is to find the username of all the lobby owners, so it will show in the lobby browser.
     for (let i = 0; i < this.games.length; i++) {
       if (this.games[i].userid_owner !== 0 && this.games[i].userid_owner !== null) {
         this.lobbyCreators.push(await this.userService.asyncFindId(this.games[i].userid_owner))
@@ -144,7 +150,7 @@ export default {
       }
     }
 
-    //saves the creatorname in games variable.
+    //saves the creator name in games variable.
     for (let i = 0; i < this.allgames.length; i++) {
       this.games[i].creatorNames = this.lobbyCreators[i].username
     }
@@ -156,6 +162,36 @@ export default {
     colorChoosing(color) {
       this.selectedColor = color;
     },
+
+    //Method to disable colors that have already been picked by other players.
+    async disableColors(game, join_code) {
+      game.showPopup2 = !game.showPopup2;
+
+      const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
+      this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
+
+      if (this.selectedColorsinLobby.includes("red")){
+        this.redColorSelectionDisabled = true;
+      }
+      if (this.selectedColorsinLobby.includes("blue")){
+        this.blueColorSelectionDisabled = true;
+      }
+      if (this.selectedColorsinLobby.includes("yellow")) {
+        this.yellowColorSelectionDisabled = true;
+      }
+      if (this.selectedColorsinLobby.includes("green")){
+        this.greenColorSelectionDisabled = true;
+      }
+
+    },
+
+    //Method to show the separate game popups.
+    togglePopup(game) {
+      // this.disableColors(game.join_code);
+
+      game.showPopup2 = !game.showPopup2;
+    },
+
     //Async method to join a game using a join code of that lobby
     async Joingame(join_code) {
       //saves the response and send it to the User_has_lobby.
@@ -166,24 +202,20 @@ export default {
 
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
-      this.maxPlayer = await this.lobbyService.asyncFindMaxPlayerCountCompare(createdLobby[0].idLobby)
-      console.log(this.maxPlayer)
-      if (this.maxPlayer[0] === this.maxPlayer[1]) {
-        alert("max aan spelers berijkt")
-      } else {
-        for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
-          if (this.selectedColorsinLobby[i] === selectedColor){
-            // document.getElementById(this.selectedColor).disabled;
-            alert("color has already been selected")
-            break;
-          } else {
-            await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
-            //Push router to lobby with join code so it will see it in the params
-            this.$router.push("/lobby/" + createdLobby[0].join_code)
-          }
+      for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
+        if (this.selectedColorsinLobby[i] === selectedColor){
+          this.colorSelectionDisabled = true;
+          alert("color has already been selected")
+          break;
+        } else {
+          await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
+          //Push router to lobby with join code, so it will see it in the params
+          this.$router.push("/lobby/" + createdLobby[0].join_code)
         }
+
       }
     },
+
   }
 }
 </script>
@@ -229,6 +261,26 @@ export default {
   filter: brightness(0.7);
   background-color: rgba(5, 11, 98, 1);
 }
+
+/*.lobbyContent {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  margin-top: 36%;*/
+/*  padding: 20px;*/
+/*}*/
+
+/*.lobbyDetail {*/
+/*  display: none; !* Hidden by default *!*/
+/*  position: fixed; !* Stay in place *!*/
+/*  left: 0;*/
+/*  top: 0;*/
+/*  height: 100%; !* Full height *!*/
+/*  overflow: auto; !* Enable scroll if needed *!*/
+/*  background-color: rgba(0, 0, 0, 0.4); !* Black w/ opacity *!*/
+/*  width: 100%;*/
+/*  border-radius: 20px;*/
+/*}*/
+
 .playerColor {
   background-color: white;
   text-align: center;
@@ -245,25 +297,25 @@ export default {
   margin: 5px;
 }
 
-#red:hover {
-  background-color: red;
+.playerColorButton.disabled {
+  opacity: 0.5; /* Reduce the opacity of disabled buttons */
 }
 
-#blue:hover {
-  background-color: blue;
-}
-
-#yellow:hover {
-  background-color: yellow;
-}
-
-#green:hover {
-  background-color: green;
-}
 
 .active {
   background-color: black;
   color: white;
 }
+.inactive {
+  background-color: grey;
+  color: white;
+}
+
+/*.close {*/
+/*  color: red;*/
+/*  float: right;*/
+/*  font-size: 50px;*/
+/*  font-weight: bold;*/
+/*}*/
 
 </style>

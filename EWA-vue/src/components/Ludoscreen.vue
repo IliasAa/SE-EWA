@@ -194,7 +194,9 @@
       </div>
       <h2 class="make-your-move-text">{{ movePawnText }}</h2>
 
-      <button class="btn btn-primary" :disabled="!hasChanged" @click="ThrowDice">Gooi je dobbelsteen</button>
+      <button class="btn btn-primary" id="buttonForDice" :disabled="!hasChanged"
+              @click="ThrowDice">Gooi je dobbelsteen
+      </button>
 
     </div>
     <div class="right-part">
@@ -235,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService', 'lobbyService', 'userService', 'ludoService'],
+  inject: ['lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -258,6 +260,7 @@ export default {
       connectedUsers: [],
       users: [],
       selectedColorsMP: [],
+      colorsActive: [],
 
 
       //PlayerCardinfo
@@ -270,12 +273,17 @@ export default {
       //Websockets playermove
       playerMoves: [],
       activeThrow: null,
-      getPawn: null,
+      throwWithColor: [],
+      turns: [],
     };
   },
 
   async created() {
+    for (let i = 0; i < 4; i++) {
+      this.colorsActive.push(0);
+    }
     this.currentuser = await this.userService.asyncGetInfo();
+
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
     this.lobbyCode = this.$route.params.joincode;
@@ -291,45 +299,26 @@ export default {
     }
 
 
-    //creates all pawns
+    //creates all pawns and also the playable pawns
     this.createPawns();
 
-    //Saves all the pawns that is allowed to move to playablePawns.
-    //Make it so only can move pawns that have the same color as you selected.
-    switch (this.selectedcolor) {
-      case 'green':
-        for (let i = 0; i < 4; i++) {
-          this.playablePawns.push(this.pawns[i]);
-        }
-        this.greenName = this.currentuser.username;
-        break;
-      case 'yellow':
-        for (let i = 4; i < 8; i++) {
-          this.playablePawns.push(this.pawns[i]);
-        }
-        this.yellowName = this.currentuser.username;
-        break;
-      case 'red':
-        for (let i = 8; i < 12; i++) {
-          this.playablePawns.push(this.pawns[i]);
-        }
-        this.redName = this.currentuser.username;
-        break;
-      case  'blue':
-        for (let i = 12; i < 16; i++) {
-          this.playablePawns.push(this.pawns[i]);
-        }
-        this.blueName = this.currentuser.username;
-    }
 
     //Multiplayer usernames on cards and removes unused pawns from board.
     if (!this.isSingleplayer) {
+
+
       this.assignPlayerCardMP();
       this.removePawns();
-      // this.notificationService.subscribe("playermoves", this.reInitialize)
-      // await this.reInitialize();
-      this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
-      console.log(this.playerMoves)
+      this.notificationService.subscribe("turns", this.reInitialize)
+      await this.reInitialize();
+      await this.dicePriority();
+
+
+      if (this.playerMoves.length > 0) {
+        for (let i = 0; i < this.playerMoves.length; i++) {
+          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
+        }
+      }
     }
 
   },
@@ -342,6 +331,7 @@ export default {
   },
 
   methods: {
+    //Initial creation for the pawns and playable pawns.
     createPawns() {
       //for statements to create pawns for each color with unique ids
       for (let i = 100; i < 104; i++) {
@@ -364,14 +354,48 @@ export default {
         let homepos = 4000 + count;
         this.pawns.push(pawn.createbluePawn(i, homepos))
       }
+      this.createPlayablePawns();
     },
+
+    createPlayablePawns() {
+      //Saves all the pawns that is allowed to move to playablePawns.
+      //Make it so only can move pawns that have the same color as you selected.
+      switch (this.selectedcolor) {
+        case 'green':
+          for (let i = 0; i < 4; i++) {
+            this.playablePawns.push(this.pawns[i]);
+          }
+          this.greenName = this.currentuser.username;
+          this.colorsActive[0] = 1;
+          break;
+        case 'yellow':
+          for (let i = 4; i < 8; i++) {
+            this.playablePawns.push(this.pawns[i]);
+          }
+          this.yellowName = this.currentuser.username;
+          this.colorsActive[1] = 1;
+          break;
+        case 'red':
+          for (let i = 8; i < 12; i++) {
+            this.playablePawns.push(this.pawns[i]);
+          }
+          this.redName = this.currentuser.username;
+          this.colorsActive[2] = 1;
+          break;
+        case  'blue':
+          for (let i = 12; i < 16; i++) {
+            this.playablePawns.push(this.pawns[i]);
+          }
+          this.blueName = this.currentuser.username;
+          this.colorsActive[3] = 1;
+      }
+    },
+
+    //Method specifically made for multiplayer games.
     async multiplayerInitialLaunch() {
       //get the selectedColor from manyToMany table in DB
       this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
 
-      console.log(this.lobby);
-      console.log(this.lobby.idLobby);
-      console.log(this.lobby[0].idLobby);
 
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
@@ -380,10 +404,8 @@ export default {
 
       //get info from other players
       this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
-      console.log(this.userids)
       for (let i = 0; i < this.userids.length; i++) {
         //prevents saving the current user in the user variable
-        console.log(this.currentuser.userId)
         if (this.currentuser.userId !== this.userids[i]) {
           //saves users in users variable and searches connected color in the ManyToMany table
           this.users.push(await this.userService.asyncFindId(this.userids[i]));
@@ -391,10 +413,10 @@ export default {
           this.selectedColorsMP.push(returns[0]);
         }
       }
-
     },
 
-    async newPawn() {
+    //Method for adding a new pawn to the field.
+    async newPawn(result, totalThrows) {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -423,9 +445,20 @@ export default {
 
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
-            console.log(this.lobby[0].idLobby);
-            const move = playermove.createPlayermove(pawnId, this.playablePawns[arrayPos].position);
+            const position = this.playablePawns[arrayPos].position;
+            const move = playermove.createPlayermove(pawnId, position);
             await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
+
+            //add steps to DB
+            if (totalThrows === 0) {
+              await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
+            } else {
+              const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+              turn[0].throwCount = turn[0].throwCount + 1;
+              turn[0].lastThrow = result
+              await this.diceService.addStepToRecord(turn[0]);
+            }
+
           }
         } else {
           this.selectPawn()
@@ -436,6 +469,7 @@ export default {
     },
 
 
+    //Method to move a pawn on the field.
     async movePawn(pawnId, arrayPos) {
       const result = this.output;
 
@@ -488,28 +522,64 @@ export default {
         //if it is a mutliplayer game it will post the playermove to the database
         if (!this.isSingleplayer) {
           const returnPawn =
-              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.playablePawns[arrayPos].position);
-          console.log(returnPawn);
-          console.log(returnPawn[0]);
+              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
           returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
+          await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
 
-          await this.ludoService.asyncUpdatePlayerPos(this.getPawn[0])
+          //turn in DB
+          const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+          console.log(turn);
+          turn[0].throwCount = turn[0].throwCount + 1;
+          turn[0].lastThrow = result
+          await this.diceService.addStepToRecord(turn[0]);
         }
       }
     },
 
+    //Shows that you won the game.
     winConfirmation() {
       this.allowedToMove = false
       this.output = "win"
     },
 
-    ThrowDice() {
+    //Method to throw the dice
+    async ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
       this.output = result
       let allowMove = false;
-      if (result === 6) {
-        this.newPawn(result)
 
+
+      //mp specific
+      let hasAPlayablePawn = false;
+      let totalThrows;
+      if (!this.isSingleplayer) {
+
+        for (let i = 0; i < this.throwWithColor.length; i++) {
+          if (this.selectedcolor === this.throwWithColor[i].color) {
+            totalThrows = this.throwWithColor[i].Throws;
+          }
+        }
+        for (let i = 0; i < this.playablePawns.length; i++) {
+          if (this.playablePawns[i].onField === 2) {
+            hasAPlayablePawn = true;
+          }
+        }
+
+        if (hasAPlayablePawn === false && result < 6) {
+          if (totalThrows === 0 || totalThrows === null) {
+            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
+          } else {
+            const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+            turn[0].throwCount = turn[0].throwCount + 1;
+            turn[0].lastThrow = result
+            await this.diceService.addStepToRecord(turn[0]);
+          }
+        }
+      }
+
+
+      if (result === 6) {
+        this.newPawn(result, totalThrows)
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
@@ -522,6 +592,8 @@ export default {
           this.selectPawn()
         }
       }
+
+
     },
 
 
@@ -552,33 +624,28 @@ export default {
     },
 
     removePawns() {
-
       //Could be better
       if (this.greenName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('100' + i);
-          console.log(element)
           element.remove();
         }
       }
       if (this.yellowName === null) {
         for (let i = 0; i < 4; i++) {
           let element = document.getElementById('200' + i)
-          console.log(element)
           element.remove();
         }
       }
       if (this.redName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('300' + i);
-          console.log(element)
           element.remove();
         }
       }
       if (this.blueName === null) {
         for (let i = 0; i < 4; i++) {
           const element = document.getElementById('400' + i);
-          console.log(element)
           element.remove();
         }
       }
@@ -589,15 +656,19 @@ export default {
         switch (this.selectedColorsMP[i]) {
           case 'green':
             this.greenName = this.users[i].username;
+            this.colorsActive[0] = 1;
             break;
           case 'yellow':
             this.yellowName = this.users[i].username;
+            this.colorsActive[1] = 1;
             break;
           case 'red':
             this.redName = this.users[i].username;
+            this.colorsActive[2] = 1;
             break;
           case  'blue':
             this.blueName = this.users[i].username;
+            this.colorsActive[3] = 1;
         }
       }
     },
@@ -607,7 +678,85 @@ export default {
 
       //saves all the moves made
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
+      this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
     },
+
+
+    async setupPawns(pawnId, newPos) {
+      let getPawn = null;
+
+      //boolean to define wheather it is in the playable pawns or not.
+      let notPlayable = true;
+      for (let i = 0; i < this.playablePawns.length; i++) {
+        if (pawnId === this.playablePawns[i].id) {
+          getPawn = this.playablePawns[i];
+          notPlayable = false;
+        }
+      }
+
+      if (notPlayable) {
+        for (let i = 0; i < this.pawns.length; i++) {
+          if (pawnId === this.pawns[i].id) {
+            getPawn = this.pawns[i];
+          }
+        }
+      }
+
+
+      getPawn.previousPosition = getPawn.homePosition;
+      getPawn.position = newPos;
+      getPawn.onField = 2;
+
+
+      //Check if pawn reached finished area
+      const pawnMove = document.getElementById(pawnId);
+      let prevPosBox = document.getElementById(getPawn.homePosition);
+      let nextPosBox = document.getElementById(newPos);
+      prevPosBox.removeChild(pawnMove);
+      nextPosBox.appendChild(pawnMove);
+    },
+
+
+    async dicePriority() {
+      let colors = ['green', 'yellow', 'red', 'blue']
+      let throwsPerColor = [null, null, null, null];
+
+      for (let i = 0; i < this.colorsActive.length; i++) {
+        if (this.colorsActive[i] === 1) {
+          throwsPerColor[i] = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, colors[i]);
+        } else {
+          throwsPerColor[i] = "color not used"
+        }
+      }
+
+
+      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
+      //and saves it in a throw with color so the throws are combined with the color
+      for (let i = 0; i < throwsPerColor.length; i++) {
+        if (throwsPerColor[i] !== "color not used") {
+          if (typeof (throwsPerColor[i][0]) === "undefined") {
+            this.throwWithColor.push({Throws: 0, color: colors[i]});
+          } else {
+            this.throwWithColor.push({Throws: throwsPerColor[i][0], color: colors[i]});
+          }
+        }
+      }
+
+      //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
+      let lowestRoll = this.throwWithColor[0].Throws;
+      let dicePrio = this.throwWithColor[0].color;
+      for (let i = 0; i < this.throwWithColor.length; i++) {
+        if (this.throwWithColor[i].Throws < lowestRoll) {
+          lowestRoll = this.throwWithColor[i].Throws;
+          dicePrio = this.throwWithColor[i].color;
+        }
+      }
+
+      this.activeThrow = dicePrio;
+      if (this.activeThrow !== this.selectedcolor) {
+        document.getElementById("buttonForDice").disabled = true;
+      }
+    }
   },
 
 }

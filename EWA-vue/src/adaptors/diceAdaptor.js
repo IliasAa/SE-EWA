@@ -1,4 +1,4 @@
-export class LudoAdaptor {
+export class diceAdaptor {
     RESOURCE_URL;
 
     constructor(resourceUrl) {
@@ -20,33 +20,31 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
 
-    async asyncFindAllWithLobbyid(lobbyId){
+    async asyncFindAllInLobby(lobbyId) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
     }
 
-
-    async asyncFindOnTokedIdAndLobby(tokenId,Lobby){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + tokenId + "/" + Lobby);
+    async asyncAllFindOnColorAndID(lobbyId, selectedColor) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor);
     }
 
-    async asyncSaveUsermove(playermove,lobbyId) {
-        await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
+    async asyncFindOnColorAndID(lobbyId, selectedColor) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/number/" + lobbyId + "/" + selectedColor);
+    }
+
+    async addExtrastep(lobbyId, selectedColor,result) {
+        await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor + "/" + result, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
-            body: JSON.stringify(playermove)
         },)
     }
 
-    async asyncUpdatePlayerPos(move) {
+    async addStepToRecord(turn) {
         await this.fetchJSon(this.RESOURCE_URL , {
             headers: {'Content-Type': 'application/json'},
             method: 'PUT',
-            body: JSON.stringify(move)
+            body: JSON.stringify(turn)
         },)
     }
-
-
-
-
 
 }

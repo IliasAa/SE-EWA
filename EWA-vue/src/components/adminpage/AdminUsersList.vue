@@ -14,7 +14,7 @@
                                     <thead>
                                     <tr>
                                         <!-- loop through each value of the fields to get the table header -->
-                                        <th v-for="tableField in tableFields" :key='tableField' >
+                                        <th v-for="tableField in tableFields" :key='tableField' @click="sortTable(tableField)" >
                                             {{ tableField }} <i class="fa-solid fa-arrow-down-a-z" aria-label='Sort Icon'></i>
                                         </th>
                                         <th>Actions</th>
@@ -22,10 +22,10 @@
                                     </thead>
                                     <tbody>
                                     <!-- Loop through the list get the each student data -->
-                                    <tr v-for="user in users" :key='user' @click="sortTable(tableField)">
+                                    <tr v-for="user in users" :key='user'>
                                         <td v-for="tableField in tableFields" :key='tableField' >{{ user[tableField] }}</td>
                                         <td>
-                                            <button class="btn btn-primary">Edit</button>
+                                            <button class="btn btn-primary" @click="showPopUpEdit(user)">Edit</button>
                                             <button class="btn btn-danger" @click="showPopUp(user)">Delete</button>
                                         </td>
                                     </tr>
@@ -39,71 +39,75 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">New User</h5>
-                            <button class="btn btn-success" @click="modalUser()">Add User</button>
+                            <button class="btn btn-success" @click="showPopUpAdd()">Add User</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <form v-if="showAdduser" id="myModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header border-none mb-0">
-                    <span class="close" @click="modalUser()">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold">Add User</h2>
-                    <v-text-field
-                        label="Username"
-                        type="text"
-                        v-model="username"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Email address"
-                        type="email"
-                        v-model="email"
-                    ></v-text-field>
-                    <v-text-field
-                        label="firstname"
-                        type="text"
-                        v-model="firstname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="lastname"
-                        type="text"
-                        v-model="lastname"
-                    ></v-text-field>
-                    <v-text-field
-                        label="Password"
-                        type="password"
-                        v-model="password"
-                    ></v-text-field>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add User</button>
+        <div v-if="showEditUser === true" id="myModal" class="modal">
+            <div class="modal-content flex justify-content-center">
+                <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Edit User" }}</h2>
+              <v-form>
+                <v-text-field label="Username"  type="text" v-model="selectedUser.username" ></v-text-field>
+                <v-text-field label="firstname" type="text" v-model="selectedUser.firstname"></v-text-field>
+                <v-text-field label="lastname"  type="text" v-model="selectedUser.lastname"></v-text-field>
+                <v-text-field label="email"  type="email" v-model="selectedUser.email"></v-text-field>
+              </v-form>
+                <div class="modal-footer mt-3 flex justify-content-center mt-10">
+                    <div>
+                        <button class="btn btn-danger" @click="goBack()">
+                          Cancel Edit
+                        </button>
+                        <button class="btn btn-success"  @click="onUpdate()">
+                          Update User
+                        </button>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
+
+
+      <div v-if="showAddUser === true" id="myModal" class="modal">
+        <div class="modal-content flex justify-content-center">
+          <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "Add User" }}</h2>
+          <v-form>
+            <v-text-field label="Username"  type="text" v-model="username" ></v-text-field>
+            <v-text-field label="firstname" type="text" v-model="firstname"></v-text-field>
+            <v-text-field label="lastname"  type="text" v-model="lastname"></v-text-field>
+            <v-text-field label="email"  type="email" v-model="email"></v-text-field>
+            <v-text-field label="password" type="password" v-model="password"></v-text-field>
+          </v-form>
+          <div class="modal-footer mt-3 flex justify-content-center mt-10">
+            <div>
+              <button class="btn btn-danger" @click="goBack()">
+                Cancel
+              </button>
+              <button class="btn btn-success"  @click="createUser()">
+                Create User
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
         <div v-if="showModal === true" id="myModal" class="modal ">
             <div class="modal-content flex justify-content-center align-items-center">
                 <h2 class="mb-2 text-xl text-green-800 mt-0 font-bold mt-2">{{ "VERWIJDEREN" }}</h2>
                 <p class="mt-2">Weet je zeker dat je {{ this.selectedUser.username }} wilt gaan verwijderen?<br>
-                    Dit account zal voor goed verwijderd worden, ook alle posts gekoppeld aan het account worden verwijderd
+                    Dit account zal voor goed verwijderd worden, ook alle lobbys gekoppeld aan het account worden verwijderd
                 </p>
                 <div class="modal-footer mt-3 flex justify-content-center mt-10">
-                    <div>
-                        <button class="btn pushable" style="background: #323232;" @click="goBack()">
-                <span class="front" style="background: #ec1629">
-                     Nee, ga terug!
-                </span>
-                        </button>
-                        <button class="btn pushable" style="background: #323232;">
-                <span class="front" style="background: mediumseagreen" @click="deleteUser(this.selectedUser.userId)">
-                     Ja! Ik kies deze!
-                </span>
-                        </button>
-                    </div>
+                  <div>
+                    <button class="btn btn-danger" @click="goBack()">
+                      Cancel
+                    </button>
+                    <button class="btn btn-success"  @click="deleteUser(this.selectedUser.userId)">
+                      Delete User
+                    </button>
+                  </div>
                 </div>
             </div>
         </div>
@@ -120,18 +124,21 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {toast} from "vue3-toastify";
+import User from "@/models/user";
+import user from "@/models/user";
 
 
 export default {
     name: "AdminUsersList",
     components: {NavBar},
-    inject: ['userService'],
+    inject: ['userService', 'loginService'],
     data() {
         return {
             users: [],
             tableFields: null,
             showModal: false,
-            showAdduser: false,
+            showEditUser: false,
+            showAddUser: false,
             selectedUser: {},
             username: '',
             email: '',
@@ -165,6 +172,8 @@ export default {
 
         goBack() {
             this.showModal = false;
+            this.showEditUser = false;
+            this.showAddUser = false;
         },
 
         async deleteUser(id) {
@@ -177,8 +186,17 @@ export default {
         async showPopUp(user) {
             this.selectedUser = user;
             this.showModal = true;
+        },
+        async showPopUpEdit(user) {
+            this.selectedUser = user;
+            this.showEditUser = true;
 
         },
+
+        async showPopUpAdd(){
+          this.showAddUser = true;
+        },
+
         sortTable(tableField) {
             if (tableField === "email") {
                 for (let i = 0; i < this.users.length - 1; i++) {
@@ -191,8 +209,36 @@ export default {
                     }
                 }
             }
+        },
+        async onUpdate() {
+            // this.selectedUser.firstName = this.firstname;
+            // this.selectedUser.lastName = this.firstname;
+            // this.selectedUser.username = this.username;
+            // this.selectedUser.email = this.email;
+
+            await this.userService.asyncAdminUpdate(this.selectedUser)
+            toast.success("Account succesfully edited!");
+            this.showEditUser = false
+        },
+
+      async createUser() {
+        try {
+          if (!this.usernameValidated ) {
+            const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
+            await this.loginService.asyncSave(newuser);
+            this.showAddUser = false
+
+          } else {
+            toast.error("Error encouterd check your input");
+          }
+        } catch (e) {
+          console.log(e);
+          toast.error("User not Created");
         }
+      },
     },
+
+
 
 
     async created() {
@@ -202,6 +248,7 @@ export default {
         this.tableFields = [
             'userId', 'username', 'firstname', 'lastname', "email", "role"
         ]
+
 
     },
 }

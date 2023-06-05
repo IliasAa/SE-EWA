@@ -7,7 +7,7 @@
         <div class="friends-list-container">
           <div class="friends-list">
             <div class="searchBar">
-              <input v-model.lazy="searchInput" type="text" placeholder="Search for friends..."/>
+              <input v-model.lazy="searchInput" v-on:keyup.enter="this.userFound()" type="text" placeholder="Search for friends..."/>
               <button @click="this.userFound()" class="chat-button">Search</button>
             </div>
 
@@ -71,19 +71,14 @@ export default {
   created() {
     this.reinitializeFriends();
     this.currentUser = this.SessionService.currentAccount;
+
+
   },
   computed: {
     filteredFriends() {
       const searchTerm = this.searchInput.toLowerCase();
       if (!searchTerm.length > 0) {
         return this.friends;
-      }
-      return null;
-    },
-    filteredSearchedUsers() {
-      const searchTerm = this.searchInput.toLowerCase();
-      if (searchTerm.length > 0) {
-        return this.searchedUser;
       }
       return null;
     },
@@ -124,10 +119,27 @@ export default {
 
   },
   watch: {
+    $route(to, from) {
+      // Perform actions when the route changes
+      // Call any methods or perform any logic based on the route change
+      // For example, you can update the selectedFriend based on the route params
+      if (this.$route.params.id !== undefined) {
+        let friendId = parseInt(this.$route.params.id);
+
+        this.selectedFriend = this.friends.find(friend => {
+          return friend.userId === friendId;
+        });
+
+        console.log('Selected friend:', this.selectedFriend);
+      }
+
+    },
     'selectedFriend'() {
       if (this.selectedFriend === null) {
         this.$router.push("/friends");
       }
+
+
     }
   }
 };

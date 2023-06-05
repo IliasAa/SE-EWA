@@ -4,8 +4,10 @@ import com.example.ewaserver.Config;
 import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
+import com.example.ewaserver.models.Turn;
 import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.LudoRepository;
+import com.example.ewaserver.repositories.TurnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +40,13 @@ public class LudoController {
 
         Lobby lobby = lobbyRepository.findById(lobbyId);
 
-        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId,lobby);
+        return repository.findByQuery("Find_Playermoves_based_of_tokenAndLobby", tokenId, lobby);
     }
 
     @GetMapping(path = "/{lobbyId}", produces = "application/json")
     public List<Playerposition> getPlayermovesOnLobbyid(@PathVariable int lobbyId) {
         Lobby lobby = lobbyRepository.findById(lobbyId);
-        if (lobby == null){
+        if (lobby == null) {
             throw new PreConditionFailed("Need a valid lobby");
         }
 
@@ -53,12 +55,10 @@ public class LudoController {
 
     @PostMapping(path = "/save/{lobbyId}", produces = "application/json")
     public ResponseEntity<Object> CreateNewPlayermove(@PathVariable int lobbyId,
-            @RequestBody Playerposition pPos) {
+                                                      @RequestBody Playerposition pPos) {
+
         Lobby lobby = lobbyRepository.findById(lobbyId);
         pPos.setLobby(lobby);
-
-
-
         Playerposition savePmove = repository.Save(pPos);
 
         URI location = ServletUriComponentsBuilder.
@@ -76,6 +76,7 @@ public class LudoController {
         if (getPos == null) {
             throw new PreConditionFailed("Need a valid playerPos");
         }
+
         getPos.setTokenPos(pos.getTokenPos());
         repository.Save(getPos);
 

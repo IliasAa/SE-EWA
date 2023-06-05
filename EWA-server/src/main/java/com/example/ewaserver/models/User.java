@@ -38,7 +38,7 @@ public class User {
     private int points;
     private String role = "Player";
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     @JsonIgnore
     private Set<Token> tokens;

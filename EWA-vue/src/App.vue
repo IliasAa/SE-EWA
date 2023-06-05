@@ -13,6 +13,7 @@ import {LeaderboardAdaptor} from "@/adaptors/LeaderboardAdaptor";
 import {LobbyAdaptor} from "@/adaptors/LobbyAdaptor";
 import {NotificationAdaptor} from "@/adaptors/NotificationAdapter";
 import {LudoAdaptor} from "@/adaptors/LudoAdaptor";
+import {diceAdaptor} from "@/adaptors/diceAdaptor";
 
 export default {
   name: 'App',
@@ -35,6 +36,7 @@ export default {
       leaderboardService: new LeaderboardAdaptor(URL + "/leaderboard"),
       lobbyService: new LobbyAdaptor(URL + "/Lobby"),
       ludoService: new LudoAdaptor(URL + "/Ludo"),
+      diceService: new diceAdaptor(URL + "/Dice"),
       SessionService: this.theSessionService,
       // service for notification framework
       notificationService: this.NotificationService,
