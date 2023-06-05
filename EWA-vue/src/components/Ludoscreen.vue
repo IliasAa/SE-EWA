@@ -306,7 +306,6 @@ export default {
     if (!this.isSingleplayer) {
 
 
-
       this.assignPlayerCardMP();
       this.removePawns();
       this.notificationService.subscribe("playermoves", this.reInitialize)
@@ -416,7 +415,7 @@ export default {
     },
 
     //Method for adding a new pawn to the field.
-    async newPawn(result,totalThrows) {
+    async newPawn(result, totalThrows) {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -566,12 +565,10 @@ export default {
         }
 
         if (hasAPlayablePawn === false && result < 6) {
-          if (totalThrows === 0) {
-            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor)
+          if (totalThrows === 0 || totalThrows === null) {
+            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor, result)
           } else {
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
-            console.log(turn)
-            console.log(turn[0]);
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);
@@ -581,7 +578,7 @@ export default {
 
 
       if (result === 6) {
-        this.newPawn(result,totalThrows)
+        this.newPawn(result, totalThrows)
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
