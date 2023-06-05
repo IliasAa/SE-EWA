@@ -570,6 +570,8 @@ export default {
             await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor)
           } else {
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+            console.log(turn)
+            console.log(turn[0]);
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);

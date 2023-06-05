@@ -35,7 +35,7 @@ public class Lobby {
     private int userid_owner;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lobby")
     private List<UserHasLobby> users = new ArrayList<>();
 
     @JsonIgnore
