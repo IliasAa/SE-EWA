@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr v-for="user in even(users)" :key="user">
-          <td>{{ (index++) - 400 }}</td>
+          <td>{{ (index++) - 2000 }}</td>
           <td><img alt="Avatar" width="50"></td>
           <td>{{ user.username }}</td>
           <td>{{ user.points }}</td>
@@ -48,10 +48,10 @@ export default {
   async created() {
     this.users = await this.leaderboardService.asyncFindAll();
 
-    // Temporary hardcoded amount of wins
-    for (let i = 0; i < this.users.length; i++) {
-      this.users[i].points = Math.round(Math.random() * 1000);
-    }
+    // // Temporary hardcoded amount of wins
+    // for (let i = 0; i < this.users.length; i++) {
+    //   this.users[i].points = Math.round(Math.random() * 1000);
+    // }
   },
   methods: {
     // Sort from most wins to least wins
