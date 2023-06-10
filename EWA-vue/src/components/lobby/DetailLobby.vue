@@ -43,7 +43,7 @@ import NavBar from "@/components/NavBar.vue";
 export default {
   name: "DetailLobby",
   components: {NavBar},
-  inject: ['lobbyService','userService'],
+  inject: ['lobbyService','userService','notificationService'],
   data() {
     return {
       lobbyCode: null,
@@ -66,19 +66,13 @@ export default {
     //get the lobby code from route param and finds associated lobby
     this.lobbyCode = this.$route.params.joincode;
     this.lobby = await this.lobbyService.asyncFindByjoincode(this.lobbyCode);
+
     const ownerid = this.lobby[0].userid_owner;
     this.host = await this.userService.asyncFindId(ownerid);
-    this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
 
+    this.notificationService.subscribe(this.lobby[0].idLobby, this.reInitialize)
 
-
-    for (let i = 0; i < this.userids.length; i++) {
-      //saves users in users variable and searches connected color in the many to many table
-      this.users.push(await this.userService.asyncFindId(this.userids[i]));
-      const returnStatement =
-          await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.users[i].userId);
-      this.users[i].selectedColor = returnStatement[0];
-    }
+    this.reInitialize();
 
 
     if (this.myId === ownerid) {
@@ -87,6 +81,19 @@ export default {
   },
 
   methods: {
+    async reInitialize(){
+      // Find all user id's connected to the lobby
+      this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
+
+      this.users = [];
+      for (let i = 0; i < this.userids.length; i++) {
+        //saves users in users variable and searches connected color in the many to many table
+        this.users.push(await this.userService.asyncFindId(this.userids[i]));
+        const returnStatement =
+            await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.users[i].userId);
+        this.users[i].selectedColor = returnStatement[0];
+      }
+    },
     async startGame(lobbycode) {
       //changes status to 1 which is the status for active game.
       this.lobby[0].lobby_status = 1;

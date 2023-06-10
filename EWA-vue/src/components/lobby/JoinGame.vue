@@ -47,7 +47,7 @@
           <tbody>
           <tr v-for="(game) in games" :key="game">
             <td>{{ game.idLobby }}</td>
-            <td>{{game.creatorNames}}</td>
+            <td>{{ game.creatorNames }}</td>
             <td>{{ game.player_size + "/" + game.max_allowed_Players }}</td>
             <td>
               <button class="btn btn-primary btn-lg" @click="disableColors(game, game.join_code)">&#9658;</button>
@@ -58,16 +58,20 @@
                   <span @click="game.showPopup2 = !game.showPopup2" class="close">&times;</span>
                   <div class="playerColor">
                     <p>Choose a starting color:</p>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'red', inactive: redColorSelectionDisabled}"
+                    <button class="playerColorButton"
+                            :class="{ active: selectedColor === 'red', inactive: redColorSelectionDisabled}"
                             id="red" @click="colorChoosing('red')" :disabled="redColorSelectionDisabled">Red
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'blue', inactive: blueColorSelectionDisabled}"
+                    <button class="playerColorButton"
+                            :class="{ active: selectedColor === 'blue', inactive: blueColorSelectionDisabled}"
                             id="blue" @click="colorChoosing('blue')" :disabled="blueColorSelectionDisabled">Blue
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'yellow', inactive: yellowColorSelectionDisabled}"
+                    <button class="playerColorButton"
+                            :class="{ active: selectedColor === 'yellow', inactive: yellowColorSelectionDisabled}"
                             id="yellow" @click="colorChoosing('yellow')" :disabled="yellowColorSelectionDisabled">Yellow
                     </button>
-                    <button class="playerColorButton" :class="{ active: selectedColor === 'green', inactive: greenColorSelectionDisabled}"
+                    <button class="playerColorButton"
+                            :class="{ active: selectedColor === 'green', inactive: greenColorSelectionDisabled}"
                             id="green" @click="colorChoosing('green')" :disabled="greenColorSelectionDisabled">Green
                     </button>
                   </div>
@@ -167,19 +171,25 @@ export default {
     async disableColors(game, join_code) {
       game.showPopup2 = !game.showPopup2;
 
+      // Enable all buttons
+      this.redColorSelectionDisabled = false;
+      this.blueColorSelectionDisabled = false;
+      this.yellowColorSelectionDisabled = false;
+      this.greenColorSelectionDisabled = false;
+
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
       this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
 
-      if (this.selectedColorsinLobby.includes("red")){
+      if (this.selectedColorsinLobby.includes("red")) {
         this.redColorSelectionDisabled = true;
       }
-      if (this.selectedColorsinLobby.includes("blue")){
+      if (this.selectedColorsinLobby.includes("blue")) {
         this.blueColorSelectionDisabled = true;
       }
       if (this.selectedColorsinLobby.includes("yellow")) {
         this.yellowColorSelectionDisabled = true;
       }
-      if (this.selectedColorsinLobby.includes("green")){
+      if (this.selectedColorsinLobby.includes("green")) {
         this.greenColorSelectionDisabled = true;
       }
 
@@ -201,19 +211,14 @@ export default {
       const selectedColor = this.selectedColor;
 
       const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
-      this.selectedColorsinLobby = await this.lobbyService.asyncFindColorToLobby(createdLobby[0].idLobby)
-      for (let i = 0; i < this.selectedColorsinLobby.length; i++) {
-        if (this.selectedColorsinLobby[i] === selectedColor){
-          this.colorSelectionDisabled = true;
-          alert("color has already been selected")
-          break;
-        } else {
-          await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
-          //Push router to lobby with join code, so it will see it in the params
-          this.$router.push("/lobby/" + createdLobby[0].join_code)
-        }
 
-      }
+      // Link the user to the lobby
+      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
+
+      //Push router to lobby with join code, so it will see it in the params
+      this.$router.push("/lobby/" + createdLobby[0].join_code)
+
+
     },
 
   }
@@ -306,6 +311,7 @@ export default {
   background-color: black;
   color: white;
 }
+
 .inactive {
   background-color: grey;
   color: white;
