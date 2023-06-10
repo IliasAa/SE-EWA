@@ -274,6 +274,7 @@ export default {
       playerMoves: [],
       activeThrow: null,
       throwWithColor: [],
+      turns: [],
     };
   },
 
@@ -306,10 +307,9 @@ export default {
     if (!this.isSingleplayer) {
 
 
-
       this.assignPlayerCardMP();
       this.removePawns();
-      this.notificationService.subscribe("playermoves", this.reInitialize)
+      this.notificationService.subscribe("turns", this.reInitialize)
       await this.reInitialize();
       await this.dicePriority();
 
@@ -416,7 +416,7 @@ export default {
     },
 
     //Method for adding a new pawn to the field.
-    async newPawn(result,totalThrows) {
+    async newPawn(result, totalThrows) {
       //Check if there are pawns in the home area (Starting zone for their color)
       let pawnId = null;
       let arrayPos = null;
@@ -451,7 +451,7 @@ export default {
 
             //add steps to DB
             if (totalThrows === 0) {
-              await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor)
+              await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
             } else {
               const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
               turn[0].throwCount = turn[0].throwCount + 1;
@@ -554,8 +554,8 @@ export default {
       let totalThrows;
       if (!this.isSingleplayer) {
 
-        for (let i = 0; i < this.throwWithColor; i++) {
-          if (this.selectedcolor === this.throwWithColor[i].selectedcolor) {
+        for (let i = 0; i < this.throwWithColor.length; i++) {
+          if (this.selectedcolor === this.throwWithColor[i].color) {
             totalThrows = this.throwWithColor[i].Throws;
           }
         }
@@ -566,8 +566,8 @@ export default {
         }
 
         if (hasAPlayablePawn === false && result < 6) {
-          if (totalThrows === 0) {
-            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedColor)
+          if (totalThrows === 0 || totalThrows === null) {
+            await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
           } else {
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
             turn[0].throwCount = turn[0].throwCount + 1;
@@ -579,7 +579,7 @@ export default {
 
 
       if (result === 6) {
-        this.newPawn(result,totalThrows)
+        this.newPawn(result, totalThrows)
       } else {
         //this checks if a pawn is available in the first place (think about start of the game)
         //if not it will skip the whole process of going through the other methods.
@@ -678,6 +678,7 @@ export default {
 
       //saves all the moves made
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
+      this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
     },
 
 

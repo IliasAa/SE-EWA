@@ -65,15 +65,15 @@ public class diceController {
         return repository.findByQuery("Find_Allofturn_based_of_selectedColor_And_lobby", selectedColor, lobbyId);
     }
 
-    @PostMapping(path = "/{lobbyId}/{selectedColor}/{result}", produces = "application/json")
+    @PostMapping(path = "/{lobbyId}/{selectedcolor}/{result}", produces = "application/json")
     public Turn AddNewRecord(@PathVariable int lobbyId,
-                                   @PathVariable String selectedColor,
+                                   @PathVariable String selectedcolor,
                                    @PathVariable int result) {
         Lobby lobby = lobbyRepository.findById(lobbyId);
         if (lobby == null) {
             throw new PreConditionFailed("Need a valid lobby");
         }
-        Turn turn = new Turn(selectedColor, lobby, result, 1);
+        Turn turn = new Turn(selectedcolor, lobby, result, 1);
 
 
         return repository.Save(turn);

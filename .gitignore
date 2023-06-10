@@ -6,4 +6,5 @@ node_modules
 *.iml
 *.iws
 *.ipr
+.env
 package-lock.json

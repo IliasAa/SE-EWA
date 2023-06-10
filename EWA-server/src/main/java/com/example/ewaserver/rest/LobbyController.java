@@ -61,6 +61,11 @@ public class LobbyController {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
     }
 
+    @GetMapping(path = "/max/{LobbyId}", produces = "application/json")
+    public List<UserHasLobby> getMaxPlayerCountCompare(@PathVariable int LobbyId) {
+        return userLobbyRepository.findByQuery("find_player_count_MAX_Compare", LobbyId);
+    }
+
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
     public UserHasLobby CombineLobbyWithUser(

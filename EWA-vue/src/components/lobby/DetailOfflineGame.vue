@@ -58,6 +58,7 @@ export default {
 
     colorChoosing(color) {
       this.selectedColor = color;
+      console.log(process.env.VUE_APP_API_URL)
     }
   }
 }
