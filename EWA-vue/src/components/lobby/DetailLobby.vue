@@ -26,7 +26,7 @@
           </tr>
           </tbody>
         </table>
-        <button class="btn btn-primary" :disabled="!hasChanged" @click="startGame(this.lobbyCode)">Start game</button>
+        <button class="btn btn-primary" :disabled="!hasChanged" @click="startGame()">Start game</button>
       </div>
     </main>
   </div>
@@ -70,6 +70,7 @@ export default {
     const ownerid = this.lobby[0].userid_owner;
     this.host = await this.userService.asyncFindId(ownerid);
 
+    console.log(this.lobby[0].idLobby)
     this.notificationService.subscribe(this.lobby[0].idLobby, this.reInitialize)
 
     this.reInitialize();
@@ -77,6 +78,8 @@ export default {
 
     if (this.myId === ownerid) {
       this.isOwner = true;
+    }else{
+      this.notificationService.subscribe(this.lobbyCode, this.startGame)
     }
   },
 
@@ -94,14 +97,18 @@ export default {
         this.users[i].selectedColor = returnStatement[0];
       }
     },
-    async startGame(lobbycode) {
+    async startGame() {
       //changes status to 1 which is the status for active game.
-      this.lobby[0].lobby_status = 1;
-      console.log(this.lobby[0]);
-      await this.lobbyService.asyncUpdate(this.lobby[0]);
+      if (this.isOwner){
+        this.lobby[0].lobby_status = 1;
+        console.log(this.lobby[0]);
+        await this.lobbyService.asyncUpdate(this.lobby[0]);
+        this.notificationService.notify(this.lobbyCode);
+      }
+
 
       //redirect to game with lobbycode.
-      this.$router.push("/gamepage/"+ lobbycode);
+      this.$router.push("/gamepage/"+ this.lobbyCode);
     }
   },
 
