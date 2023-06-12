@@ -1,8 +1,8 @@
 export class diceAdaptor {
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
     constructor(resourceUrl) {
-        this.RESOURCE_URL = resourceUrl;
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -17,30 +17,30 @@ export class diceAdaptor {
     }
 
     async asyncFindAll() {
-        return await this.fetchJSon(this.RESOURCE_URL);
+        return await this.fetchJSon(this.resourceUrl);
     }
 
     async asyncFindAllInLobby(lobbyId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
+        return await this.fetchJSon(this.resourceUrl + "/" + lobbyId);
     }
 
     async asyncAllFindOnColorAndID(lobbyId, selectedColor) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor);
+        return await this.fetchJSon(this.resourceUrl + "/" + lobbyId + "/" + selectedColor);
     }
 
     async asyncFindOnColorAndID(lobbyId, selectedColor) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/number/" + lobbyId + "/" + selectedColor);
+        return await this.fetchJSon(this.resourceUrl + "/number/" + lobbyId + "/" + selectedColor);
     }
 
     async addExtrastep(lobbyId, selectedColor,result) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId + "/" + selectedColor + "/" + result, {
+        await this.fetchJSon(this.resourceUrl + "/" + lobbyId + "/" + selectedColor + "/" + result, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
         },)
     }
 
     async addStepToRecord(turn) {
-        await this.fetchJSon(this.RESOURCE_URL , {
+        await this.fetchJSon(this.resourceUrl , {
             headers: {'Content-Type': 'application/json'},
             method: 'PUT',
             body: JSON.stringify(turn)

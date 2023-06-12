@@ -1,8 +1,8 @@
 export class LobbyAdaptor {
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
     constructor(resourceUrl) {
-        this.RESOURCE_URL = resourceUrl;
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -17,12 +17,12 @@ export class LobbyAdaptor {
     }
 
     async asyncFindAll() {
-        return await this.fetchJSon(this.RESOURCE_URL);
+        return await this.fetchJSon(this.resourceUrl);
     }
 
 
     async asyncDeleteById(id) {
-        return this.fetchJSon(this.RESOURCE_URL + "/" + id,
+        return this.fetchJSon(this.resourceUrl + "/" + id,
             {
                 method: 'DELETE',
                 headers: {
@@ -33,7 +33,7 @@ export class LobbyAdaptor {
     }
 
     async asyncUpdate(lobby) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + lobby.idLobby, {
+        await this.fetchJSon(this.resourceUrl + "/" + lobby.idLobby, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
                 body: JSON.stringify(lobby)
@@ -42,11 +42,11 @@ export class LobbyAdaptor {
     }
 
     async asyncFindByjoincode(join_code) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
+        return await this.fetchJSon(this.resourceUrl + "/" + join_code);
     }
 
     async combineUserWithLobby(userid, LobbyId, selectedcolor) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + userid + "/" + LobbyId + "/" + selectedcolor, {
+        await this.fetchJSon(this.resourceUrl + "/" + userid + "/" + LobbyId + "/" + selectedcolor, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
         },)
@@ -54,7 +54,7 @@ export class LobbyAdaptor {
 
 
     async asyncSave(lobby) {
-        await this.fetchJSon(this.RESOURCE_URL, {
+        await this.fetchJSon(this.resourceUrl, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(lobby)
@@ -62,22 +62,22 @@ export class LobbyAdaptor {
     }
 
     async asyncFindId(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/get/" + id);
+        return await this.fetchJSon(this.resourceUrl + "/get/" + id);
     }
 
 
     async asyncFindAllConnectedToLobby(LobbyId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/lobby/" + LobbyId);
+        return await this.fetchJSon(this.resourceUrl + "/lobby/" + LobbyId);
     }
     async asyncFindColorToLobby(LobbyId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/color/" + LobbyId);
+        return await this.fetchJSon(this.resourceUrl + "/color/" + LobbyId);
     }
     async asyncFindMaxPlayerCountCompare(LobbyId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/max/" + LobbyId);
+        return await this.fetchJSon(this.resourceUrl + "/max/" + LobbyId);
     }
 
     async asyncFindColorConnectedToUser(LobbyId,userId) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + LobbyId + "/" + userId);
+        return await this.fetchJSon(this.resourceUrl + "/" + LobbyId + "/" + userId);
     }
 
 

@@ -1,8 +1,8 @@
 export class LudoAdaptor {
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
     constructor(resourceUrl) {
-        this.RESOURCE_URL = resourceUrl;
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -17,20 +17,20 @@ export class LudoAdaptor {
     }
 
     async asyncFindAll() {
-        return await this.fetchJSon(this.RESOURCE_URL);
+        return await this.fetchJSon(this.resourceUrl);
     }
 
     async asyncFindAllWithLobbyid(lobbyId){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + lobbyId);
+        return await this.fetchJSon(this.resourceUrl + "/" + lobbyId);
     }
 
 
     async asyncFindOnTokedIdAndLobby(tokenId,Lobby){
-        return await this.fetchJSon(this.RESOURCE_URL + "/" + tokenId + "/" + Lobby);
+        return await this.fetchJSon(this.resourceUrl + "/" + tokenId + "/" + Lobby);
     }
 
     async asyncSaveUsermove(playermove,lobbyId) {
-        await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
+        await this.fetchJSon(this.resourceUrl + "/save/" + lobbyId,{
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(playermove)
@@ -38,15 +38,10 @@ export class LudoAdaptor {
     }
 
     async asyncUpdatePlayerPos(move) {
-        await this.fetchJSon(this.RESOURCE_URL , {
+        await this.fetchJSon(this.resourceUrl , {
             headers: {'Content-Type': 'application/json'},
             method: 'PUT',
             body: JSON.stringify(move)
         },)
     }
-
-
-
-
-
 }

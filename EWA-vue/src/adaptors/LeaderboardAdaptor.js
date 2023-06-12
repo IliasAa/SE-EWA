@@ -1,8 +1,8 @@
 export class LeaderboardAdaptor {
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
-    constructor(resourceurl) {
-        this.RESOURCE_URL = resourceurl;
+    constructor(resourceUrl) {
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -17,7 +17,7 @@ export class LeaderboardAdaptor {
     }
 
     async asyncFindAll() {
-        return await this.fetchJSon(this.RESOURCE_URL);
+        return await this.fetchJSon(this.resourceUrl);
     }
 
 }

@@ -1,8 +1,8 @@
 export class UserAdaptor {
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
     constructor(resourceUrl) {
-        this.RESOURCE_URL = resourceUrl;
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -17,7 +17,7 @@ export class UserAdaptor {
     }
 
     async asyncFindAll() {
-        return  await this.fetchJSon(this.RESOURCE_URL,
+        return  await this.fetchJSon(this.resourceUrl,
             {
                 method: 'GET',
                 headers: {
@@ -28,7 +28,7 @@ export class UserAdaptor {
 
     async asyncGetInfo() {
         console.log("Info about client is being retrieved...")
-        return await this.fetchJSon(this.RESOURCE_URL + "/info",
+        return await this.fetchJSon(this.resourceUrl + "/info",
             {
                 method: 'GET',
                 headers: {
@@ -38,7 +38,7 @@ export class UserAdaptor {
     }
 
     async getNumberOfUsers() {
-        return  await this.fetchJSon(this.RESOURCE_URL + "/count",
+        return  await this.fetchJSon(this.resourceUrl + "/count",
             {
                 method: 'GET',
                 headers: {
@@ -48,11 +48,11 @@ export class UserAdaptor {
     }
 
     async asyncFindLobbyOwner(id) {
-        return await this.fetchJSon(this.RESOURCE_URL + "/owner/" + id)
+        return await this.fetchJSon(this.resourceUrl + "/owner/" + id)
     }
 
     async asyncFindId(id) {
-        return this.fetchJSon(this.RESOURCE_URL + "/get/" + id,
+        return this.fetchJSon(this.resourceUrl + "/get/" + id,
             {
                 method: 'GET',
                 headers: {
@@ -63,7 +63,7 @@ export class UserAdaptor {
 
 
     async asyncDeleteById(id) {
-        return this.fetchJSon(this.RESOURCE_URL + "/" + id,
+        return this.fetchJSon(this.resourceUrl + "/" + id,
             {
                 method: 'DELETE',
                 headers: {
@@ -75,7 +75,7 @@ export class UserAdaptor {
 
 
     async asyncUpdate(user) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
+        await this.fetchJSon(this.resourceUrl + "/" + user.userId, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
                 body: JSON.stringify({
@@ -92,7 +92,7 @@ export class UserAdaptor {
     }
 
     async asyncAdminUpdate(user) {
-        await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
+        await this.fetchJSon(this.resourceUrl + "/" + user.userId, {
                 headers: {'Content-Type': 'application/json'},
                 method: 'PUT',
                 body: JSON.stringify(user)

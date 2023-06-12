@@ -1,9 +1,9 @@
 export class AuthenticationAdaptor {
 
-    RESOURCE_URL;
+    resourceUrl = process.env.VUE_APP_API_URL;
 
-    constructor(resourceurl) {
-        this.RESOURCE_URL = resourceurl;
+    constructor(resourceUrl) {
+        resourceUrl = this.resourceUrl;
     }
 
     async fetchJSon(url, options = null) {
@@ -19,7 +19,7 @@ export class AuthenticationAdaptor {
 
     async asyncLogIn(username, password) {
         const body = JSON.stringify({username: username, password: password});
-        let response = await fetch(this.RESOURCE_URL + "/login",
+        let response = await fetch(this.resourceUrl + "/login",
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -37,7 +37,7 @@ export class AuthenticationAdaptor {
     }
 
     async asyncSave(user) {
-        await this.fetchJSon(this.RESOURCE_URL + "/register", {
+        await this.fetchJSon(this.resourceUrl + "/register", {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify(user)
