@@ -10,10 +10,12 @@ export class NotificationAdaptor {
         this.handlersByTopic = new Map();
 
         // use the new websocket protocol or the SockJS library to multiplex across http
-        // this.socketUrl = socketUrl.replace("http://","ws://");
+        this.socketUrl = socketUrl.replace("http://","ws://");
         this.socket = new WebSocket(this.socketUrl);
-        this.socketUrl = socketUrl.replace("ws://","http://");
-        // this.socket = new SockJS(this.socketUrl);
+        // this.socketUrl = socketUrl.replace("ws://","http://");
+        // this.socket = new WebSocket(this.socketUrl);
+        console.log(this.socketUrl)
+
 
         // introduce a local const for 'this' to refer to 'this NotificationAdaptor' from
         // within (old-style) javascript callback functions that do not have a class scope
