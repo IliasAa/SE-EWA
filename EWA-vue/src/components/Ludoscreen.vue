@@ -510,7 +510,11 @@ export default {
         this.allowedToMove = true;
         this.movePawnText = null;
 
+
+
         //moving the pawn to the new position and changing the data of the pawn itself.
+
+
         this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
         this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
         let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
