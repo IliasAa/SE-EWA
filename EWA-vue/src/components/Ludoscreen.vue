@@ -308,7 +308,7 @@ export default {
 
 
       this.assignPlayerCardMP();
-      this.removePawns();
+      this.removeUnusedPawnsFrontend();
       this.notificationService.subscribe("turns", this.reInitialize)
       await this.reInitialize();
       await this.dicePriority();
@@ -510,32 +510,59 @@ export default {
         this.allowedToMove = true;
         this.movePawnText = null;
 
-
+        let fieldHasPawn = false;
+        let removePawn = null;
 
         //moving the pawn to the new position and changing the data of the pawn itself.
+        for (let i = 0; i < this.pawns.length; i++) {
+          if (this.pawns[i].position === this.playablePawns[arrayPos].path[newPawnPosIndex]){
+            fieldHasPawn = true;
+            removePawn = this.pawns[i];
+          }
+        }
 
+        if (fieldHasPawn === true){
+          for (let i = 0; i < this.playablePawns.length; i++) {
+            if (this.playablePawns[i].id === removePawn.id){
+              removePawn = "Own pawn";
+            }
+          }
+        }
 
-        this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
-        this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
-        let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
-        let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
-        prevPosBox.removeChild(pawnMove);
-        nextPosBox.appendChild(pawnMove);
+        if (removePawn !== "Own pawn"){
+          if (removePawn !== null){
+            removePawn.position = removePawn.homePosition
+            removePawn.onField = 1;
+            if (!this.isSingleplayer){
+              const returnDeletablePawn =
+                  await this.ludoService.asyncFindOnTokedIdAndLobby(removePawn.id, this.lobby[0].idLobby);
+              await this.ludoService.removePawn(returnDeletablePawn[0]);
+            }
+          }
+          this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
+          this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
+          let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
+          let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
+          prevPosBox.removeChild(pawnMove);
+          nextPosBox.appendChild(pawnMove);
 
+          //if it is a mutliplayer game it will post the playermove to the database
+          if (!this.isSingleplayer) {
+            const returnPawn =
+                await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
+            returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
+            await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
 
-        //if it is a mutliplayer game it will post the playermove to the database
-        if (!this.isSingleplayer) {
-          const returnPawn =
-              await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
-          returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
-          await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
-
-          //turn in DB
-          const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
-          console.log(turn);
-          turn[0].throwCount = turn[0].throwCount + 1;
-          turn[0].lastThrow = result
-          await this.diceService.addStepToRecord(turn[0]);
+            //turn in DB
+            const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+            console.log(turn);
+            turn[0].throwCount = turn[0].throwCount + 1;
+            turn[0].lastThrow = result
+            await this.diceService.addStepToRecord(turn[0]);
+          }
+        } else {
+          alert("Je kan deze pawn niet bewegen omdat je al een pawn op die positie heb.")
+          this.selectPawn()
         }
       }
     },
@@ -545,6 +572,8 @@ export default {
       this.allowedToMove = false
       this.output = "win"
     },
+
+
 
     //Method to throw the dice
     async ThrowDice() {
@@ -627,7 +656,7 @@ export default {
       }
     },
 
-    removePawns() {
+    removeUnusedPawnsFrontend() {
       //Could be better
       if (this.greenName === null) {
         for (let i = 0; i < 4; i++) {

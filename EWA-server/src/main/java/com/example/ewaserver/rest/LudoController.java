@@ -83,4 +83,14 @@ public class LudoController {
         return ResponseEntity.ok().body(pos);
     }
 
+    @DeleteMapping(path = "", produces = "application/json")
+    public Playerposition CreateNewPlayermove(@RequestBody Playerposition pos) {
+        Playerposition getPos = repository.findById(pos.getIdPlayerposition());
+        if (getPos == null) {
+            throw new PreConditionFailed("Need a valid playerPos");
+        }
+
+        return repository.deleteById(getPos.getIdPlayerposition());
+    }
+
 }
