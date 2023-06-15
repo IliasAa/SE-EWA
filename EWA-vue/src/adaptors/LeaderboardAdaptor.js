@@ -19,5 +19,15 @@ export class LeaderboardAdaptor {
     async asyncFindAll() {
         return await this.fetchJSon(this.RESOURCE_URL);
     }
+    //
+    // async asyncFinduser(userName) {
+    //     return this.fetchJSon(this.RESOURCE_URL + "/get/" + userName,
+    //         {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //         });
+    // }
 
 }

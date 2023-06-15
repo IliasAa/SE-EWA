@@ -2,9 +2,11 @@ package com.example.ewaserver.rest;
 
 import com.example.ewaserver.Config;
 import com.example.ewaserver.models.User;
+import com.example.ewaserver.models.UserHasLobby;
 import com.example.ewaserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,4 +27,9 @@ public class LeaderboardController {
     public List<User> getSummary() {
         return userRepository.findAll();
     }
+//
+//    @GetMapping(path = "/get/{userName}", produces = "application/json")
+//    public List<User> getColorToLobby(@PathVariable String userName) {
+//        return userRepository.findByQuery("find_user", userName);
+//    }
 }
