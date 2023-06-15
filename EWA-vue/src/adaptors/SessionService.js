@@ -133,6 +133,8 @@ export class SessionService {
         return null;
     }
 
+
+
     async refresh() {
         let response = await fetch(this.RESOURCES_URL + "/refresh",
             {

@@ -85,7 +85,7 @@ let usernameRegex = new RegExp("^(?=.*[a-z]*)(?=.*[A-Z]*)(?=.*[0-9]*)(?=.{4,})")
 
 export default {
   name: "RegisterScreen",
-  inject: ['userService', 'loginService'],
+  inject: ['userService', 'loginService','SessionService'],
   data() {
     return {
       UserRepository: new UserRepository(),
@@ -107,6 +107,9 @@ export default {
         if (!this.usernameValidated ) {
             const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
             await this.loginService.asyncSave(newuser);
+
+          //log in the new user
+            await this.SessionService.asyncSignIn(this.username,this.password);
             this.$router.push("/Dashboard");
         } else {
             toast.error("Error encouterd check your input");

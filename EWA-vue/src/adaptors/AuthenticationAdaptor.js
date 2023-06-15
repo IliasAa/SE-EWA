@@ -43,4 +43,5 @@ export class AuthenticationAdaptor {
             body: JSON.stringify(user)
         },)
     }
+
 }
