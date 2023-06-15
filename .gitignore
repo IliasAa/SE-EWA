@@ -6,5 +6,8 @@ node_modules
 *.iml
 *.iws
 *.ipr
-.env
 package-lock.json
+
+#dotenv environment variables file
+.env
+.env.test

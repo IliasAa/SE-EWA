@@ -4,6 +4,8 @@ export class SessionService {
     _currentToken;              // the current authentication token of this session// to be injected in the authorization header of every outgoing request
     _currentAccount;            // the account instant of the currently logged on user
 
+    url = process.env.VUE_APP_API_URL;
+
 
     constructor(resourcesUrl, browserStorageItemName) {
         console.log("Created SessionService...");
@@ -149,7 +151,7 @@ export class SessionService {
     }
 
     async asyncFindAll(){
-        let response =  await fetch ("http://localhost:8081/chat/getAll", {
+        let response =  await fetch (this.url + "/chat/getAll", {
             headers: {'Content-Type': 'application/json'},
             method: 'GET',
         })
@@ -159,7 +161,7 @@ export class SessionService {
     }
 
     async asyncFindChatWithFriend(friendId){
-        let response =  await fetch ("http://localhost:8081/chat/" + this.currentAccount.userId +"&"+friendId, {
+        let response =  await fetch (this.url + "/chat/" + this.currentAccount.userId +"&"+friendId, {
             headers: {'Content-Type': 'application/json'},
             method: 'GET',
         })
@@ -168,7 +170,7 @@ export class SessionService {
         }
     }
     async sendMessage(message, friendId){
-        await fetch("http://localhost:8081/chat/friend/" + friendId, {
+        await fetch(this.url + "/chat/friend/" + friendId, {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify({
@@ -179,7 +181,7 @@ export class SessionService {
     }
 
     async searchUser(keyword){
-        let response = await fetch("http://localhost:8081/chat/searchUser/" + keyword, {
+        let response = await fetch(this.url + "/chat/searchUser/" + keyword, {
             headers: {'Content-Type': 'application/json'},
             method: 'GET',
         })
@@ -189,7 +191,7 @@ export class SessionService {
     }
 
     async getAllFriends(){
-        let response = await fetch("http://localhost:8081/chat/friends/getAll/" +
+        let response = await fetch(this.url + "/chat/friends/getAll/" +
             this.currentAccount.userId,
             {
                 headers: {'Content-Type': 'application/json'},
@@ -201,7 +203,7 @@ export class SessionService {
     }
 
     async addFriend(friendId){
-        await fetch("http://localhost:8081/chat/addFriend", {
+        await fetch(this.url + "/chat/addFriend", {
             headers: {'Content-Type': 'application/json'},
             method: 'POST',
             body: JSON.stringify({

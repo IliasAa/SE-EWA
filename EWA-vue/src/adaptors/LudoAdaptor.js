@@ -29,6 +29,13 @@ export class LudoAdaptor {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + tokenId + "/" + Lobby);
     }
 
+    async removePawn(move){
+        return await this.fetchJSon(this.RESOURCE_URL,{
+            headers: {'Content-Type': 'application/json'},
+            method: 'DELETE',
+            body: JSON.stringify(move)
+        })
+    }
     async asyncSaveUsermove(playermove,lobbyId) {
         await this.fetchJSon(this.RESOURCE_URL + "/save/" + lobbyId,{
             headers: {'Content-Type': 'application/json'},
@@ -36,6 +43,8 @@ export class LudoAdaptor {
             body: JSON.stringify(playermove)
         },)
     }
+
+
 
     async asyncUpdatePlayerPos(move) {
         await this.fetchJSon(this.RESOURCE_URL , {

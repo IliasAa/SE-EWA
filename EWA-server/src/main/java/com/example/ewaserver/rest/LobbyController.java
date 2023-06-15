@@ -6,6 +6,7 @@ import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.models.UserHasLobby;
+import com.example.ewaserver.notifications.NotificationDistributor;
 import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.UserHasLobbyRepository;
 import com.example.ewaserver.repositories.UserRepository;
@@ -30,6 +31,9 @@ public class LobbyController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationDistributor notificationDistributor;
 
     @GetMapping(path = "", produces = "application/json")
     public List<Lobby> getAllLobbys() {
@@ -61,6 +65,11 @@ public class LobbyController {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
     }
 
+    @GetMapping(path = "/max/{LobbyId}", produces = "application/json")
+    public List<UserHasLobby> getMaxPlayerCountCompare(@PathVariable int LobbyId) {
+        return userLobbyRepository.findByQuery("find_player_count_MAX_Compare", LobbyId);
+    }
+
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
     public UserHasLobby CombineLobbyWithUser(
@@ -76,6 +85,8 @@ public class LobbyController {
         lobby.addUser(userHasLobby);
 
         userLobbyRepository.Save(userHasLobby);
+
+        this.notificationDistributor.notify(Integer.toString(LobbyId));
         return userLobbyRepository.Save(userHasLobby);
     }
 

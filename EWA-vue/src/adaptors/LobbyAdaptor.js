@@ -72,6 +72,9 @@ export class LobbyAdaptor {
     async asyncFindColorToLobby(LobbyId) {
         return await this.fetchJSon(this.RESOURCE_URL + "/color/" + LobbyId);
     }
+    async asyncFindMaxPlayerCountCompare(LobbyId) {
+        return await this.fetchJSon(this.RESOURCE_URL + "/max/" + LobbyId);
+    }
 
     async asyncFindColorConnectedToUser(LobbyId,userId) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + LobbyId + "/" + userId);
