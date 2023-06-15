@@ -14,8 +14,11 @@
                 type="text"
                 @keyup="checkUsername()"
                 v-model="username"
-                :error-messages="usernameErrorMessage ? usernameErrorMessage : []"
             ></v-text-field>
+            <label v-if="this.usernameValidated"
+                   class="checkLabel">
+              Gelieve minimaal 4 characters bestaande uit letters of cijfers gebruiken.
+            </label>
           </div>
         </div>
         <div class="row mb-2">
@@ -32,8 +35,13 @@
             <v-text-field
                 label="firstname"
                 type="text"
+                @keyup="checkFirstname"
                 v-model="firstname"
             ></v-text-field>
+            <label v-if="this.firstnameValidated"
+                   class="checkLabel">
+              Gelieve minimaal 4 characters bestaande uit letters gebruiken.
+            </label>
           </div>
         </div>
           <div class="row mb-2">
@@ -41,8 +49,13 @@
             <v-text-field
                 label="lastname"
                 type="text"
+                @keyup="checkLastname"
                 v-model="lastname"
             ></v-text-field>
+            <label v-if="this.lastnameValidated"
+                   class="checkLabel">
+              Gelieve minimaal 4 characters bestaande uit letters gebruiken.
+            </label>
           </div>
         </div>
         <div class="row mb-2">
@@ -104,11 +117,11 @@ export default {
   methods: {
     async createUser() {
       try {
-        if (!this.usernameValidated ) {
+        if (!this.usernameValidated && !this.firstnameValidated && !this.lastnameValidated ) {
             const newuser = User.createUser(this.username,this.firstname,this.lastname,this.email,this.password);
             await this.loginService.asyncSave(newuser);
 
-          //log in the new user
+            //log in the new user
             await this.SessionService.asyncSignIn(this.username,this.password);
             this.$router.push("/Dashboard");
         } else {
@@ -122,6 +135,12 @@ export default {
     checkUsername() {
         this.usernameValidated = !usernameRegex.test(this.username);
     },
+    checkFirstname() {
+      this.firstnameValidated = !usernameRegex.test(this.firstname);
+    },
+    checkLastname() {
+      this.lastnameValidated = !usernameRegex.test(this.lastname);
+    }
   }
 }
 </script>
@@ -155,6 +174,10 @@ export default {
 
 .register{
   text-align: center;
+}
+
+label {
+  color: indianred;
 }
 
 
