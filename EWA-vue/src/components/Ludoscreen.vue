@@ -309,16 +309,11 @@ export default {
 
       this.assignPlayerCardMP();
       this.removeUnusedPawnsFrontend();
-      this.notificationService.subscribe("turns", this.reInitialize)
+      this.notificationService.subscribe("turns" + this.lobbyCode, this.reInitialize)
       await this.reInitialize();
       await this.dicePriority();
 
 
-      if (this.playerMoves.length > 0) {
-        for (let i = 0; i < this.playerMoves.length; i++) {
-          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
-        }
-      }
     }
 
   },
@@ -708,10 +703,20 @@ export default {
 
     async reInitialize() {
       // reload all playerMoves from the back-end
-
       //saves all the moves made
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
       this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
+
+      this.processPlayerMoves();
+
+      await this.dicePriority();
+    },
+    processPlayerMoves() {
+      if (this.playerMoves.length > 0) {
+        for (let i = 0; i < this.playerMoves.length; i++) {
+          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
+        }
+      }
     },
 
 
@@ -737,6 +742,7 @@ export default {
 
 
       getPawn.previousPosition = getPawn.homePosition;
+      console.log(getPawn.homePosition)
       getPawn.position = newPos;
       getPawn.onField = 2;
 
