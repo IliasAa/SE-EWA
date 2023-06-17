@@ -5,6 +5,12 @@
     <router-link to="/Dashboard"><img src="../assets/back.png" class="back-button"></router-link>
     <h1 class="leaderboard-heading">Leaderboard</h1>
     <div class="leaderboard-table">
+<!--      <v-text-field-->
+<!--          label="Lobby code"-->
+<!--          type="text"-->
+<!--          v-model="username"-->
+<!--      ></v-text-field>-->
+<!--      <button class="btn btn-primary btn-sm play" @click="Joingame(username)">&#9658;</button>-->
       <table>
         <thead>
         <tr>
@@ -59,7 +65,7 @@ export default {
       return arr.slice().sort(function(a, b) {
         return b.points - a.points;
       });
-    }
+    },
   }
 }
 </script>
@@ -140,18 +146,22 @@ tbody tr:nth-child(even) {
 
 
 
-
-.background, .background img {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  object-position: bottom;
-  position: absolute;
+.background {
+  position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1000;
-  filter: brightness(0.7);
   background-color: rgba(5, 11, 98, 1);
+}
+
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  filter: brightness(0.7);
 }
 
 </style>

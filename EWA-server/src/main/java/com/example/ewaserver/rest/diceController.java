@@ -5,6 +5,7 @@ import com.example.ewaserver.exceptions.PreConditionFailed;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
 import com.example.ewaserver.models.Turn;
+import com.example.ewaserver.notifications.NotificationDistributor;
 import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.TurnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class diceController {
     private TurnRepository repository;
     @Autowired
     private LobbyRepository lobbyRepository;
+
+    @Autowired
+    private NotificationDistributor notificationDistributor;
 
     @GetMapping(path = "", produces = "application/json")
     public List<Turn> getAllPlayermoves() {
@@ -74,9 +78,10 @@ public class diceController {
             throw new PreConditionFailed("Need a valid lobby");
         }
         Turn turn = new Turn(selectedcolor, lobby, result, 1);
+        repository.Save(turn);
+        this.notificationDistributor.notify("turns" + lobby.getJoin_code());
 
-
-        return repository.Save(turn);
+        return turn;
     }
 
     @PutMapping(path = "", produces = "application/json")
@@ -85,8 +90,9 @@ public class diceController {
 
         saveTurn.setThrowCount(turn.getThrowCount());
         saveTurn.setLastThrow(turn.getLastThrow());
-
-        return repository.Save(turn);
+        repository.Save(turn);
+        this.notificationDistributor.notify("turns" + saveTurn.getLobby().getJoin_code());
+        return turn;
     }
 
 

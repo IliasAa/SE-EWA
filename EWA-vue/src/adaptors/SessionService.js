@@ -11,6 +11,7 @@ export class SessionService {
         console.log("Created SessionService...");
         this.BROWSER_STORAGE_ITEM_NAME = browserStorageItemName;
         this.RESOURCES_URL = resourcesUrl;
+        this.url = resourcesUrl;
         this._currentAccount = null;
         this._currentToken = null;
         // retrieve the current user info from browser storage,
@@ -193,7 +194,7 @@ export class SessionService {
     }
 
     async getAllFriends(){
-        let response = await fetch(this.url + "/chat/friends/getAll/" +
+        let response = await fetch(this.RESOURCES_URL + "/chat/friends/getAll/" +
             this.currentAccount.userId,
             {
                 headers: {'Content-Type': 'application/json'},

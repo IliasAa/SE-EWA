@@ -118,6 +118,10 @@
       </div>
     </div>
   </div>
+
+  <div class="background">
+    <img src="../assets/Ludobackground.png">
+  </div>
 </template>
 
 <script>
@@ -179,17 +183,21 @@ export default {
 }
 
 .background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  background-image: url("../assets/Ludobackground.png");
+  z-index: -1000;
   background-color: rgba(5, 11, 98, 1);
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.5)
+}
+
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  filter: brightness(0.7);
 }
 
 p {
