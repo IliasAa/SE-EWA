@@ -77,7 +77,7 @@ public class Config implements WebMvcConfigurer , WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(this.announcementDistributor, "/announcements")
-                .setAllowedOriginPatterns("http://localhost:*", getHostIPAddressPattern(), allowedCorsClients)
+                .setAllowedOriginPatterns("http://localhost:*",  "https://ludo-frontend-production.up.railway.app" ,getHostIPAddressPattern(), allowedCorsClients)
         //.withSockJS()
         ;
         registry.addHandler(this.notificationDistributor, "/notifications")
