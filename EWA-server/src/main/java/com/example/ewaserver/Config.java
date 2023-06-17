@@ -68,7 +68,7 @@ public class Config implements WebMvcConfigurer , WebSocketConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").
-                allowedOriginPatterns("https://ludo-frontend-production.up.railway.app", getHostIPAddressPattern(), allowedCorsClients)
+                allowedOriginPatterns("http://localhost:*", "https://ludo-frontend-production.up.railway.app", getHostIPAddressPattern(), allowedCorsClients)
                 .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .allowCredentials(true);
