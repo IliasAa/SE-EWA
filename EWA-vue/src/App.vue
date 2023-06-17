@@ -19,7 +19,7 @@ export default {
   name: 'App',
   components: {},
   provide() {
-    const URL = "process.env.VUE_APP_API_URL";
+    const URL = process.env.API;
 
     this.theSessionService = shallowReactive(
         new SessionService(URL + "/authentication", "JWT_LUDO"));
