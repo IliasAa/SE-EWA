@@ -115,7 +115,7 @@ export class SessionService {
 
     async asyncSignIn(username, password) {
         const body = JSON.stringify({username: username, password: password});
-        let response = await fetch(this.RESOURCES_URL + "/login",
+        let response = await fetch(process.env.VUE_APP_API_URL + "/login",
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
