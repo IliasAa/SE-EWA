@@ -115,7 +115,7 @@ export class SessionService {
 
     async asyncSignIn(username, password) {
         const body = JSON.stringify({username: username, password: password});
-        let response = await fetch(process.env.VUE_APP_API_URL + "/login",
+        let response = await fetch(this.url + "/login",
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -153,68 +153,7 @@ export class SessionService {
         return response;
     }
 
-    async asyncFindAll(){
-        let response =  await fetch (this.url + "/chat/getAll", {
-            headers: {'Content-Type': 'application/json'},
-            method: 'GET',
-        })
-        if (response.ok){
-            return await response.json();
-        }
-    }
 
-    async asyncFindChatWithFriend(friendId){
-        let response =  await fetch (this.url + "/chat/" + this.currentAccount.userId +"&"+friendId, {
-            headers: {'Content-Type': 'application/json'},
-            method: 'GET',
-        })
-        if (response.ok){
-            return await response.json();
-        }
-    }
-    async sendMessage(message, friendId){
-        await fetch(this.url + "/chat/friend/" + friendId, {
-            headers: {'Content-Type': 'application/json'},
-            method: 'POST',
-            body: JSON.stringify({
-                "id": this.currentAccount.userId,
-                "message": message,
-            })
-        })
-    }
-
-    async searchUser(keyword){
-        let response = await fetch(this.url + "/chat/searchUser/" + keyword, {
-            headers: {'Content-Type': 'application/json'},
-            method: 'GET',
-        })
-        if (response.ok){
-            return response.json();
-        }
-    }
-
-    async getAllFriends(){
-        let response = await fetch(this.RESOURCES_URL + "/chat/friends/getAll/" +
-            this.currentAccount.userId,
-            {
-                headers: {'Content-Type': 'application/json'},
-                method: 'GET',
-            })
-        if (response.ok){
-            return await response.json();
-        }
-    }
-
-    async addFriend(friendId){
-        await fetch(this.url + "/chat/addFriend", {
-            headers: {'Content-Type': 'application/json'},
-            method: 'POST',
-            body: JSON.stringify({
-                "userId": this.currentAccount.userId,
-                "friendId": friendId,
-            })
-        })
-    }
 
 
     async signOut() {

@@ -710,6 +710,7 @@ export default {
       this.processPlayerMoves();
 
       await this.dicePriority();
+
     },
     processPlayerMoves() {
       if (this.playerMoves.length > 0) {

@@ -58,7 +58,7 @@ import NavBar from "@/components/NavBar";
 export default {
   name: 'friendsPage',
   components: {NavBar},
-  inject: ['SessionService'],
+  inject: ['SessionService', 'chatFriend'],
   data() {
     return {
       friends: [],
@@ -101,17 +101,17 @@ export default {
       console.log('Inviting friend:', friendId);
     },
     reinitializeFriends() {
-      this.SessionService.getAllFriends().then((array) => {
+      this.chatFriend.getAllFriends().then((array) => {
         this.friends = array;
       });
     },
     userFound() {
-      this.SessionService.searchUser(this.searchInput).then((array) => {
+      this.chatFriend.searchUser(this.searchInput).then((array) => {
         this.searchedUser = array;
       });
     },
     addFriend(userId) {
-      this.SessionService.addFriend(userId).then(() => {
+      this.chatFriend.addFriend(userId).then(() => {
         this.reinitializeFriends();
       });
       this.searchInput = '';

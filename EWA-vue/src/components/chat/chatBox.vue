@@ -24,7 +24,7 @@
 export default {
   name: "chatBox",
   props: ["friend"],
-  inject: ['notificationService', 'SessionService'],
+  inject: ['notificationService', 'SessionService', 'chatFriend' ],
   data() {
     return {
       messages: [],
@@ -69,7 +69,7 @@ export default {
         // this method is called when enter is pressed within the input text field
         // for demo purpose of a simple web socket
 
-        this.SessionService.sendMessage(this.userInput, this.friendId);
+        this.chatFriend.sendMessage(this.userInput, this.friendId);
 
         this.userInput = "";
         // a persistent announcement system would save the announcement here via the REST api
@@ -79,7 +79,7 @@ export default {
 
     async reInitialize() {
       // reload all books from the back-end
-      this.messages = (await this.SessionService.asyncFindChatWithFriend(this.friendId));
+      this.messages = (await this.chatFriend.asyncFindChatWithFriend(this.friendId));
     },
 
     scrollToBottom() {
