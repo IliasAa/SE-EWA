@@ -69,6 +69,7 @@ export default {
     };
   },
   created() {
+    console.log(this.selectedFriend)
     this.reinitializeFriends();
     this.currentUser = this.SessionService.currentAccount;
 
@@ -138,8 +139,6 @@ export default {
       if (this.selectedFriend === null) {
         this.$router.push("/friends");
       }
-
-
     }
   }
 };

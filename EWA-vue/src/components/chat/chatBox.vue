@@ -41,8 +41,10 @@ export default {
     this.scrollToBottom();
   },
   created() {
+    if (this.friend === null){
+      this.$router.push("/friends")
+    }
     this.userId = this.SessionService.currentAccount.userId;
-
     this.createChatLink();
 
 

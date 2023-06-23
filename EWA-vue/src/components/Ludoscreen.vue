@@ -237,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
+  inject: ['SessionService','lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -282,7 +282,7 @@ export default {
     for (let i = 0; i < 4; i++) {
       this.colorsActive.push(0);
     }
-    this.currentuser = await this.userService.asyncGetInfo();
+    this.currentuser = await this.SessionService.currentAccount;
 
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
@@ -395,6 +395,9 @@ export default {
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
       this.selectedcolor = returnStatement[0];
+      console.log(returnStatement[0])
+      console.log(this.selectedcolor)
+
 
 
       //get info from other players
@@ -510,25 +513,25 @@ export default {
 
         //moving the pawn to the new position and changing the data of the pawn itself.
         for (let i = 0; i < this.pawns.length; i++) {
-          if (this.pawns[i].position === this.playablePawns[arrayPos].path[newPawnPosIndex]){
+          if (this.pawns[i].position === this.playablePawns[arrayPos].path[newPawnPosIndex]) {
             fieldHasPawn = true;
             removePawn = this.pawns[i];
           }
         }
 
-        if (fieldHasPawn === true){
+        if (fieldHasPawn === true) {
           for (let i = 0; i < this.playablePawns.length; i++) {
-            if (this.playablePawns[i].id === removePawn.id){
+            if (this.playablePawns[i].id === removePawn.id) {
               removePawn = "Own pawn";
             }
           }
         }
 
-        if (removePawn !== "Own pawn"){
-          if (removePawn !== null){
+        if (removePawn !== "Own pawn") {
+          if (removePawn !== null) {
             removePawn.position = removePawn.homePosition
             removePawn.onField = 1;
-            if (!this.isSingleplayer){
+            if (!this.isSingleplayer) {
               const returnDeletablePawn =
                   await this.ludoService.asyncFindOnTokedIdAndLobby(removePawn.id, this.lobby[0].idLobby);
               await this.ludoService.removePawn(returnDeletablePawn[0]);
@@ -569,7 +572,6 @@ export default {
     },
 
 
-
     //Method to throw the dice
     async ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
@@ -598,6 +600,7 @@ export default {
             await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
           } else {
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
+            console.log(totalThrows)
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);
@@ -706,6 +709,8 @@ export default {
       //saves all the moves made
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
       this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
+      console.log(this.playerMoves)
+      alert("balls")
 
       this.processPlayerMoves();
 
@@ -761,17 +766,16 @@ export default {
       let colors = ['green', 'yellow', 'red', 'blue']
       let throwsPerColor = [null, null, null, null];
 
+      let count = 0;
       for (let i = 0; i < this.colorsActive.length; i++) {
         if (this.colorsActive[i] === 1) {
+          count++;
           throwsPerColor[i] = await this.diceService.asyncFindOnColorAndID(this.lobby[0].idLobby, colors[i]);
         } else {
           throwsPerColor[i] = "color not used"
         }
       }
 
-
-      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
-      //and saves it in a throw with color so the throws are combined with the color
       for (let i = 0; i < throwsPerColor.length; i++) {
         if (throwsPerColor[i] !== "color not used") {
           if (typeof (throwsPerColor[i][0]) === "undefined") {
@@ -782,20 +786,64 @@ export default {
         }
       }
 
-      //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
-      let lowestRoll = this.throwWithColor[0].Throws;
-      let dicePrio = this.throwWithColor[0].color;
-      for (let i = 0; i < this.throwWithColor.length; i++) {
-        if (this.throwWithColor[i].Throws < lowestRoll) {
-          lowestRoll = this.throwWithColor[i].Throws;
-          dicePrio = this.throwWithColor[i].color;
+      let throws = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby)
+      if (throws.length === count){
+        let min = Infinity;
+        let colorWithMin = null;
+        for (let i = 0; i < throws.length; i++) {
+          console.log(throws[i])
+
+          let throwCount = throws[i].throwCount;
+          min = Math.min(min, throws[i].throwCount);
+          if (throwCount === min) {
+            colorWithMin = throws[i].id.selectedColor;
+          }
+        }
+        console.log(min)
+        console.log(throws[0].id.selectedColor)
+        console.log(colorWithMin)
+        console.log(this.selectedcolor)
+
+        document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
+      }
+      else {
+        console.clear();
+        console.log(this.selectedcolor)
+        let throwsLength = throws.length;
+        for (let i = 0; i < this.colorsActive.length; i++) {
+          if (this.colorsActive[i] === 1 && throwsLength === 0) {
+            console.log(colors[i])
+            document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
+            break;
+          }
+          if (throwsLength !== 0){
+            throwsLength--;
+          }
+
         }
       }
 
-      this.activeThrow = dicePrio;
-      if (this.activeThrow !== this.selectedcolor) {
-        document.getElementById("buttonForDice").disabled = true;
-      }
+
+      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
+      //and saves it in a throw with color so the throws are combined with the color
+
+      // console.log(throwsPerColor)
+      //
+      // //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
+      // let lowestRoll = this.throwWithColor[0].Throws;
+      // let dicePrio = this.throwWithColor[0].color;
+      // for (let i = 0; i < this.throwWithColor.length; i++) {
+      //   if (this.throwWithColor[i].Throws < lowestRoll) {
+      //     lowestRoll = this.throwWithColor[i].Throws;
+      //     dicePrio = this.throwWithColor[i].color;
+      //   }
+      // }
+      //
+      // console.log(this.throwWithColor)
+      // this.activeThrow = dicePrio;
+      // if (this.activeThrow !== this.selectedcolor) {
+      //   document.getElementById("buttonForDice").disabled = true;
+      // }
     }
   },
 
