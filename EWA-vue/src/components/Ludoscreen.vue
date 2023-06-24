@@ -237,7 +237,7 @@ export default {
   name: "LoginScreen",
   components: {NavBar},
   props: ['selectedColor'],
-  inject: ['SessionService','lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
+  inject: ['SessionService', 'lobbyService', 'userService', 'ludoService', 'diceService', 'notificationService'],
   data() {
     return {
       //save the lobbycode and saves if the game is singleplayer or not.
@@ -311,7 +311,6 @@ export default {
       this.removeUnusedPawnsFrontend();
       this.notificationService.subscribe("turns" + this.lobbyCode, this.reInitialize)
       await this.reInitialize();
-      await this.dicePriority();
 
 
     }
@@ -397,7 +396,6 @@ export default {
       this.selectedcolor = returnStatement[0];
       console.log(returnStatement[0])
       console.log(this.selectedcolor)
-
 
 
       //get info from other players
@@ -707,13 +705,11 @@ export default {
     async reInitialize() {
       // reload all playerMoves from the back-end
       //saves all the moves made
+      await this.dicePriority();
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
-      this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
-      console.log(this.playerMoves)
 
       this.processPlayerMoves();
 
-      await this.dicePriority();
 
     },
     processPlayerMoves() {
@@ -726,6 +722,7 @@ export default {
 
 
     async setupPawns(pawnId, newPos) {
+
       let getPawn = null;
 
       //boolean to define wheather it is in the playable pawns or not.
@@ -745,16 +742,19 @@ export default {
         }
       }
 
+      const pawnMove = document.getElementById(pawnId);
 
-      getPawn.previousPosition = getPawn.homePosition;
-      console.log(getPawn.homePosition)
+      if (getPawn.previousPosition === null) {
+        getPawn.previousPosition = getPawn.homePosition;
+        getPawn.onField = 2;
+      } else {
+        getPawn.previousPosition = pawnMove.parentElement.id;
+      }
       getPawn.position = newPos;
-      getPawn.onField = 2;
 
 
       //Check if pawn reached finished area
-      const pawnMove = document.getElementById(pawnId);
-      let prevPosBox = document.getElementById(getPawn.homePosition);
+      let prevPosBox = document.getElementById(getPawn.previousPosition);
       let nextPosBox = document.getElementById(newPos);
       prevPosBox.removeChild(pawnMove);
       nextPosBox.appendChild(pawnMove);
@@ -785,42 +785,41 @@ export default {
         }
       }
 
-      let throws = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby)
-      if (throws.length === count){
+      this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby)
+      if (this.turns.length === count) {
         // Set min to infinity so that the minimal value can be retrieved.
         let min = Infinity;
         let colorWithMin = null;
-        for (let i = 0; i < throws.length; i++) {
-          console.log(throws[i])
+        for (let i = 0; i < this.turns.length; i++) {
+          console.log(this.turns[i])
 
-          let throwCount = throws[i].throwCount;
+          let throwCount = this.turns[i].throwCount;
           // Make sure that the colorWithMin selects the first color in the list if the same throwCount.
-          if (throwCount !== min){
-            min = Math.min(min, throws[i].throwCount);
+          if (throwCount !== min) {
+            min = Math.min(min, this.turns[i].throwCount);
             if (throwCount === min) {
-              colorWithMin = throws[i].id.selectedColor;
+              colorWithMin = this.turns[i].id.selectedColor;
             }
           }
 
         }
         console.log(min)
-        console.log(throws[0].id.selectedColor)
+        console.log(this.turns[0].id.selectedColor)
         console.log(colorWithMin)
         console.log(this.selectedcolor)
 
         document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
-      }
-      else {
+      } else {
         console.clear();
         console.log(this.selectedcolor)
-        let throwsLength = throws.length;
+        let throwsLength = this.turns.length;
         for (let i = 0; i < this.colorsActive.length; i++) {
           if (this.colorsActive[i] === 1 && throwsLength === 0) {
             console.log(colors[i])
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
             break;
           }
-          if (this.colorsActive[i] === 1 && throwsLength !== 0){
+          if (this.colorsActive[i] === 1 && throwsLength !== 0) {
             throwsLength--;
           }
 
