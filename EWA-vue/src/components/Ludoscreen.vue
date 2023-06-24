@@ -252,7 +252,6 @@ export default {
       playablePawns: [],
       allowedToMove: true,
 
-
       //information for multiplayer
       userids: [],
       lobby: null,
@@ -262,13 +261,11 @@ export default {
       selectedColorsMP: [],
       colorsActive: [],
 
-
       //PlayerCardinfo
       greenName: null,
       yellowName: null,
       blueName: null,
       redName: null,
-
 
       //Websockets playermove
       playerMoves: [],
@@ -284,7 +281,6 @@ export default {
     }
     this.currentuser = await this.SessionService.currentAccount;
 
-
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
     this.lobbyCode = this.$route.params.joincode;
     if (this.lobbyCode === ":joincode") {
@@ -298,21 +294,15 @@ export default {
       await this.multiplayerInitialLaunch();
     }
 
-
     //creates all pawns and also the playable pawns
     this.createPawns();
 
-
     //Multiplayer usernames on cards and removes unused pawns from board.
     if (!this.isSingleplayer) {
-
-
       this.assignPlayerCardMP();
       this.removeUnusedPawnsFrontend();
       this.notificationService.subscribe("turns" + this.lobbyCode, this.reInitialize)
       await this.reInitialize();
-
-
     }
 
   },
@@ -444,12 +434,12 @@ export default {
             //check if playermove exist in database
             const returnPawn =
                 await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
-            if (returnPawn[0] !== undefined){
+            if (returnPawn[0] !== undefined) {
               returnPawn[0].onField = 2;
               returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
               await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
             } else {
-              const move = playermove.createPlayermove(pawnId, position,2);
+              const move = playermove.createPlayermove(pawnId, position, 2);
               await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
             }
             //add steps to DB
@@ -565,6 +555,7 @@ export default {
             const returnPawn =
                 await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
             returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
+            returnPawn[0].onField = this.playablePawns[arrayPos].onField;
             await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
 
             //turn in DB
@@ -594,7 +585,8 @@ export default {
       let allowMove = false;
 
 
-      //mp specific
+      //mp specific. Will make a new diceCount if it doesn't exist yet and adds an extra step instantly if there are no
+      //available pawns on the field.
       let hasAPlayablePawn = false;
       let totalThrows;
       if (!this.isSingleplayer) {
@@ -730,7 +722,7 @@ export default {
     processPlayerMoves() {
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
-          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos,this.playerMoves[i].onField);
+          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos, this.playerMoves[i].onField);
         }
       }
     },
@@ -739,7 +731,6 @@ export default {
     async setupPawns(pawnId, newPos, onfield) {
 
       let getPawn = null;
-
       //boolean to define wheather it is in the playable pawns or not.
       let notPlayable = true;
       for (let i = 0; i < this.playablePawns.length; i++) {
