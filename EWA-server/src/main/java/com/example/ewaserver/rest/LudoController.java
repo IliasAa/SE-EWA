@@ -71,20 +71,21 @@ public class LudoController {
     }
 
     @PutMapping(path = "")
-    public ResponseEntity<Playerposition> updateLobby(@RequestBody Playerposition pos) {
+    public ResponseEntity<Playerposition> updatePlayerMove(@RequestBody Playerposition pos) {
         Playerposition getPos = repository.findById(pos.getIdPlayerposition());
         if (getPos == null) {
             throw new PreConditionFailed("Need a valid playerPos");
         }
 
         getPos.setTokenPos(pos.getTokenPos());
+        getPos.setOnField(pos.getOnField());
         repository.Save(getPos);
 
-        return ResponseEntity.ok().body(pos);
+        return ResponseEntity.ok().body(getPos);
     }
 
     @DeleteMapping(path = "", produces = "application/json")
-    public Playerposition CreateNewPlayermove(@RequestBody Playerposition pos) {
+    public Playerposition deletePlayerMove(@RequestBody Playerposition pos) {
         Playerposition getPos = repository.findById(pos.getIdPlayerposition());
         if (getPos == null) {
             throw new PreConditionFailed("Need a valid playerPos");

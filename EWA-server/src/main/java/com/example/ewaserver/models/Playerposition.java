@@ -26,6 +26,8 @@ public class Playerposition {
     private int tokenId;
     private int tokenPos;
 
+    private int onField;
+
 
     @ManyToOne
     private Lobby lobby;

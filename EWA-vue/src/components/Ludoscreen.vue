@@ -440,9 +440,18 @@ export default {
           //if it is a mutliplayer game it will post the playermove to the database
           if (!this.isSingleplayer) {
             const position = this.playablePawns[arrayPos].position;
-            const move = playermove.createPlayermove(pawnId, position);
-            await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
 
+            //check if playermove exist in database
+            const returnPawn =
+                await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
+            if (returnPawn[0] !== undefined){
+              returnPawn[0].onField = 2;
+              returnPawn[0].position = this.playablePawns[arrayPos].position;
+              await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
+            } else {
+              const move = playermove.createPlayermove(pawnId, position,2);
+              await this.ludoService.asyncSaveUsermove(move, this.lobby[0].idLobby)
+            }
             //add steps to DB
             if (totalThrows === 0) {
               await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
@@ -537,9 +546,13 @@ export default {
             if (!this.isSingleplayer) {
               const returnDeletablePawn =
                   await this.ludoService.asyncFindOnTokedIdAndLobby(removePawn.id, this.lobby[0].idLobby);
-              await this.ludoService.removePawn(returnDeletablePawn[0]);
+              returnDeletablePawn[0].onField = 1;
+              returnDeletablePawn[0].position = removePawn.homePosition;
+              await this.ludoService.asyncUpdatePlayerPos(returnDeletablePawn[0]);
             }
           }
+
+          //moves your selected pawn to the position with the dice result.
           this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
           this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
           const prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
@@ -585,7 +598,6 @@ export default {
       let hasAPlayablePawn = false;
       let totalThrows;
       if (!this.isSingleplayer) {
-
         for (let i = 0; i < this.throwWithColor.length; i++) {
           if (this.selectedcolor === this.throwWithColor[i].color) {
             totalThrows = this.throwWithColor[i].Throws;
