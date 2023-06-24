@@ -710,7 +710,6 @@ export default {
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
       this.turns = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby);
       console.log(this.playerMoves)
-      alert("balls")
 
       this.processPlayerMoves();
 
@@ -788,16 +787,21 @@ export default {
 
       let throws = await this.diceService.asyncFindAllInLobby(this.lobby[0].idLobby)
       if (throws.length === count){
+        // Set min to infinity so that the minimal value can be retrieved.
         let min = Infinity;
         let colorWithMin = null;
         for (let i = 0; i < throws.length; i++) {
           console.log(throws[i])
 
           let throwCount = throws[i].throwCount;
-          min = Math.min(min, throws[i].throwCount);
-          if (throwCount === min) {
-            colorWithMin = throws[i].id.selectedColor;
+          // Make sure that the colorWithMin selects the first color in the list if the same throwCount.
+          if (throwCount !== min){
+            min = Math.min(min, throws[i].throwCount);
+            if (throwCount === min) {
+              colorWithMin = throws[i].id.selectedColor;
+            }
           }
+
         }
         console.log(min)
         console.log(throws[0].id.selectedColor)
@@ -816,7 +820,7 @@ export default {
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
             break;
           }
-          if (throwsLength !== 0){
+          if (this.colorsActive[i] === 1 && throwsLength !== 0){
             throwsLength--;
           }
 
