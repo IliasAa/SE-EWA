@@ -446,7 +446,7 @@ export default {
                 await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
             if (returnPawn[0] !== undefined){
               returnPawn[0].onField = 2;
-              returnPawn[0].position = this.playablePawns[arrayPos].position;
+              returnPawn[0].tokenPos = this.playablePawns[arrayPos].position;
               await this.ludoService.asyncUpdatePlayerPos(returnPawn[0]);
             } else {
               const move = playermove.createPlayermove(pawnId, position,2);
@@ -547,7 +547,7 @@ export default {
               const returnDeletablePawn =
                   await this.ludoService.asyncFindOnTokedIdAndLobby(removePawn.id, this.lobby[0].idLobby);
               returnDeletablePawn[0].onField = 1;
-              returnDeletablePawn[0].position = removePawn.homePosition;
+              returnDeletablePawn[0].tokenPos = removePawn.homePosition;
               await this.ludoService.asyncUpdatePlayerPos(returnDeletablePawn[0]);
             }
           }
@@ -730,13 +730,13 @@ export default {
     processPlayerMoves() {
       if (this.playerMoves.length > 0) {
         for (let i = 0; i < this.playerMoves.length; i++) {
-          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos);
+          this.setupPawns(this.playerMoves[i].tokenId, this.playerMoves[i].tokenPos,this.playerMoves[i].onField);
         }
       }
     },
 
 
-    async setupPawns(pawnId, newPos) {
+    async setupPawns(pawnId, newPos, onfield) {
 
       let getPawn = null;
 
@@ -761,7 +761,7 @@ export default {
 
       if (getPawn.previousPosition === null) {
         getPawn.previousPosition = getPawn.homePosition;
-        getPawn.onField = 2;
+        getPawn.onField = onfield;
       } else {
         getPawn.previousPosition = pawnMove.parentElement.id;
       }
