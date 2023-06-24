@@ -74,6 +74,10 @@ export default {
     this.notificationService.subscribe(this.lobby[0].idLobby, this.reInitialize)
 
     this.reInitialize();
+    if (this.lobby[0].lobby_status === 1 || this.lobby[0].lobby_status === 2){
+      //redirect to game with lobbycode.
+      this.$router.push("/gamepage/"+ this.lobbyCode);
+    }
 
 
     if (this.myId === ownerid) {

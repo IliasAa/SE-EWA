@@ -394,8 +394,6 @@ export default {
       const returnStatement =
           await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby, this.currentuser.userId);
       this.selectedcolor = returnStatement[0];
-      console.log(returnStatement[0])
-      console.log(this.selectedcolor)
 
 
       //get info from other players
@@ -535,6 +533,7 @@ export default {
             removeLandBox.appendChild(removePawnId);
             removePawn.position = removePawn.homePosition;
             removePawn.onField = 1;
+            //if it is a multiplayer match it will send a Delete to the DB using removePawn.
             if (!this.isSingleplayer) {
               const returnDeletablePawn =
                   await this.ludoService.asyncFindOnTokedIdAndLobby(removePawn.id, this.lobby[0].idLobby);
@@ -548,7 +547,7 @@ export default {
           prevPosBox.removeChild(pawnMove);
           nextPosBox.appendChild(pawnMove);
 
-          //if it is a mutliplayer game it will post the playermove to the database
+          //if it is a mutliplayer match it will post the playermove and add a step using asyncUpdatePlayerPos.
           if (!this.isSingleplayer) {
             const returnPawn =
                 await this.ludoService.asyncFindOnTokedIdAndLobby(pawnId, this.lobby[0].idLobby);
@@ -557,7 +556,6 @@ export default {
 
             //turn in DB
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
-            console.log(turn);
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);
@@ -604,7 +602,6 @@ export default {
             await this.diceService.addExtrastep(this.lobby[0].idLobby, this.selectedcolor, result)
           } else {
             const turn = await this.diceService.asyncAllFindOnColorAndID(this.lobby[0].idLobby, this.selectedcolor);
-            console.log(totalThrows)
             turn[0].throwCount = turn[0].throwCount + 1;
             turn[0].lastThrow = result
             await this.diceService.addStepToRecord(turn[0]);
@@ -770,8 +767,8 @@ export default {
     async dicePriority() {
       let colors = ['green', 'yellow', 'red', 'blue']
       let throwsPerColor = [null, null, null, null];
-
       let count = 0;
+
       for (let i = 0; i < this.colorsActive.length; i++) {
         if (this.colorsActive[i] === 1) {
           count++;
@@ -797,7 +794,6 @@ export default {
         let min = Infinity;
         let colorWithMin = null;
         for (let i = 0; i < this.turns.length; i++) {
-          console.log(this.turns[i])
 
           let throwCount = this.turns[i].throwCount;
           // Make sure that the colorWithMin selects the first color in the list if the same throwCount.
@@ -809,19 +805,11 @@ export default {
           }
 
         }
-        console.log(min)
-        console.log(this.turns[0].id.selectedColor)
-        console.log(colorWithMin)
-        console.log(this.selectedcolor)
-
         document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
       } else {
-        console.clear();
-        console.log(this.selectedcolor)
         let throwsLength = this.turns.length;
         for (let i = 0; i < this.colorsActive.length; i++) {
           if (this.colorsActive[i] === 1 && throwsLength === 0) {
-            console.log(colors[i])
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
             break;
           }
