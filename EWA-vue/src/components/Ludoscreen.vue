@@ -527,7 +527,13 @@ export default {
 
         if (removePawn !== "Own pawn") {
           if (removePawn !== null) {
-            removePawn.position = removePawn.homePosition
+            //moves pawn to new pos and also changes position and onfield properties of it.
+            const removeBox = document.getElementById(removePawn.position);
+            const removeLandBox = document.getElementById(removePawn.homePosition);
+            const removePawnId = document.getElementById(removePawn.id)
+            removeBox.removeChild(removePawnId);
+            removeLandBox.appendChild(removePawnId);
+            removePawn.position = removePawn.homePosition;
             removePawn.onField = 1;
             if (!this.isSingleplayer) {
               const returnDeletablePawn =
@@ -537,8 +543,8 @@ export default {
           }
           this.playablePawns[arrayPos].previousPosition = this.playablePawns[arrayPos].position;
           this.playablePawns[arrayPos].position = this.playablePawns[arrayPos].path[newPawnPosIndex];
-          let prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
-          let nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
+          const prevPosBox = document.getElementById(this.playablePawns[arrayPos].previousPosition);
+          const nextPosBox = document.getElementById(this.playablePawns[arrayPos].position);
           prevPosBox.removeChild(pawnMove);
           nextPosBox.appendChild(pawnMove);
 
