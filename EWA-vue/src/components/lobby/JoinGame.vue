@@ -94,6 +94,7 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import {isDisabled} from "bootstrap/js/src/util";
+import {el} from "vuetify/locale";
 // import DetailJoinGame from "@/components/lobby/DetailJoinGame.vue";
 
 
@@ -117,6 +118,8 @@ export default {
       lobby: null,
 
       users: [],
+      lobbyMax: null,
+      playerCount: null,
       selectedColorsinLobby: [],
       redColorSelectionDisabled: false,
       blueColorSelectionDisabled: false,
@@ -206,18 +209,25 @@ export default {
     async Joingame(join_code) {
       //saves the response and send it to the User_has_lobby.
 
-      //dummy data to test combination between user and lobby
-      //this has to be removed if the selectColor pop-up is implemented
-      const selectedColor = this.selectedColor;
+      this.playerCount = await this.lobbyService.asyncFindMaxPlayerCountCompare(join_code);
+      this.lobbyMax = await this.lobbyService.asyncFindMaxPlayer(join_code);
+      console.log(this.lobbyMax);
+      console.log(this.playerCount);
+      if (this.lobbyMax <= this.playerCount) {
+        alert('max players')
+      } else {
+        //dummy data to test combination between user and lobby
+        //this has to be removed if the selectColor pop-up is implemented
+        const selectedColor = this.selectedColor;
 
-      const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
+        const createdLobby = await this.lobbyService.asyncFindByjoincode(join_code);
 
-      // Link the user to the lobby
-      await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
+        // Link the user to the lobby
+        await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
 
-      //Push router to lobby with join code, so it will see it in the params
-      this.$router.push("/lobby/" + createdLobby[0].join_code)
-
+        //Push router to lobby with join code, so it will see it in the params
+        this.$router.push("/lobby/" + createdLobby[0].join_code)
+      }
 
     },
 

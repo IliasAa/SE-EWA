@@ -15,6 +15,9 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = "Lobby_find_by_code",
                 query = "select l from Lobby l where l.join_code = ?1 "),
+        @NamedQuery(name = "total_max_players",
+                query = "select l.max_allowed_Players from Lobby l where  l.join_code = ?1"),
+
 })
 
 @Entity

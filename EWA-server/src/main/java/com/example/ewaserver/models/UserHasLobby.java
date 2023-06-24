@@ -17,7 +17,7 @@ import javax.lang.model.element.Name;
         @NamedQuery(name = "find_available_color",
                 query = "select l.selected_color from UserHasLobby l where l.lobby.idLobby = ?1"),
         @NamedQuery(name = "find_player_count_MAX_Compare",
-                query = "select COUNT(uhs.user.userId), l.max_allowed_Players from UserHasLobby uhs inner join Lobby l on l.idLobby = uhs.lobby.idLobby where uhs.lobby.idLobby = ?1"),
+                query = "select COUNT(uhs.user.userId) from UserHasLobby uhs inner join Lobby l on l.idLobby = uhs.lobby.idLobby where l.join_code = ?1"),
 
 })
 

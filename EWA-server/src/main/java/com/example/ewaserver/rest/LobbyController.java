@@ -65,10 +65,15 @@ public class LobbyController {
         return userLobbyRepository.findByQuery("find_color_withLobbyAndUser", LobbyId,userId);
     }
 
-    @GetMapping(path = "/max/{LobbyId}", produces = "application/json")
-    public List<UserHasLobby> getMaxPlayerCountCompare(@PathVariable int LobbyId) {
-        return userLobbyRepository.findByQuery("find_player_count_MAX_Compare", LobbyId);
+    @GetMapping(path = "/count/{LobbyCode}", produces = "application/json")
+    public List<UserHasLobby> getMaxPlayerCountCompare(@PathVariable String LobbyCode) {
+        return userLobbyRepository.findByQuery("find_player_count_MAX_Compare", LobbyCode);
     }
+
+    @GetMapping(path = "/maxPlayer/{LobbyCode}", produces = "application/json")
+        public List<Lobby> getMaxPlayer(@PathVariable String LobbyCode) {
+            return lobbyRepository.findByQuery("total_max_players", LobbyCode);
+        }
 
 
     @PostMapping(path = "/{userid}/{LobbyId}/{selectedcolor}", produces = "application/json")
