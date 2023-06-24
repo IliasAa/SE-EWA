@@ -4,14 +4,11 @@ export class SessionService {
     _currentToken;              // the current authentication token of this session// to be injected in the authorization header of every outgoing request
     _currentAccount;            // the account instant of the currently logged on user
 
-    url = process.env.VUE_APP_API_URL;
-
 
     constructor(resourcesUrl, browserStorageItemName) {
         console.log("Created SessionService...");
         this.BROWSER_STORAGE_ITEM_NAME = browserStorageItemName;
         this.RESOURCES_URL = resourcesUrl;
-        this.url = resourcesUrl;
         this._currentAccount = null;
         this._currentToken = null;
         // retrieve the current user info from browser storage,
