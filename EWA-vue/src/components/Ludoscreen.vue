@@ -830,7 +830,7 @@ export default {
         }
         // Give priority to the color that has the lowest throwCount or is before others in sequence.
         document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
-        this.colorTurnText = "Player with " + colorWithMin + " can now throw"
+        this.colorTurnText = "Player with " + colorWithMin + " can now throw!"
       }
       // Case for when the turn is not instantiated for all players.
       else {
@@ -839,7 +839,7 @@ export default {
         for (let i = 0; i < this.colorsActive.length; i++) {
           if (this.colorsActive[i] === 1 && throwsLength === 0) {
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
-            this.colorTurnText = "Player with " + colors[i] + " can now throw"
+            this.colorTurnText = "Player with " + colors[i] + " can now throw!"
             break;
           }
           // for the colors where the first ones are already instantiated.
@@ -877,7 +877,7 @@ export default {
 
 .make-your-move-text {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
