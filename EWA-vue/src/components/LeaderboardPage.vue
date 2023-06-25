@@ -15,15 +15,13 @@
         <thead>
         <tr>
           <th>Ranking</th>
-          <th>Avatar</th>
           <th>Username</th>
-          <th>Wins</th>
+          <th>Points</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="user in even(users)" :key="user">
-          <td>{{ (index++) - 2000 }}</td>
-          <td><img alt="Avatar" width="50"></td>
+        <tr v-for="(user,index) in even(users)" :key="user">
+          <td>{{ index + 1 }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.points }}</td>
         </tr>
@@ -48,7 +46,6 @@ export default {
   data() {
     return {
       users: [],
-      index: 1
     }
   },
   async created() {
