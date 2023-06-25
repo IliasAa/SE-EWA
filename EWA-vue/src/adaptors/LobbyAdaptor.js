@@ -41,6 +41,14 @@ export class LobbyAdaptor {
         );
     }
 
+    async updatePlayerCount(id) {
+        await this.fetchJSon(this.RESOURCE_URL + "/player/" + id, {
+                headers: {'Content-Type': 'application/json'},
+                method: 'PUT',
+            },
+        );
+    }
+
     async asyncFindByjoincode(join_code) {
         return await this.fetchJSon(this.RESOURCE_URL + "/" + join_code);
     }

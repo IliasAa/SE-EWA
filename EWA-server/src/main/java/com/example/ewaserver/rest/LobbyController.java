@@ -120,6 +120,18 @@ public class LobbyController {
         return ResponseEntity.ok().body(saveLobby);
     }
 
+    @PutMapping(path = "/player/{id}")
+    public ResponseEntity<Lobby> updatePlayerCount(@PathVariable int id) {
+        Lobby saveLobby = lobbyRepository.findById(id);
+        if (saveLobby.getIdLobby() != id) {
+            throw new PreConditionFailed("Id is not equal.");
+        }
+
+        saveLobby.setPlayer_size(saveLobby.getPlayer_size() + 1);
+        lobbyRepository.Save(saveLobby);
+        return ResponseEntity.ok().body(saveLobby);
+    }
+
 
     @DeleteMapping(path = "/{id}")
     public Lobby deletelobby(@PathVariable() int id) {

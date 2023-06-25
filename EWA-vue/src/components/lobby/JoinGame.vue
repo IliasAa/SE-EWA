@@ -224,6 +224,7 @@ export default {
 
         // Link the user to the lobby
         await this.lobbyService.combineUserWithLobby(this.userId, createdLobby[0].idLobby, selectedColor);
+        await this.lobbyService.updatePlayerCount(createdLobby[0].idLobby);
 
         //Push router to lobby with join code, so it will see it in the params
         this.$router.push("/lobby/" + createdLobby[0].join_code)
