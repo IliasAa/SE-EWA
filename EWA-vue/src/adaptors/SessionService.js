@@ -112,7 +112,7 @@ export class SessionService {
 
     async asyncSignIn(username, password) {
         const body = JSON.stringify({username: username, password: password});
-        let response = await fetch(this.url + "/login",
+        let response = await fetch(this.RESOURCES_URL + "/login",
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},

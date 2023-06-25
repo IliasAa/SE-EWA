@@ -796,26 +796,52 @@ export default {
         // Set min to infinity so that the minimal value can be retrieved.
         let min = Infinity;
         let colorWithMin = null;
+
         for (let i = 0; i < this.turns.length; i++) {
 
           let throwCount = this.turns[i].throwCount;
-          // Make sure that the colorWithMin selects the first color in the list if the same throwCount.
+          // Case for when the throwCount is larger or smaller than the minColor.
           if (throwCount !== min) {
-            min = Math.min(min, this.turns[i].throwCount);
+            // The color with the smallest throwCount gets the priority to throw the dice.
+            min = Math.min(min, throwCount);
+            // Assign the color with the lowest throwCount as colorWithMin
             if (throwCount === min) {
               colorWithMin = this.turns[i].id.selectedColor;
             }
           }
+          // Case for when players have the same throwCount.
+          else if (throwCount === min) {
+            let color = this.turns[i].id.selectedColor;
+            // Find the index of the color in the array because the board holds on to that sequence.
+            let indexForColor = colors.indexOf(color);
+            // If this color is before the other color to appear in the sequence.
+            if (indexForColor < colors.indexOf(colorWithMin)){
+              colorWithMin = color;
+            }
+            // minForWhenEqual = Math.min(minForWhenEqual, indexForColor)
+            //
+            // if (minForWhenEqual === indexForColor) {
+            //   colorWithMin = color;
+            // }
+          }
 
+          if (this.turns[i].threwAsLast){
+            this.output = this.turns[i].lastThrow;
+          }
         }
+        // Give priority to the color that has the lowest throwCount or is before others in sequence.
         document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
-      } else {
+      }
+      // Case for when the turn is not instantiated for all players.
+      else {
         let throwsLength = this.turns.length;
+
         for (let i = 0; i < this.colorsActive.length; i++) {
           if (this.colorsActive[i] === 1 && throwsLength === 0) {
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
             break;
           }
+          // for the colors where the first ones are already instantiated.
           if (this.colorsActive[i] === 1 && throwsLength !== 0) {
             throwsLength--;
           }

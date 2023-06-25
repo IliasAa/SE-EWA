@@ -51,6 +51,12 @@ public class TurnRepository implements EntityRepository<Turn>{
     }
 
 
+    public void removeAllThrewLast(int lobbyId) {
+        String jpql = "UPDATE Turn t SET t.threwAsLast = false WHERE t.lobby.idLobby = :lobbyId";
+        this.em.createQuery(jpql)
+                .setParameter("lobbyId", lobbyId)
+                .executeUpdate();
+    }
 
     public Turn findByQuerySingleResult(String jpqlName, Object... params) {
         TypedQuery<Turn> query =

@@ -30,12 +30,21 @@ public class Turn {
 
     private int lastThrow;
     private int throwCount;
+    private boolean threwAsLast;
 
     public Turn(String selectedColor, Lobby lobby, int lastThrow, int throwCount) {
         this.id.setSelectedColor(selectedColor);
         this.lobby = lobby;
         this.lastThrow = lastThrow;
         this.throwCount = throwCount;
+    }
+
+    public Turn(String selectedColor, Lobby lobby, int lastThrow, int throwCount, boolean threwAsLast) {
+        this.id.setSelectedColor(selectedColor);
+        this.lobby = lobby;
+        this.lastThrow = lastThrow;
+        this.throwCount = throwCount;
+        this.threwAsLast = threwAsLast;
     }
 
     public Turn() {

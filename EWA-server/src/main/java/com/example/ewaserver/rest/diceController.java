@@ -77,7 +77,9 @@ public class diceController {
         if (lobby == null) {
             throw new PreConditionFailed("Need a valid lobby");
         }
-        Turn turn = new Turn(selectedcolor, lobby, result, 1);
+
+        repository.removeAllThrewLast(lobbyId);
+        Turn turn = new Turn(selectedcolor, lobby, result, 1,true);
         repository.Save(turn);
         this.notificationDistributor.notify("turns" + lobby.getJoin_code());
 
@@ -88,9 +90,11 @@ public class diceController {
     public Turn AddExtraStep(@RequestBody Turn turn) {
         Turn saveTurn = repository.findbyTunrpk(turn.getId());
 
+        repository.removeAllThrewLast(saveTurn.getLobby().getIdLobby());
         saveTurn.setThrowCount(turn.getThrowCount());
         saveTurn.setLastThrow(turn.getLastThrow());
-        repository.Save(turn);
+        saveTurn.setThrewAsLast(true);
+        repository.Save(saveTurn);
         this.notificationDistributor.notify("turns" + saveTurn.getLobby().getJoin_code());
         return turn;
     }
