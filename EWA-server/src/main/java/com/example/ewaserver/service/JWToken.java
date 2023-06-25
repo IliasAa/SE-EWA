@@ -16,13 +16,11 @@ public class JWToken {
     private static final String JWT_CALLNAME_CLAIM = "sub";
     private static final String JWT_ACCOUNTID_CLAIM = "id";
     private static final String JWT_ROLE_CLAIM = "role";
-    private static final String JWT_IPADDRESS_CLAIM = "ipa";
     public static final String JWT_ATTRIBUTE_NAME = "JWTokenInfo";
 
     private long accountId = 0;
     private String callName = null;
     private String role = null;
-    private String ipAddress;
     private Date issued_at;
     private Date expired_at;
 
@@ -41,7 +39,6 @@ public class JWToken {
                 .claim(JWT_CALLNAME_CLAIM, this.callName)
                 .claim(JWT_ACCOUNTID_CLAIM, this.accountId)
                 .claim(JWT_ROLE_CLAIM, this.role)
-                .claim(JWT_IPADDRESS_CLAIM, this.ipAddress != null ? this.ipAddress : "1.1.1.1")
                 .setIssuer(issuer)
                 .setIssuedAt(this.issued_at)
                 .setExpiration(this.expired_at)
@@ -71,16 +68,11 @@ public class JWToken {
                 Long.valueOf(claims.get(JWT_ACCOUNTID_CLAIM).toString()),
                 claims.get(JWT_ROLE_CLAIM).toString()
         );
-        jwToken.setIpAddress((String) claims.get(JWT_IPADDRESS_CLAIM));
         jwToken.setIssued_at(claims.getIssuedAt());
         jwToken.setExpired_at(claims.getExpiration());
         return jwToken;
     }
 
-    public JWToken(String callName, Long accountId, String role, String sourceIpAddress) {
-        this(callName, accountId, role);
-        this.setIpAddress(sourceIpAddress);
-    }
 
     public long validateImpersonation(long targetAccountId) {
         // checks whether the current account is authorised to access or impersonate the targetAccountId
@@ -120,23 +112,6 @@ public class JWToken {
         this.role = role;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public static String getIpAddress(HttpServletRequest request) {
-        // obtain the source IP-address of the current request
-        String ipAddress = null;
-        ipAddress = request.getHeader(Config.IP_FORWARDED_FOR);
-        if (ipAddress == null) {
-            ipAddress = request.getRemoteAddr();
-        }
-        return ipAddress;
-    }
 
     public Date getIssued_at() {
         return issued_at;
