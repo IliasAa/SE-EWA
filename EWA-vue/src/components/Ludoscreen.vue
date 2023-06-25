@@ -309,7 +309,7 @@ export default {
       await this.reInitialize();
 
       if (this.lobby[0].lobby_status === 2){
-        this.endgameText = "Het spel is afgelopen. " + this.colorTurnText;
+        this.endgameText = "het spel is beëindigd"
       }
     }
   },
