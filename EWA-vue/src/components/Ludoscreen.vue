@@ -104,8 +104,10 @@
             </div>
           </div>
         </div>
-
-        <div class="home"><h2 class="dice-output">{{ output }}</h2></div>
+        <h2 class="make-your-move-text">{{ movePawnText }}</h2>
+        <h2 class="color-turn-text">{{colorTurnText}}</h2>
+        <div class="home">
+        <h2 class="dice-output">{{ output }}</h2></div>
         <div id="51" class="cells" style="top: 40%;"></div>
         <div id="0" class="cells g-start" style="top: 40%;left:6.66%;"></div>
         <div id="1" class="cells" style="top: 40%;left:13.32%;"></div>
@@ -174,7 +176,8 @@
         <div id="62" class="cells blue" style="top: 46.66%;right:13.32%;"></div>
         <div id="61" class="cells blue" style="top: 46.66%;right:6.66%;"></div>
 
-        <div id="56" class="cells green" style="top: 46.66%;left: 33.3%"></div>
+        <div id="56" class="cells green" style="top: 46.66%;left: 33.3%">
+        </div>
         <div id="55" class="cells green" style="top: 46.66%;left:26.64%;"></div>
         <div id="54" class="cells green" style="top: 46.66%;left:19.98%;"></div>
         <div id="53" class="cells green" style="top: 46.66%;left:13.32%;"></div>
@@ -192,7 +195,7 @@
         <div id="84" class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
         <div id="85" class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
       </div>
-      <h2 class="make-your-move-text">{{ movePawnText }}</h2>
+
 
       <button class="btn btn-primary" id="buttonForDice" :disabled="!hasChanged"
               @click="ThrowDice">Gooi je dobbelsteen
@@ -247,6 +250,7 @@ export default {
       pawns: [],
       output: null,
       movePawnText: null,
+      colorTurnText: null,
       pawnSteps: 0,
       selectedcolor: null,
       playablePawns: [],
@@ -626,6 +630,7 @@ export default {
         }
         if (allowMove) {
           this.selectPawn()
+          this.movePawnText = "choose a pawn to move"
         }
       }
 
@@ -637,7 +642,6 @@ export default {
       //possible to make it more efficient if I could toggle or add a listener for the
       // button press, but it will take too long to figure out
       this.allowedToMove = false;
-      this.movePawnText = "Selecteer welke pion je wilt bewegen";
     },
 
 
@@ -818,11 +822,6 @@ export default {
             if (indexForColor < colors.indexOf(colorWithMin)){
               colorWithMin = color;
             }
-            // minForWhenEqual = Math.min(minForWhenEqual, indexForColor)
-            //
-            // if (minForWhenEqual === indexForColor) {
-            //   colorWithMin = color;
-            // }
           }
 
           if (this.turns[i].threwAsLast){
@@ -831,6 +830,7 @@ export default {
         }
         // Give priority to the color that has the lowest throwCount or is before others in sequence.
         document.getElementById("buttonForDice").disabled = colorWithMin !== this.selectedcolor;
+        this.colorTurnText = "Player with " + colorWithMin + " can now throw"
       }
       // Case for when the turn is not instantiated for all players.
       else {
@@ -839,6 +839,7 @@ export default {
         for (let i = 0; i < this.colorsActive.length; i++) {
           if (this.colorsActive[i] === 1 && throwsLength === 0) {
             document.getElementById("buttonForDice").disabled = colors[i] !== this.selectedcolor;
+            this.colorTurnText = "Player with " + colors[i] + " can now throw"
             break;
           }
           // for the colors where the first ones are already instantiated.
@@ -848,29 +849,9 @@ export default {
 
         }
       }
+    },
 
 
-      //filter out all the colors not used and undefined values (which means either no record has been found in the DB)
-      //and saves it in a throw with color so the throws are combined with the color
-
-      // console.log(throwsPerColor)
-      //
-      // //Gets the lowest amount of rolls from green,yellow,red,blue (in this order) and gives it the dicePrio
-      // let lowestRoll = this.throwWithColor[0].Throws;
-      // let dicePrio = this.throwWithColor[0].color;
-      // for (let i = 0; i < this.throwWithColor.length; i++) {
-      //   if (this.throwWithColor[i].Throws < lowestRoll) {
-      //     lowestRoll = this.throwWithColor[i].Throws;
-      //     dicePrio = this.throwWithColor[i].color;
-      //   }
-      // }
-      //
-      // console.log(this.throwWithColor)
-      // this.activeThrow = dicePrio;
-      // if (this.activeThrow !== this.selectedcolor) {
-      //   document.getElementById("buttonForDice").disabled = true;
-      // }
-    }
   },
 
 }
@@ -880,9 +861,32 @@ export default {
 <style scoped>
 
 /* Variables */
+.color-turn-text {
+  position: absolute;
+  top: 1.9%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: rgba(0, 0, 255, 0.5); /* Blue color with 50% transparency */
+  font-size: 20px;
+  width: 500px;
+  text-align: center;
+  color: white;
+  pointer-events: none; /* Allows mouse events to pass through the element */
+}
 
 .make-your-move-text {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5); /* Yellow color with 50% transparency */
+  font-size: 20px;
+  width: 500px;
+  text-align: center;
   color: white;
+  pointer-events: none; /* Allows mouse events to pass through the element */
 }
 
 .green-pawn {
