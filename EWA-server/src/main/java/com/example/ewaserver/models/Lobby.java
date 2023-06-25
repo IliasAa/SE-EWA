@@ -17,7 +17,8 @@ import java.util.Set;
                 query = "select l from Lobby l where l.join_code = ?1 "),
         @NamedQuery(name = "total_max_players",
                 query = "select l.max_allowed_Players from Lobby l where  l.join_code = ?1"),
-
+        @NamedQuery(name = "Find_all_lobby's_connected_with_player",
+                query = "SELECT l FROM Lobby l JOIN l.users u WHERE u.user.userId = ?1 AND l.lobby_status IN (0, 1)")
 })
 
 @Entity

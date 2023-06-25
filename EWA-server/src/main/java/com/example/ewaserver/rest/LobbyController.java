@@ -45,6 +45,11 @@ public class LobbyController {
         return lobbyRepository.findByQuery("find_lobby_owner_name", id);
     }
 
+    @GetMapping(path = "/lobby's/{id}", produces = "application/json")
+    public List<Lobby> getLobbyForPlayer(@PathVariable int id) {
+        return lobbyRepository.findByQuery("Find_all_lobby's_connected_with_player", id);
+    }
+
     @GetMapping(path = "/{join_code}", produces = "application/json")
     public List<Lobby> getLobbyByCode(@PathVariable String join_code) {
         return lobbyRepository.findByQuery("Lobby_find_by_code", join_code);
