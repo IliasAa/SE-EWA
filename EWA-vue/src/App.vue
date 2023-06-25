@@ -14,7 +14,7 @@ import {LobbyAdaptor} from "@/adaptors/LobbyAdaptor";
 import {NotificationAdaptor} from "@/adaptors/NotificationAdapter";
 import {LudoAdaptor} from "@/adaptors/LudoAdaptor";
 import {diceAdaptor} from "@/adaptors/diceAdaptor";
-import CONFIG from '@/app-config.js'
+import CONFIG from './app-config'
 import {ChatFriendAdaptor} from "@/adaptors/Chat&FriendAdaptor";
 
 export default {
