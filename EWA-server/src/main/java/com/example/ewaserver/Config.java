@@ -68,7 +68,7 @@ public class Config implements WebMvcConfigurer , WebSocketConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").
-                allowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*", "*", getHostIPAddressPattern(), allowedCorsClients)
+                allowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*", "*.railway.app", "*", getHostIPAddressPattern(), allowedCorsClients)
                 .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .exposedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, IP_FORWARDED_FOR, REFRESH_TOKEN)
                 .allowCredentials(true);
@@ -77,11 +77,11 @@ public class Config implements WebMvcConfigurer , WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(this.announcementDistributor, "/announcements")
-                .setAllowedOriginPatterns("http://localhost:*",  "http://*.hva.nl:*", "*" ,getHostIPAddressPattern(), allowedCorsClients)
+                .setAllowedOriginPatterns("http://localhost:*",  "http://*.hva.nl:*", "*.railway.app","*" ,getHostIPAddressPattern(), allowedCorsClients)
         //.withSockJS()
         ;
         registry.addHandler(this.notificationDistributor, "/notifications")
-                .setAllowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*", "*", getHostIPAddressPattern(), allowedCorsClients)
+                .setAllowedOriginPatterns("http://localhost:*", "http://*.hva.nl:*", "*.railway.app", "*", getHostIPAddressPattern(), allowedCorsClients)
         //.withSockJS()
         ;
 
