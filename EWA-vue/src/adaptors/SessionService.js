@@ -4,6 +4,8 @@ export class SessionService {
     _currentToken;              // the current authentication token of this session// to be injected in the authorization header of every outgoing request
     _currentAccount;            // the account instant of the currently logged on user
 
+    url = process.env.VUE_APP_API_URL;
+
 
     constructor(resourcesUrl, browserStorageItemName) {
         console.log("Created SessionService...");
@@ -37,6 +39,7 @@ export class SessionService {
         if (this._currentToken != null) return this._currentToken
         this._currentToken = window.sessionStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME);
         let jsonAccount = window.sessionStorage.getItem(this.BROWSER_STORAGE_ITEM_NAME + "_ACC");
+        console.log(process.env.VUE_APP_API_URL)
 
         if (this._currentToken == null) {
             // TODO try to find the token+account in local storage and replicate to this session if found
@@ -131,8 +134,6 @@ export class SessionService {
         return null;
     }
 
-
-
     async refresh() {
         let response = await fetch(this.RESOURCES_URL + "/refresh",
             {
@@ -150,7 +151,68 @@ export class SessionService {
         return response;
     }
 
+    async asyncFindAll(){
+        let response =  await fetch (this.url + "/chat/getAll", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return await response.json();
+        }
+    }
 
+    async asyncFindChatWithFriend(friendId){
+        let response =  await fetch (this.url + "/chat/" + this.currentAccount.userId +"&"+friendId, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return await response.json();
+        }
+    }
+    async sendMessage(message, friendId){
+        await fetch(this.url + "/chat/friend/" + friendId, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({
+                "id": this.currentAccount.userId,
+                "message": message,
+            })
+        })
+    }
+
+    async searchUser(keyword){
+        let response = await fetch(this.url + "/chat/searchUser/" + keyword, {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET',
+        })
+        if (response.ok){
+            return response.json();
+        }
+    }
+
+    async getAllFriends(){
+        let response = await fetch(this.url + "/chat/friends/getAll/" +
+            this.currentAccount.userId,
+            {
+                headers: {'Content-Type': 'application/json'},
+                method: 'GET',
+            })
+        if (response.ok){
+            return await response.json();
+        }
+    }
+
+    async addFriend(friendId){
+        await fetch(this.url + "/chat/addFriend", {
+            headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            body: JSON.stringify({
+                "userId": this.currentAccount.userId,
+                "friendId": friendId,
+            })
+        })
+    }
 
 
     async signOut() {
