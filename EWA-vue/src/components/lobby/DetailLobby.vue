@@ -94,7 +94,7 @@ export default {
 
       this.users = [];
       for (let i = 0; i < this.userids.length; i++) {
-        //saves users in users variable and searches connected color in the many to many table
+        //saves users in users variable and searches connected color in the many-to-many table
         this.users.push(await this.userService.asyncFindId(this.userids[i]));
         const returnStatement =
             await this.lobbyService.asyncFindColorConnectedToUser(this.lobby[0].idLobby,this.users[i].userId);
@@ -105,7 +105,6 @@ export default {
       //changes status to 1 which is the status for active game.
       if (this.isOwner){
         this.lobby[0].lobby_status = 1;
-        console.log(this.lobby[0]);
         await this.lobbyService.asyncUpdate(this.lobby[0]);
         this.notificationService.notify(this.lobbyCode);
       }

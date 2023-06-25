@@ -111,6 +111,18 @@ public class UserController {
         return ResponseEntity.ok().body(saveUser);
     }
 
+    @PutMapping("/points")
+    public ResponseEntity<User> updateUserPoints(@RequestBody User user) {
+        User saveUser = userRepository.findById(user.getUserId());
+        if (user == null) {
+            throw new PreConditionFailed("Need a user");
+        }
+
+        saveUser.setPoints(user.getPoints());
+        userRepository.Save(saveUser);
+        return ResponseEntity.ok().body(saveUser);
+    }
+
 //    @DeleteMapping(path = "/{id}")
 //    public User deleteUser(@PathVariable() int id,
 //                           @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {

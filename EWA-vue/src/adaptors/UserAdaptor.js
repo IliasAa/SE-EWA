@@ -91,6 +91,15 @@ export class UserAdaptor {
         );
     }
 
+    async updatePoints(user) {
+        await this.fetchJSon(this.RESOURCE_URL + "/points", {
+                headers: {'Content-Type': 'application/json'},
+                method: 'PUT',
+                body: JSON.stringify(user)
+            },
+        );
+    }
+
     async asyncAdminUpdate(user) {
         await this.fetchJSon(this.RESOURCE_URL + "/" + user.userId, {
                 headers: {'Content-Type': 'application/json'},

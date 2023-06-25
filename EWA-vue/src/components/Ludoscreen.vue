@@ -105,9 +105,9 @@
           </div>
         </div>
         <h2 class="make-your-move-text">{{ movePawnText }}</h2>
-        <h2 class="color-turn-text">{{colorTurnText}}</h2>
+        <h2 class="color-turn-text">{{ colorTurnText }}</h2>
         <div class="home">
-        <h2 class="dice-output">{{ output }}</h2></div>
+          <h2 class="dice-output">{{ output }}</h2></div>
         <div id="51" class="cells" style="top: 40%;"></div>
         <div id="0" class="cells g-start" style="top: 40%;left:6.66%;"></div>
         <div id="1" class="cells" style="top: 40%;left:13.32%;"></div>
@@ -195,8 +195,7 @@
         <div id="84" class="cells yellow" style="top: 26.64%;left:46.66%;"></div>
         <div id="85" class="cells yellow" style="top: 33.3%;left:46.66%;"></div>
       </div>
-
-
+      <h4>{{endgameText}}</h4>
       <button class="btn btn-primary" id="buttonForDice" :disabled="!hasChanged"
               @click="ThrowDice">Gooi je dobbelsteen
       </button>
@@ -255,6 +254,7 @@ export default {
       selectedcolor: null,
       playablePawns: [],
       allowedToMove: true,
+      endgameText: null,
 
       //information for multiplayer
       userids: [],
@@ -264,6 +264,7 @@ export default {
       users: [],
       selectedColorsMP: [],
       colorsActive: [],
+      winColor: null,
 
       //PlayerCardinfo
       greenName: null,
@@ -300,15 +301,17 @@ export default {
 
     //creates all pawns and also the playable pawns
     this.createPawns();
-
     //Multiplayer usernames on cards and removes unused pawns from board.
     if (!this.isSingleplayer) {
       this.assignPlayerCardMP();
       this.removeUnusedPawnsFrontend();
       this.notificationService.subscribe("turns" + this.lobbyCode, this.reInitialize)
       await this.reInitialize();
-    }
 
+      if (this.lobby[0].lobby_status === 2){
+        this.endgameText = "Het spel is afgelopen. " + this.colorTurnText;
+      }
+    }
   },
 
   computed: {
@@ -411,7 +414,7 @@ export default {
       for (let i = 0; i < 4; i++) {
         //onfield is used to see the status of the pawn. 1 being in the starting zone, 2 in the playing field and 3
         //in the finished area and in its corrosponding ending.
-        if (this.playablePawns[i].onField === 1) {
+        if (this.playablePawns[i].position === this.playablePawns[i].homePosition) {
           pawnId = this.playablePawns[i].id;
           arrayPos = i;
           break;
@@ -496,12 +499,10 @@ export default {
 
           //changes status to finished if it got moved to the right finish box
           this.playablePawns[arrayPos].onField = 3;
-
-          if (finishPosIndexAvailable === 3) {
-            toast.success("Achievement unlocked:\nFirst Win!")
-            this.winConfirmation();
-          }
         }
+        //Used to check if this is the final playable move by the current user and will add winning points to the
+        // account
+        await this.checkIfFinalMove();
 
         //makes it so the buttons are not activated anymore and the text will disappear.
         this.allowedToMove = true;
@@ -575,13 +576,6 @@ export default {
       }
     },
 
-    //Shows that you won the game.
-    winConfirmation() {
-      this.allowedToMove = false
-      this.output = "win"
-    },
-
-
     //Method to throw the dice
     async ThrowDice() {
       let result = Math.floor((Math.random() * 6) + 1);
@@ -633,10 +627,74 @@ export default {
           this.movePawnText = "choose a pawn to move"
         }
       }
-
-
     },
 
+    async checkIfFinalMove() {
+      //this will add points to the user. It's added here so that it only will add the points to the
+      // client that made the final move so that on refresh it will not constantly add points to the users.
+      //if it is the final move made it will also update the lobby status to 2 which means finished.
+      let count = 0;
+      for (let i = 0; i < this.playablePawns.length; i++) {
+        if (this.playablePawns[i].onField === 3) {
+          count += 1;
+        }
+      }
+      if (count === 4) {
+        if (!this.isSingleplayer) {
+          this.lobby[0].lobby_status = 2;
+          await this.lobbyService.asyncUpdate(this.lobby[0]);
+          //more points if it is a multiplayer game.
+          this.currentuser.points += 100;
+        } else {
+          //less points when it is a singleplayer game.
+          this.currentuser.points += 15;
+        }
+        await this.userService.updatePoints(this.currentuser);
+
+      }
+    },
+
+
+    checkWin() {
+      let greenCount = 0;
+      let yellowCount = 0;
+      let redCount = 0;
+      let blueCount = 0;
+
+      for (let i = 0; i < 4; i++) {
+        if (this.pawns[i].onField === 3) {
+          greenCount += 1;
+        }
+      }
+      for (let i = 4; i < 8; i++) {
+        if (this.pawns[i].onField === 3) {
+          yellowCount += 1;
+        }
+      }
+      for (let i = 8; i < 12; i++) {
+        if (this.pawns[i].onField === 3) {
+          redCount += 1;
+        }
+      }
+      for (let i = 12; i < 16; i++) {
+        if (this.pawns[i].onField === 3) {
+          blueCount += 1;
+        }
+      }
+
+      if (greenCount === 4) {
+        this.winColor = "green"
+      }
+      if (yellowCount === 4) {
+        this.winColor = "yellow"
+      }
+      if (redCount === 4) {
+        this.winColor = "red"
+      }
+      if (blueCount === 4) {
+        this.winColor = "blue"
+      }
+    },
 
     selectPawn() {
       //possible to make it more efficient if I could toggle or add a listener for the
@@ -721,6 +779,8 @@ export default {
 
       this.processPlayerMoves();
 
+
+      this.checkWin();
 
     },
     processPlayerMoves() {
@@ -819,12 +879,12 @@ export default {
             // Find the index of the color in the array because the board holds on to that sequence.
             let indexForColor = colors.indexOf(color);
             // If this color is before the other color to appear in the sequence.
-            if (indexForColor < colors.indexOf(colorWithMin)){
+            if (indexForColor < colors.indexOf(colorWithMin)) {
               colorWithMin = color;
             }
           }
 
-          if (this.turns[i].threwAsLast){
+          if (this.turns[i].threwAsLast) {
             this.output = this.turns[i].lastThrow;
           }
         }
@@ -850,9 +910,43 @@ export default {
         }
       }
     },
-
-
   },
+  watch: {
+    winColor(color) {
+      document.getElementById("buttonForDice").disabled = true;
+      switch (color) {
+        case "green":
+          if (!this.isSingleplayer) {
+            this.colorTurnText = this.greenName + " heeft gewonnen!"
+          } else {
+            this.colorTurnText = "Groen heeft gewonnen!"
+          }
+          break;
+        case "yellow":
+          if (!this.isSingleplayer) {
+            this.colorTurnText = this.yellowName + " heeft gewonnen!"
+          } else {
+            this.colorTurnText = "Geel heeft gewonnen!"
+          }
+          break;
+        case "red":
+          if (!this.isSingleplayer) {
+            this.colorTurnText = this.redName + " heeft gewonnen!"
+          } else {
+            this.colorTurnText = "Rood heeft gewonnen!"
+          }
+          break;
+        case  "blue":
+          if (!this.isSingleplayer) {
+            this.colorTurnText = this.blueName + " heeft gewonnen!"
+          } else {
+            this.colorTurnText = "Blauw heeft gewonnen!"
+          }
+          break;
+      }
+    }
+
+  }
 
 }
 </script>
