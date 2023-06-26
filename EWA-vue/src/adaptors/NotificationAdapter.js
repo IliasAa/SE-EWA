@@ -10,7 +10,7 @@ export class NotificationAdaptor {
         this.handlersByTopic = new Map();
 
         // use the new websocket protocol or the SockJS library to multiplex across http
-        this.socketUrl = socketUrl.replace("https://","ws://");
+        this.socketUrl = socketUrl.replace("https://","wss://");
         this.socket = new WebSocket(this.socketUrl);
         // this.socketUrl = socketUrl.replace("ws://","http://");
         // this.socket = new WebSocket(this.socketUrl);

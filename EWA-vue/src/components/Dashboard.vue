@@ -14,6 +14,9 @@
           <router-link to="/joingame">
             <button class="btn btn-primary btn-lg">Join a game</button>
           </router-link>
+          <router-link to="/activeGames">
+            <button class="btn btn-primary btn-lg">Active games</button>
+          </router-link>
 
         </div>
         <hr>

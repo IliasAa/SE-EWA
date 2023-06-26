@@ -15,6 +15,7 @@ import AdminUserList from "@/components/adminpage/AdminUsersList.vue";
 import JoinGame from "@/components/lobby/JoinGame.vue";
 import HostGame from "@/components/lobby/HostGame.vue";
 import friendsPage from "@/components/friendsPage.vue";
+import activeGame from "@/components/lobby/activeGame.vue";
 
 const routes = [
     {path: '/homePage', component: homePage},
@@ -28,6 +29,7 @@ const routes = [
     {path: '/Registerpage', component: RegisterScreen},
     {path: '/settings', component: settingsPage},
     {path: '/joingame', component: JoinGame},
+    {path:'/activeGames', component: activeGame},
     {path: '/hostgame', component: HostGame},
     {path: '/LeaderboardPage', component: LeaderboardPage},
     {path: '/adminPage', component: AdminDashboard},
@@ -35,7 +37,8 @@ const routes = [
     {path:'/lobby/:joincode', component: detailLobby},
     {path:'/chatBox',component: chatBox},
     {path:'/friends', component: friendsPage,
-        children: [{path: ':id', component: chatBox}]}
+        children: [{path: ':id', component: chatBox}]},
+
 
 
 ];

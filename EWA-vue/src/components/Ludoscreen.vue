@@ -395,6 +395,7 @@ export default {
 
       //get info from other players
       this.userids = await this.lobbyService.asyncFindAllConnectedToLobby(this.lobby[0].idLobby);
+
       for (let i = 0; i < this.userids.length; i++) {
         //prevents saving the current user in the user variable
         if (this.currentuser.userId !== this.userids[i]) {
@@ -778,7 +779,6 @@ export default {
       this.playerMoves = await this.ludoService.asyncFindAllWithLobbyid(this.lobby[0].idLobby);
 
       this.processPlayerMoves();
-
 
       this.checkWin();
 
