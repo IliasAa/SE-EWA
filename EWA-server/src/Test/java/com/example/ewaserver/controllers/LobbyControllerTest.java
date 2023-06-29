@@ -27,45 +27,40 @@ import java.util.Date;
 import java.util.List;
 
 import static javax.swing.UIManager.put;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WebMvcTest(controllers = LobbyController.class)
 public class LobbyControllerTest {
 
     @Autowired
     private MockMvc mvc;
-    @Autowired
-    private LobbyController lobbyController;
-
     @MockBean
     private LobbyRepository lobbyRepository;
     @MockBean
     private UserHasLobbyRepository userLobbyRepository;
-
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private NotificationDistributor notificationDistributor;
+    @Test
+    public void testGetAllLobbys() throws Exception {
+        List<Lobby> lobbys = new ArrayList<>();
+        // Voeg gewenste Lobby-objecten toe aan de lobbys-lijst
 
-    private ObjectMapper objectMapper;
+        when(lobbyRepository.findAll()).thenReturn(lobbys);
 
-    private Lobby lobby1;
+        mvc.perform(get("/Lobby"))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect((ResultMatcher) jsonPath("$").isArray());
 
-    private Lobby lobby2;
-
-    private List<Lobby> lobbys;
-
-    public void setup() {
-        mvc = MockMvcBuilders.standaloneSetup(lobbyController).build();
+        verify(lobbyRepository).findAll();
     }
 
     @Test
@@ -106,6 +101,8 @@ public class LobbyControllerTest {
         verify(userLobbyRepository).Save(any(UserHasLobby.class));
     }
 
+
+
     @Test
     public void testCreateNewLobby() throws Exception {
         Lobby lobby = new Lobby("niu322",1,2,1,1,2); // Maak een dummy Lobby-object
@@ -137,24 +134,49 @@ public class LobbyControllerTest {
         verify(lobbyRepository).findById(lobbyId);
         verify(lobbyRepository).Save(any(Lobby.class));
     }
-//
-//    @BeforeEach()
-//    public void setup() {
-//        objectMapper = new ObjectMapper();
-//
-//        lobby1 = new Lobby("abc123",0,3,4,1,3);
-//        lobby2 = new Lobby("def456",1,2,2,0,2);;
-//
-//        lobbys = new ArrayList<>(List.of(lobby1, lobby2));
-//    }
-//
-//    @Test
-//    public void getLobbysByJoincode() throws Exception {
-//        mvc.perform(get("/Lobby/abc123"))
-//                .andExpect(status().isOk());
-//
-//        verify(lobbyRepository).findByQuery("Find_all_lobby's_connected_with_player", "abc123");
-//    }
-//
 
+    @Test
+    public void testDeleteLobby() throws Exception {
+        int lobbyId = 1;
+        Lobby lobby = new Lobby("njh344", 0, 2, 1, 2, 1); // Maak een dummy Lobby-object
+
+        when(lobbyRepository.deleteById(lobbyId)).thenReturn(lobby);
+
+        mvc.perform(delete("/Lobby/{id}", lobbyId))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON));
+
+        verify(lobbyRepository).deleteById(lobbyId);
+    }
+
+    @Test
+    public void testGetUserById() throws Exception {
+        int userId = 1;
+        User user = new User(userId, "john", "john","Doe","johnDoe@hva.nl","test123",12,"player"); // Maak een dummy User-object
+
+        when(userRepository.findById(userId)).thenReturn(user);
+
+        mvc.perform(get("/Lobby/get/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect((ResultMatcher) jsonPath("$.id").value(userId));
+
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    public void testCheckPlayerCount() throws Exception {
+        int lobbyId = 1;
+        Lobby lobby = new Lobby("njh344", 0, 2, 1, 2, 1); // Maak een dummy Lobby-object
+
+        when(lobbyRepository.findById(lobbyId)).thenReturn(lobby);
+
+        mvc.perform(get("/Lobby/checkPlayers/{id}", lobbyId))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().string("2")); // Verwacht aantal spelers in de lobby
+
+        verify(lobbyRepository).findById(lobbyId);
+    }
+
+    
 }
