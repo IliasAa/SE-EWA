@@ -68,23 +68,6 @@ public class LobbyControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(lobbyController).build();
     }
 
-//    @Test
-//    public void testGetAllLobbys() throws Exception {
-//        List<Lobby> lobbies = new ArrayList<>();
-//        // Voeg gewenste Lobby-objecten toe aan de lobbies-lijst
-////        lobbies = lobbyRepository.findAll();
-//        while (lobbyRepository.findAll()) {
-//            return;
-//        }
-//
-//        mvc.perform(get("/Lobby"))
-//                .andExpect(status().isOk());
-////                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-////                .andExpect(jsonPath("$").isArray());
-//
-//        verify(lobbyRepository).findAll();
-//    }
-
     @Test
     public void testGetLobbyByCode() throws Exception {
         String joinCode = "abc123";
@@ -173,36 +156,5 @@ public class LobbyControllerTest {
 //        verify(lobbyRepository).findByQuery("Find_all_lobby's_connected_with_player", "abc123");
 //    }
 //
-//    @Test
-//    public void getAvailableColors() throws Exception {
-//        mvc.perform(get("Lobby/color/1"))
-//                .andExpect(status().isOk());
-//
-//        verify(lobbyRepository).findById(1);
-//    }
-//
-//    @Test
-//    public void getMaxPlayercountCompare() throws Exception {
-//        mvc.perform(get("/count/{LobbyCode}"))
-//                .andExpect(status().isOk());
-//
-//        verify(lobbyRepository).findAll();
-//    }
-//
-////@Test
-////    public void getAllLobbys() throws Exception {
-////        mvc.perform(get("/Lobby"))
-////                .andExpect(status().isOk());
-////
-////        verify(lobbyRepository).findAll();
-////    }
-//
-//@Test
-//    public void CreateNewLobby() throws Exception {
-//        mvc.perform(post("/Lobby"))
-//                .andExpect(status().isOk());
-//
-//        verify(lobbyRepository).Save(lobby1);
-//    }
 
 }
