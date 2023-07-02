@@ -14,8 +14,8 @@ export class FakeUser{
         this.userId = userId;
     }
 
-    static createSampleUser(){
-        return new FakeUser(this.createId(), this.randomUser(), this.randomMail(), this.createCoints(), this.winsCount())
+    static createSampleUser(userId){
+        return new FakeUser(userId, this.randomUser(), this.randomMail(), this.createCoints(), this.winsCount())
     }
 
     static randomUser() {
