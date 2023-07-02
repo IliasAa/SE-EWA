@@ -17,10 +17,10 @@ beforeEach( function () {
 
 describe('Lobby', function () {
     it('creates a proper userLobbby', function () {
-        expect(userLobby1.selected_color).toBe("red");
-        expect(userLobby1.user_user_id).toBe(3);
-        expect(userLobby1.lobby_id_lobby).toBe(1);
-        expect(userLobby1.userId_owner).toBe(7);
+        expect(userLobby1.selected_color, "color was not set properly").toBe("red");
+        expect(userLobby1.user_user_id, "user id was not set properly").toBe(3);
+        expect(userLobby1.lobby_id_lobby, "lobby id was not set properly").toBe(1);
+        expect(userLobby1.userId_owner, "owner id was not set properly").toBe(7);
     });
 });
 
