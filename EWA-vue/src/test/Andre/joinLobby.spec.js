@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import JoinGame from "@/components/lobby/JoinGame.vue";
+import JoinGame from "../../components/lobby/JoinGame.vue";
 
 
 
