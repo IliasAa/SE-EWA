@@ -1,5 +1,5 @@
 <template>
-  <NavBar></NavBar>
+<!--  <NavBar></NavBar>-->
   <div class="screen">
 
     <div class="card">

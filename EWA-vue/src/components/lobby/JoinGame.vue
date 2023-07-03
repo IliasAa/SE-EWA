@@ -1,5 +1,5 @@
 <template>
-  <NavBar></NavBar>
+<!--  <NavBar></NavBar>-->
   <div class="wrapper">
     <main class="page-main">
       <div class="container flex-column">
@@ -92,16 +92,16 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
-import {isDisabled} from "bootstrap/js/src/util";
-import {el} from "vuetify/locale";
+// import NavBar from "@/components/NavBar.vue";
+// import {isDisabled} from "bootstrap/js/src/util";
+// import {el} from "vuetify/locale";
 // import DetailJoinGame from "@/components/lobby/DetailJoinGame.vue";
 
 
 export default {
 
   name: "ActiveGamesScreen",
-  components: {NavBar},
+  // components: {NavBar},
   inject: ['lobbyService', 'userService'],
 
   data() {
@@ -165,7 +165,7 @@ export default {
 
   methods: {
 
-    isDisabled,
+    // isDisabled,
     colorChoosing(color) {
       this.selectedColor = color;
     },

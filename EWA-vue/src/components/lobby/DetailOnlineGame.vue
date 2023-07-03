@@ -33,7 +33,7 @@
 
 
 import {Lobby} from "@/models/Lobby";
-import {isDisabled} from "bootstrap/js/src/util";
+// import {isDisabled} from "bootstrap/js/src/util";
 
 export default {
   name: "DetailOnlineGame",
@@ -48,7 +48,7 @@ export default {
     }
   },
   methods: {
-    isDisabled,
+    // isDisabled,
     maxPlayer() {
       if (this.players < 1) {
         return this.players = 2;

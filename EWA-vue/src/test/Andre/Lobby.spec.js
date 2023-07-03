@@ -16,11 +16,11 @@ beforeEach( function () {
 
 describe('Lobby', function () {
     it('creates a proper Lobby user', function () {
-        expect(lobby1.join_code).toBe(joinCode);
-        expect(lobby1.isPrivateLobby).toBe(0);
-        expect(lobby1.players_size).toBe(7);
-        expect(lobby1.max_allowed_Players).toBe(7);
-        expect(lobby1.userid_owner).toBe(2);
+        expect(lobby1.join_code, "join code was not set properly").toBe(joinCode);
+        expect(lobby1.isPrivateLobby, "private lobby was not set properly").toBe(0);
+        expect(lobby1.players_size, "player size was not set properly").toBe(7);
+        expect(lobby1.max_allowed_Players, "max players was not set properly").toBe(7);
+        expect(lobby1.userid_owner, "owner id was not set properly").toBe(2);
     });
 
 
