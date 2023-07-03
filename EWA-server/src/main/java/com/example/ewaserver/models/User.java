@@ -93,7 +93,7 @@ public class User {
         this.role = role;
     }
 
-    protected User() {
+    public User() {
     }
 
     public boolean verifyPassword(String GivenPassword) {

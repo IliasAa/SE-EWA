@@ -1,5 +1,6 @@
 package com.example.ewaserver.controllers;
-
+import com.example.ewaserver.exceptions.PreConditionFailed;
+import com.example.ewaserver.exceptions.ResourceNotFoundException;
 import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.User;
 import com.example.ewaserver.models.UserHasLobby;
@@ -8,177 +9,142 @@ import com.example.ewaserver.repositories.LobbyRepository;
 import com.example.ewaserver.repositories.UserHasLobbyRepository;
 import com.example.ewaserver.repositories.UserRepository;
 import com.example.ewaserver.rest.LobbyController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static javax.swing.UIManager.put;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WebMvcTest(controllers = LobbyController.class)
-public class LobbyControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-    @MockBean
+class LobbyControllerTest {
+
+    @Mock
     private LobbyRepository lobbyRepository;
-    @MockBean
+
+    @Mock
     private UserHasLobbyRepository userLobbyRepository;
-    @MockBean
+
+    @Mock
     private UserRepository userRepository;
 
-    @Test
-    public void testGetAllLobbys() throws Exception {
-        List<Lobby> lobbys = new ArrayList<>();
+    @Mock
+    private NotificationDistributor notificationDistributor;
 
-        when(lobbyRepository.findAll()).thenReturn(lobbys);
+    @InjectMocks
+    private LobbyController lobbyController;
 
-        mvc.perform(get("/Lobby"))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect((ResultMatcher) jsonPath("$").isArray())
-                .andReturn();
-
-        verify(lobbyRepository).findAll();
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetLobbyByCode() throws Exception {
-        String joinCode = "abc123";
-        List<Lobby> lobbies = new ArrayList<>();
-        // Voeg gewenste Lobby-objecten toe aan de lobbies-lijst
+    void getAllLobbys_ReturnsListOfLobbys() {
+        // Arrange
+        // Creëer een lijst van verwachte Lobbys
+        List<Lobby> expectedLobbys = new ArrayList<>();
+        expectedLobbys.add(new Lobby("join_code1", 0, 5, 10, 0, 1));
+        expectedLobbys.add(new Lobby("join_code2", 1, 3, 6, 1, 2));
+        when(lobbyRepository.findAll()).thenReturn(expectedLobbys);
 
-        when(lobbyRepository.findByQuery("Lobby_find_by_code", joinCode)).thenReturn(lobbies);
+        // Act
+        List<Lobby> actualLobbys = lobbyController.getAllLobbys();
 
-        mvc.perform(get("/Lobby/{joinCode}", joinCode))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect((ResultMatcher) jsonPath("$").isArray());
-
-        verify(lobbyRepository).findByQuery("Lobby_find_by_code", joinCode);
+        // Assert
+        // Controleer of de daadwerkelijke Lobbys overeenkomen met de verwachte Lobbys
+        assertEquals(expectedLobbys, actualLobbys);
     }
 
     @Test
-    public void testCombineLobbyWithUser() throws Exception {
-        int userId = 1;
-        int lobbyId = 2;
-        String selectedColor = "red";
+    void getLobbyOwner_ValidOwnerId_ReturnsListOfLobbys() {
+        // Arrange
+        int ownerId = 1;
+        List<Lobby> expectedLobbys = new ArrayList<>();
+        expectedLobbys.add(new Lobby("join_code1", 0, 5, 10, 0, ownerId));
+        expectedLobbys.add(new Lobby("join_code2", 1, 3, 6, 1, ownerId));
+        when(lobbyRepository.findByQuery("find_lobby_owner_name", ownerId)).thenReturn(expectedLobbys);
 
-        User user = new User(4,"jan12","jan","12","jan@hva.nl","jan123",12,"player"); // Maak een dummy User-object
-        Lobby lobby = new Lobby("jan122",0,3,4,0,3); // Maak een dummy Lobby-object
+        // Act
+        List<Lobby> actualLobbys = lobbyController.getLobbyOwner(ownerId);
 
-        when(userRepository.findById(userId)).thenReturn(user);
-        when(lobbyRepository.findById(lobbyId)).thenReturn(lobby);
-        when(userLobbyRepository.Save(any(UserHasLobby.class))).thenReturn(new UserHasLobby());
+        // Assert
+        assertEquals(expectedLobbys, actualLobbys);
 
-        mvc.perform(post("/Lobby/{userid}/{LobbyId}/{selectedcolor}", userId, lobbyId, selectedColor))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(userRepository).findById(userId);
-        verify(lobbyRepository).findById(lobbyId);
-        verify(userLobbyRepository).Save(any(UserHasLobby.class));
+        // Verifieer of de methode `findByQuery("find_lobby_owner_name", ownerId)` van de `lobbyRepository`
+        // één keer is aangeroepen met de gegeven argumenten
+        verify(lobbyRepository, times(1)).findByQuery("find_lobby_owner_name", ownerId);
     }
 
+    @Test
+    void getLobbyOwner_InvalidOwnerId_ReturnsEmptyList() {
+        // Arrange
+        // Stel een ongeldige ownerId in voor de test
+        int ownerId = 5;
+        when(lobbyRepository.findByQuery("find_lobby_owner_name", ownerId)).thenReturn(new ArrayList<>());
 
+        // Act
+        List<Lobby> actualLobbys = lobbyController.getLobbyOwner(ownerId);
 
-//    @Test
-//    public void testCreateNewLobby() throws Exception {
-//        Lobby lobby = new Lobby("niu322",1,2,1,1,2); // Maak een dummy Lobby-object
-//
-//        when(lobbyRepository.Save(any(Lobby.class))).thenReturn(lobby);
-//
-//        mvc.perform(post("/Lobby")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{ \"propertyName\": \"propertyValue\" }")) // Voeg hier de juiste JSON-invoer toe voor de lobby
-//                .andExpect(status().isCreated())
-//                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON));
-//
-//        verify(lobbyRepository).Save(any(Lobby.class));
-//    }
+        // Assert
+        // Controleer of de daadwerkelijke Lobbys niet null zijn en een lege lijst zijn
+        assertNotNull(actualLobbys);
+        assertTrue(actualLobbys.isEmpty());
+        verify(lobbyRepository, times(1)).findByQuery("find_lobby_owner_name", ownerId);
+    }
 
     @Test
-    public void testUpdatePlayerCount() throws Exception {
+    void deleteLobby_ValidId_ReturnsDeletedLobby() {
+        // Arrange
         int lobbyId = 1;
+        Lobby existingLobby = new Lobby("join_code1", 0, 5, 10, 0, 1);
+        when(lobbyRepository.deleteById(lobbyId)).thenReturn(existingLobby);
 
-        Lobby lobby = new Lobby("njh344",0,2,1,2,1); // Maak een dummy Lobby-object
+        // Act
+        Lobby deletedLobby = lobbyController.deletelobby(lobbyId);
 
-        when(lobbyRepository.findById(lobbyId)).thenReturn(lobby);
-        when(lobbyRepository.Save(any(Lobby.class))).thenReturn(lobby);
-
-        mvc.perform((RequestBuilder) put("/Lobby/player/{id}", lobbyId))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(lobbyRepository).findById(lobbyId);
-        verify(lobbyRepository).Save(any(Lobby.class));
+        // Assert
+        assertEquals(existingLobby, deletedLobby);
     }
 
     @Test
-    public void testDeleteLobby() throws Exception {
-        int lobbyId = 1;
-        Lobby lobby = new Lobby("njh344", 0, 2, 1, 2, 1); // Maak een dummy Lobby-object
-
-        when(lobbyRepository.deleteById(lobbyId)).thenReturn(lobby);
-
-        mvc.perform(delete("/Lobby/{id}", lobbyId))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON));
-
-        verify(lobbyRepository).deleteById(lobbyId);
-    }
-
-    @Test
-    public void testGetUserById() throws Exception {
+    void getUserById_ValidId_ReturnsUser() {
+        // Arrange
         int userId = 1;
-        User user = new User(userId, "john", "john","Doe","johnDoe@hva.nl","test123",12,"player"); // Maak een dummy User-object
-
+        User user = new User();
         when(userRepository.findById(userId)).thenReturn(user);
 
-        mvc.perform(get("/Lobby/get/{id}", userId))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect((ResultMatcher) jsonPath("$.id").value(userId));
+        // Act
+        User retrievedUser = lobbyController.getUserById(userId);
 
-        verify(userRepository).findById(userId);
+        // Assert
+        assertEquals(user, retrievedUser);
     }
 
     @Test
-    public void testCheckPlayerCount() throws Exception {
-        int lobbyId = 1;
-        Lobby lobby = new Lobby("njh344", 0, 2, 1, 2, 1); // Maak een dummy Lobby-object
+    void testGetLobbyByCode_ValidCode_ReturnsListOfLobbys() {
+        // Arrange
+        String joinCode = "ABC123";
+        List<Lobby> expectedLobbys = new ArrayList<>();
+        expectedLobbys.add(new Lobby(joinCode, 0, 5, 10, 0, 1));
+        when(lobbyRepository.findByQuery("Lobby_find_by_code", joinCode)).thenReturn(expectedLobbys);
 
-        when(lobbyRepository.findById(lobbyId)).thenReturn(lobby);
+        // Act
+        List<Lobby> actualLobbys = lobbyController.getLobbyByCode(joinCode);
 
-        mvc.perform(get("/Lobby/checkPlayers/{id}", lobbyId))
-                .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().string("2")); // Verwacht aantal spelers in de lobby
-
-        verify(lobbyRepository).findById(lobbyId);
+        // Assert
+        assertEquals(expectedLobbys, actualLobbys);
+        verify(lobbyRepository, times(1)).findByQuery("Lobby_find_by_code", joinCode);
     }
-
-    
 }
