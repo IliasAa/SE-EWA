@@ -27,9 +27,4 @@ public class LeaderboardController {
     public List<User> getSummary() {
         return userRepository.findAll();
     }
-//
-//    @GetMapping(path = "/get/{userName}", produces = "application/json")
-//    public List<User> getColorToLobby(@PathVariable String userName) {
-//        return userRepository.findByQuery("find_user", userName);
-//    }
 }
