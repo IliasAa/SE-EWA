@@ -287,6 +287,7 @@ export default {
     this.currentuser = await this.SessionService.currentAccount;
 
     //saves the param in lobby code and changes game to singleplayer if the lobbycode is not found.
+
     this.lobbyCode = this.$route.params.joincode;
     if (this.lobbyCode === ":joincode") {
       this.isSingleplayer = true;

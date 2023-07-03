@@ -32,6 +32,13 @@ public class Playerposition {
     @ManyToOne
     private Lobby lobby;
 
+    public Playerposition(int tokenId, int tokenPos, int onField, Lobby lobby) {
+        this.tokenId = tokenId;
+        this.tokenPos = tokenPos;
+        this.onField = onField;
+        this.lobby = lobby;
+    }
+
     public Playerposition() {
 
     }
