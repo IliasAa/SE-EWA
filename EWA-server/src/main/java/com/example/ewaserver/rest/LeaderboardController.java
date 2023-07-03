@@ -27,5 +27,4 @@ public class LeaderboardController {
     public List<User> getSummary() {
         return userRepository.findAll();
     }
-
 }

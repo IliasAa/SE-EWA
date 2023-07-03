@@ -21,15 +21,16 @@ public class TurnRepository implements EntityRepository<Turn>{
 
     @Override
     public List<Turn> findAll() {
-        return null;
+        TypedQuery<Turn> query = this.em.createQuery("select t from Turn t", Turn.class);
+
+        return query.getResultList();
     }
 
     @Override
     public Turn findById(int id) {
-        return null;
+        return this.em.find(Turn.class, id);
     }
 
-    @Transactional
     @Override
     public Turn Save(Turn entity) {
         return this.em.merge(entity);
@@ -37,12 +38,14 @@ public class TurnRepository implements EntityRepository<Turn>{
 
     @Override
     public Turn update(Turn entity, int id) {
-        return null;
+        return this.em.merge(entity);
     }
 
     @Override
     public Turn deleteById(int id) {
-        return null;
+        Turn turn = this.findById(id);
+        em.remove(turn);
+        return turn;
     }
 
 
