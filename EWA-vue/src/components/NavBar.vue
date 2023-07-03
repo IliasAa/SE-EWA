@@ -8,7 +8,7 @@
               <ul>
                   <router-link to="/LeaderboardPage"><li><a href="#">Leaderboard</a></li></router-link>
                   <router-link to="/friends"><li><a href="#">Friends</a></li></router-link>
-                  <router-link to="/adminPage" v-if="isAdmin"><li><a href="#">Admin</a></li></router-link>
+<!--                  <router-link to="/adminPage" v-if="isAdmin"><li><a href="#">Admin</a></li></router-link>-->
 
               </ul>
               <img src="../assets/icon.png" class="user-pic" @click="toggleMenu()">
@@ -86,16 +86,17 @@ export default {
     checkPage(){
       if (this.isLoggedIn === false){
         return "Log in"
-      }else{
-        if (this.SessionService.currentAccount != null){
-          return this.SessionService.currentAccount.username.toString();
-        }
-        return ""
       }
+      // else{
+        // if (this.SessionService.currentAccount != null){
+        //   return this.SessionService.currentAccount.username.toString();
+        // }
+        // return ""
+      // }
     },
-    isAdmin(){
-        return this.SessionService.isAdmin();
-    }
+    // isAdmin(){
+    //     return this.SessionService.isAdmin();
+    // }
 
   }
 }

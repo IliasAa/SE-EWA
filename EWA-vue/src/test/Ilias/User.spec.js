@@ -14,7 +14,13 @@ beforeEach(function (){
 })
 describe ('Fake User', function (){
     it ('creates user sample correctly', function (){
-        expect(User1.userId).toBe(USER_ID)
+        expect(User2.userId).toBe(USER_ID + 1)
+        expect(User2.userName).toBeTruthy()
+    })
+
+    it('Copy the constructor correctly', function (){
+        let copy = FakeUser.copyConstructor(User1)
+        expect(User1).toStrictEqual(copy)
     })
 })
 

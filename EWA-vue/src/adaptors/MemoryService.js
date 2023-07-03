@@ -18,8 +18,16 @@ export class MemoryService
         }
     }
 
+    currentAccount(){
+        return this._entities[0];
+    }
+
+    searchUser(username){
+        const foundEntity = this._entities.find(e => e?.userName == username);
+        return Promise.resolve(foundEntity)
+    }
     findAll() {
-        return this._entities;
+        return Promise.resolve(this._entities);
     }
 
     findById(id) {

@@ -1,5 +1,5 @@
 <template>
-  <NavBar></NavBar>
+<!--  <NavBar></NavBar>-->
   <div class="friend-template">
     <div class="card">
       <h1>Friends</h1>
@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar";
+// import NavBar from "@/components/NavBar";
 // import chatBox from "@/components/chat/chatBox";
 
 export default {
   name: 'friendsPage',
-  components: {NavBar},
+  // components: {NavBar},
   inject: ['SessionService', 'chatFriend'],
   data() {
     return {
@@ -102,7 +102,7 @@ export default {
       console.log('Inviting friend:', friendId);
     },
     reinitializeFriends() {
-      this.chatFriend.getAllFriends().then((array) => {
+      this.chatFriend.findAll().then((array) => {
         this.friends = array;
       });
     },
