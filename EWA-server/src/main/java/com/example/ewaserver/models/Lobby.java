@@ -61,6 +61,17 @@ public class Lobby {
         this.userid_owner = userid_owner;
     }
 
+    public Lobby(int idLobby, String join_code, int isPrivateLobby, int player_size, int max_allowed_Players,
+                 int lobby_status, int userid_owner) {
+        this.idLobby = idLobby;
+        this.join_code = join_code;
+        this.isPrivateLobby = isPrivateLobby;
+        this.player_size = player_size;
+        this.max_allowed_Players = max_allowed_Players;
+        this.lobby_status = lobby_status;
+        this.userid_owner = userid_owner;
+    }
+
     protected Lobby() {
     }
 
