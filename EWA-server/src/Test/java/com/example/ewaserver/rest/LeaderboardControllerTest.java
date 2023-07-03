@@ -26,7 +26,6 @@ class LeaderboardControllerTest {
     @InjectMocks
     private LeaderboardController leaderboardController;
 
-    @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach

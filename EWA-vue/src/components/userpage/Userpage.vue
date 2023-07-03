@@ -90,20 +90,6 @@ export default {
     onFullNameChange() {
       this.fullNameError = null;
     },
-    // emailValidation() {
-    //   if (!this.email.match("/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/")) {
-    //     this.emailError = 'Please enter a valid email address.';
-    //   } else {
-    //     this.emailError = null;
-    //   }
-    // },
-    // fullNameValidation() {
-    //   if (!this.firstName.match("/^[a-zA-Z]+$/") || !this.lastName.match("/^[a-zA-Z]+$/")) {
-    //     this.fullNameError = 'Please enter a valid full name.';
-    //   } else {
-    //     this.fullNameError = null;
-    //   }
-    // },
 
     async onDelete() {
       const confirmationMessage = confirm("Are you sure you want to delete your account?")
