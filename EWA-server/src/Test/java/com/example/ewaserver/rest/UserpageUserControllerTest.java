@@ -58,7 +58,7 @@ class UserControllerTest2 {
         int id = 1;
         User user = new User();
         user.setUserId(id);
-        user.setUsername("john");
+        user.setUsername("Elvis");
 
         when(userRepository.deleteById(id)).thenReturn(user);
 
