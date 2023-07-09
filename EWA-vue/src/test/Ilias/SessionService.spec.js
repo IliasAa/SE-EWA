@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import friendsPage from "../../components/friendsPage.vue";
-import {MemoryService} from "../../adaptors/MemoryService";
+import {InMemoryService} from "@/adaptors/InMemoryService";
 import {FakeUser} from "../../models/FakeUser";
 import {reactive} from "vue";
 
@@ -8,7 +8,7 @@ import {reactive} from "vue";
 let wrapper;
 
 beforeEach(async function() {
-    let userService = new MemoryService(10000, FakeUser.createSampleUser);
+    let userService = new InMemoryService(10000, FakeUser.createSampleUser);
 
     wrapper = await mount(friendsPage, {
         global: {

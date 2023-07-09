@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils'
-import {MemoryService} from "../adaptors/MemoryService";
+import {MemoryService} from "../adaptors/InMemoryService";
 import {FakeUser} from "../models/FakeUser";
 import {reactive} from "vue";
 import friendsPage from '@/components/friendsPage.vue';

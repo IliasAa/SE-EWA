@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,
         classes = {Repository.class, Entity.class}))
 
-
 public class LudoRepositoryTest {
 
     @Autowired

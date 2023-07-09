@@ -1,5 +1,5 @@
-export class MemoryService
-   {
+export class InMemoryService
+    /* implements EntitiesServiceInterface<E> */ {
 
     _lastId;
     _entities;
@@ -18,16 +18,8 @@ export class MemoryService
         }
     }
 
-    currentAccount(){
-        return this._entities[0];
-    }
-
-    searchUser(username){
-        const foundEntity = this._entities.find(e => e?.userName == username);
-        return Promise.resolve(foundEntity)
-    }
     findAll() {
-        return Promise.resolve(this._entities);
+        return this._entities;
     }
 
     findById(id) {

@@ -26,7 +26,7 @@
                                         <td v-for="tableField in tableFields" :key='tableField' >{{ user[tableField] }}</td>
                                         <td>
                                             <button class="btn btn-primary" @click="showPopUpEdit(user)">Edit</button>
-                                            <button class="btn btn-danger" @click="showPopUp(user)">Delete</button>
+                                            <button class="btn btn-danger" ref="delete-user" id="delete-user" @click="showPopUp(user)">Delete</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -81,7 +81,7 @@
           </v-form>
           <div class="modal-footer mt-3 flex justify-content-center mt-10">
             <div>
-              <button class="btn btn-danger" @click="goBack()">
+              <button class="btn btn-danger"  ref="add-user" id="add-user" @click="goBack()">
                 Cancel
               </button>
               <button class="btn btn-success"  @click="createUser()">

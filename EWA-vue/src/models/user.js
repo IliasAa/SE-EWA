@@ -29,6 +29,18 @@ export class User {
         return this.isAdmin;
     }
 
+    static createSample(id) {
+        const user = new User();
+        user.userId = id;
+        user.username = "username"
+        user.firstname = "firstname"
+        user.lastname = "lastname"
+        user.email = "test@mail.com"
+        user.password = "test"
+        user.role = "Admin"
+        return user;
+    }
+
 
 
 
