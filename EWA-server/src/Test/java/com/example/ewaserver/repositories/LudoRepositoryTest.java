@@ -67,5 +67,6 @@ public class LudoRepositoryTest {
 
         //test if the first pos of the playerlist is changed.
         assertNotEquals(this.playerpositionList.get(0),playerposition);
+        assertEquals(57, this.playerpositionList.size());
     }
 }
