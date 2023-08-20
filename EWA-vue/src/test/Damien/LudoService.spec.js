@@ -14,7 +14,7 @@ describe('LudoService', () => {
     });
 
     it('should fetch playermove', async () => {
-        const mockPlayerPos = { tokenId: '101', tokenPos: '51', onField: '2' };
+        const mockPlayerPos = {tokenId: '101', tokenPos: '51', onField: '2'};
         const fetchPlayerPos = jest.fn().mockResolvedValue(mockPlayerPos);
         service.fetchPlayerPos = fetchPlayerPos;
         const result = await service.fetchPlayerPos();

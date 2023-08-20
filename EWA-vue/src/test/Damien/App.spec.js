@@ -8,6 +8,6 @@ beforeEach(async function () {
     wrapper = mount(HostGame)
 });
 
-it('Check if content exist', async function() {
+it('Check if content exist', async function () {
     expect(wrapper.html()).toContain("Choose to host an offline or online game:");
 })

@@ -98,7 +98,8 @@ public class LudoControllerTest {
         mockMvc.perform(get("/Ludo/100/1")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].tokenId").value(100))
                 .andExpect(jsonPath("$[0].tokenPos").value(1))
-                .andExpect(jsonPath("$[0].onField").value(2));;
+                .andExpect(jsonPath("$[0].onField").value(2));
+        ;
 
         verify(repo, times(1))
                 .findByQuery("Find_Playermoves_based_of_tokenAndLobby", posTokenId, lobby);
@@ -121,7 +122,8 @@ public class LudoControllerTest {
         mockMvc.perform(get("/Ludo/1")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].tokenId").value(100))
                 .andExpect(jsonPath("$[0].tokenPos").value(1))
-                .andExpect(jsonPath("$[0].onField").value(2));;
+                .andExpect(jsonPath("$[0].onField").value(2));
+        ;
 
         verify(repo, times(1)).findByQuery("Find_Playermoves_based_of_lobbyId", lobby);
     }
