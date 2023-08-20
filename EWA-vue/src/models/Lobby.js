@@ -35,13 +35,13 @@ export class Lobby {
     }
 
     static createSample() {
-        const lobby = new Lobby();
-        lobby.join_code = "Za89Hh7"
-        lobby.selected_color = "blue";
-        lobby.isPrivateLobby = 0;
-        lobby.players_size = 2;
-        lobby.max_allowed_Players = 3;
-        lobby.userid_owner = 1;
-        return lobby;
+        const lobbyT = new Lobby();
+        lobbyT.join_code = 'Za89Hh7';
+        lobbyT.selected_color = 'blue';
+        lobbyT.isPrivateLobby = 0;
+        lobbyT.players_size = 2;
+        lobbyT.max_allowed_Players = 3;
+        lobbyT.userid_owner = 1;
+        return lobbyT;
     }
 }
