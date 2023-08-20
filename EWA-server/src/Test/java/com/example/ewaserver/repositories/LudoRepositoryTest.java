@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 //Damiën test
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,
@@ -50,5 +51,21 @@ public class LudoRepositoryTest {
         assertEquals(playerposition.getTokenId(), playerposition1.getTokenId());
         assertEquals(playerposition.getOnField(), playerposition1.getOnField());
         assertEquals(playerposition.getTokenPos(), playerposition1.getTokenPos());
+    }
+
+    @Test
+    public void repoDeletePlayerposition() {
+        // test if object in list will be found by get by id.
+        Playerposition playerposition = this.playerpositionList.get(0);
+        Playerposition playerposition1 = playerPRepository.deleteById(playerposition.getIdPlayerposition());
+
+        //test if the deleted position is the same as the selected position.
+        assertEquals(playerposition,playerposition1);
+
+        //replace the playerlist with the new one.
+        this.playerpositionList = this.playerPRepository.findAll();
+
+        //test if the first pos of the playerlist is changed.
+        assertNotEquals(this.playerpositionList.get(0),playerposition);
     }
 }
