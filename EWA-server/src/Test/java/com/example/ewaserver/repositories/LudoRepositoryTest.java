@@ -1,47 +1,52 @@
 package com.example.ewaserver.repositories;
-//Damiën
 
-import com.example.ewaserver.models.Lobby;
 import com.example.ewaserver.models.Playerposition;
-import org.aspectj.apache.bcel.Repository;
+import jakarta.persistence.Entity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-
-import javax.swing.text.html.parser.Entity;
+import org.springframework.stereotype.Repository;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+//Damiën test
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,
         classes = {Repository.class, Entity.class}))
-
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class LudoRepositoryTest {
 
     @Autowired
-    private EntityRepository<Playerposition> repo;
+    EntityRepository<Playerposition> playerPRepository;
 
     private List<Playerposition> playerpositionList;
 
-    @Test
-    public void repoSavepos() {
-        Lobby lobby = new Lobby(1, "5025x", 0, 2, 4, 1, 1);
-        Playerposition playerposition = new Playerposition(100, 1, 2, lobby);
-
-
-        Playerposition savedPos = repo.Save(playerposition);
-
-        assertTrue(this.playerpositionList.size() > 0);
-
-        assertEquals(100, savedPos.getTokenId());
-        assertEquals(1,savedPos.getTokenPos());
+    @BeforeEach
+    public void setup() {
+        this.playerpositionList = this.playerPRepository.findAll();
     }
 
 
+    @Test
+    public void repoFindAllReturnsAll() {
+        // check users have been loaded
+        // Has to be updated if the records in the DB are changed.
+        assertEquals(58, this.playerpositionList.size());
+    }
+
+
+    @Test
+    public void repoFindByIdReturnsUser() {
+        // test if object in list will be found by get by id.
+        Playerposition playerposition = this.playerpositionList.get(0);
+        Playerposition playerposition1 = playerPRepository.findById(playerposition.getIdPlayerposition());
+
+        // Comfirm if it is the same playerPos
+        assertEquals(playerposition.getTokenId(), playerposition1.getTokenId());
+        assertEquals(playerposition.getOnField(), playerposition1.getOnField());
+        assertEquals(playerposition.getTokenPos(), playerposition1.getTokenPos());
+    }
 }
