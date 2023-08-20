@@ -1,16 +1,20 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import DetailOfflineGame from '../../components/lobby/DetailOfflineGame.vue';
 
 describe('DetailOfflineGame', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(DetailOfflineGame);
+        wrapper = mount(DetailOfflineGame);
     });
 
     afterEach(() => {
         wrapper.unmount();
     });
+
+    // it('mount test', async () => {
+    //     expect()
+    // })
 
     it('displays "Player must select a color" message when start button is clicked without selecting a color', async () => {
         const startButton = wrapper.find('.start');

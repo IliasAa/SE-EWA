@@ -34,4 +34,14 @@ export class Lobby {
             max_allowed_Players,userid_owner);
     }
 
+    static createSample() {
+        const lobby = new Lobby();
+        lobby.join_code = "Za89Hh7"
+        lobby.selected_color = "blue";
+        lobby.isPrivateLobby = 0;
+        lobby.players_size = 2;
+        lobby.max_allowed_Players = 3;
+        lobby.userid_owner = 1;
+        return lobby;
+    }
 }
