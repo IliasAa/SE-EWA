@@ -4,6 +4,9 @@ import HostGame from "@/components/lobby/HostGame.vue";
 
 let wrapper;
 
+
+
+
 beforeEach(async function () {
     wrapper = mount(HostGame)
 });
