@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION,
         classes = {Repository.class, Entity.class}))
@@ -29,6 +30,13 @@ public class LobbyRepositoryTest {
 
     @BeforeEach
     public void setup() { this.lobbyList = this.lobbyEntityRepository.findAll(); }
+
+    @Test
+    public void loadContext() {
+
+        assertNotNull(lobbyEntityRepository);
+        assertNotNull(lobbyList);
+    }
 
     @Test
     public void returnAllLobbys() {

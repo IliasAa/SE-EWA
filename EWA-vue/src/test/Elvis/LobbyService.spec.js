@@ -22,8 +22,7 @@ describe('LobbyServiceTest', () => {
     it('findById returns the specified lobbys', function () {
         const lobby = service.entities[0];
 
-        expect(service.findById(lobby.id),
-            // eslint-disable-next-line jest/valid-expect
+        expect(service.findById(1),
             'Lobby.findById cannot find Lobby-${lobby.id})'
     ).toStrictEqual(lobby)
 
